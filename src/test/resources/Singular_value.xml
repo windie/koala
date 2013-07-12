@@ -1,0 +1,84 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.8/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.8/ http://www.mediawiki.org/xml/export-0.8.xsd" version="0.8" xml:lang="en">
+  <siteinfo>
+    <sitename>Wikipedia</sitename>
+    <base>http://en.wikipedia.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.22wmf9</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">Wikipedia</namespace>
+      <namespace key="5" case="first-letter">Wikipedia talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="100" case="first-letter">Portal</namespace>
+      <namespace key="101" case="first-letter">Portal talk</namespace>
+      <namespace key="108" case="first-letter">Book</namespace>
+      <namespace key="109" case="first-letter">Book talk</namespace>
+      <namespace key="446" case="first-letter">Education Program</namespace>
+      <namespace key="447" case="first-letter">Education Program talk</namespace>
+      <namespace key="710" case="first-letter">TimedText</namespace>
+      <namespace key="711" case="first-letter">TimedText talk</namespace>
+      <namespace key="828" case="first-letter">Module</namespace>
+      <namespace key="829" case="first-letter">Module talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Singular value</title>
+    <ns>0</ns>
+    <id>709116</id>
+    <revision>
+      <id>552814083</id>
+      <parentid>552813732</parentid>
+      <timestamp>2013-04-30T00:48:59Z</timestamp>
+      <contributor>
+        <ip>80.65.246.4</ip>
+      </contributor>
+      <text xml:space="preserve" bytes="3942">In [[mathematics]], in particular [[functional analysis]], the '''singular values''', or '''''s''-numbers''' of a [[compact operator]] {{nowrap|''T''&amp;thinsp;: ''X'' → ''Y''}} acting between [[Hilbert space]]s ''X'' and ''Y'', are the square roots of the [[eigenvalue]]s of the non-negative self-adjoint operator {{nowrap|''T*T''&amp;thinsp;: ''X'' → ''X''}} (where ''T*'' denotes the [[adjoint operator|adjoint]] of ''T'').
+
+The singular values are non-negative [[real number]]s, usually listed in decreasing order (''s''&lt;sub&gt;1&lt;/sub&gt;(''T''), ''s''&lt;sub&gt;2&lt;/sup&gt;(''T''), …).  If ''T'' is [[self-adjoint operator|self-adjoint]], then the largest singular value ''s''&lt;sub&gt;1&lt;/sub&gt;(''T'') is equal to the [[operator norm]] of ''T'' (see [[Courant minimax principle]]). 
+
+[[File:Singular value decomposition.gif|thumb|right|280px|Visualisation of a [[singular value decomposition]] (SVD) of a 2-dimensional, real [[:en:Shear mapping|shearing matrix]] ''M''. First, we see the [[unit disc]] in blue together with the two [[standard basis|canonical unit vectors]]. We then see the action of ''M'', which distorts the disc to an [[ellipse]]. The SVD decomposes ''M'' into three simple transformations: a [[Rotation matrix|rotation]] ''V''&lt;sup&gt;*&lt;/sup&gt;, a [[scaling (geometry)|scaling]] ''&amp;Sigma;'' along the rotated coordinate axes and a second rotation ''U''. ''&amp;Sigma;'' is a [[diagonal matrix]] containing in its diagonal the singular values of ''M'', which represent the lengths &amp;sigma;&lt;sub&gt;1&lt;/sub&gt; and &amp;sigma;&lt;sub&gt;2&lt;/sub&gt; of the [[Ellipse#Elements of an ellipse|semi-axes]] of the ellipse.]]
+
+In the case that ''T'' acts on euclidean space '''R'''&lt;sup&gt;''n''&lt;/sup&gt;, there is a simple geometric interpretation for the singular values: Consider the image by ''T'' of the [[N-sphere|unit sphere]]; this is an [[ellipsoid]], and its semi-axes are the singular values of ''T'' (the figure provides an example in '''R'''&lt;sup&gt;''2''&lt;/sup&gt;). 
+
+In the case of a [[normal matrix]] ''A'', the [[spectral theorem]] can be applied to obtain unitary diagonalization of ''A'' as per {{nowrap|''A'' {{=}} ''U''Λ''U*''}}. Therefore, &lt;math&gt;\sqrt{A^*A}=U|\Lambda|U^*&lt;/math&gt; and so the singular values are simply the absolute values of the [[eigenvalues]].
+
+Most [[normed linear space|norms]] on Hilbert space operators studied are defined using ''s''-numbers.  For example, the [[Ky Fan]]-''k''-norm is the sum of first ''k'' singular values, the trace norm is the sum of all singular values, and the [[Schatten norm]] is the ''p''th root of the sum of the ''p''th powers of the singular values.  Note that each norm is defined only on a special class of operators, hence ''s''-numbers are useful in classifying different operators.
+
+In the finite-dimensional case, a [[matrix (mathematics)|matrix]] can always be decomposed in the form  ''UDW'', where ''U'' and ''W'' are [[unitary matrix|unitary matrices]] and ''D'' is a [[diagonal matrix]] with the singular values lying on the diagonal.  This is the [[singular value decomposition]].
+
+== History ==
+This concept was introduced by [[Erhard Schmidt]] in 1907.  Schmidt called singular values &quot;eigenvalues&quot; at that time.  The name &quot;singular value&quot; was first quoted by Smithies in 1937.  In 1957, Allahverdiev proved the following characterization of the ''n''th ''s''-number {{ref|1}}: 
+: &lt;math&gt;
+    s_n(T) = \inf\big\{\, \|T-L\| : L\text{ is an operator of finite rank }&lt;n \,\big\}.
+  &lt;/math&gt;
+This formulation made it possible to extend the notion of ''s''-numbers to operators in [[Banach space]].
+
+== See also ==
+*[[Singular value decomposition]]
+*[[Condition number]]
+
+==References==
+# {{note|1}}I. C. Gohberg and M. G. Krein. Introduction to the Theory of Linear Non-selfadjoint Operators. American Mathematical Society, Providence, R.I.,1969. Translated from the Russian by A. Feinstein. Translations of Mathematical Monographs, Vol. 18.
+
+[[Category:Operator theory]]
+[[Category:Singular value decomposition]]</text>
+      <sha1>ivaskqnncfbwmyxf4vgsocruq2t67qe</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+</mediawiki>
