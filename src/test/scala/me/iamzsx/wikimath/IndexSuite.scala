@@ -8,6 +8,10 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.Assert._
 import scala.io.Source
 import java.io._
+import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
+import uk.ac.ed.ph.snuggletex.SnuggleInput
+import uk.ac.ed.ph.snuggletex.SerializationMethod
+import uk.ac.ed.ph.snuggletex.SnuggleEngine
 
 @RunWith(classOf[JUnitRunner])
 class ParseWorkerSuite extends FunSuite {
@@ -34,14 +38,14 @@ class ParseWorkerSuite extends FunSuite {
 
   class IndexerImplTest extends Indexer {
 
-    var latexes = List[String]()
+    var formulas = List[(String, WikiPage)]()
     var isStop = false
 
     def act() {
       loop {
         react {
-          case latex: String => {
-            latexes = latexes ::: List(latex)
+          case (latex: String, page: WikiPage) => {
+            formulas = formulas ::: List((latex, page))
           }
           case Stop => {
             isStop = true
@@ -65,6 +69,18 @@ class ParseWorkerSuite extends FunSuite {
       """s_n(T) = \inf\big\{\, \|T-L\| : L\text{ is an operator of finite rank }<n \,\big\}.""")
 
     assertTrue(indexer.isStop)
-    assertEquals(expected, indexer.latexes.map(_.trim))
+    assertEquals(2, indexer.formulas.length)
+
+    val page = indexer.formulas(0)._2
+    val page2 = indexer.formulas(1)._2
+    assertTrue(page == page2)
+    assertEquals("Singular value", page.title)
+    assertEquals(1, page.id)
+
+    val formula = indexer.formulas(0)._1
+    val formula2 = indexer.formulas(1)._1
+
+    assertEquals(expected(0), formula.trim)
+    assertEquals(expected(1), formula2.trim)
   }
 }
