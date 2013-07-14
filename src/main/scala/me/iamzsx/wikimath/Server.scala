@@ -1,9 +1,14 @@
 package me.iamzsx.wikimath
 
-import java.io.File
+import java.io._
+import scala.collection.mutable.ArrayBuffer
 import org.apache.lucene.analysis.standard.StandardAnalyzer
 import org.apache.lucene.index.DirectoryReader
+import org.apache.lucene.index.Term
 import org.apache.lucene.search.IndexSearcher
+import org.apache.lucene.search.payloads.AveragePayloadFunction
+import org.apache.lucene.search.payloads.PayloadFunction
+import org.apache.lucene.search.payloads.PayloadTermQuery
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.util.Version
 import org.mortbay.jetty.Server
@@ -14,10 +19,13 @@ import org.mortbay.jetty.servlet.ServletHandler
 import org.mortbay.jetty.servlet.ServletHolder
 import org.mortbay.jetty.servlet.ServletMapping
 import org.mortbay.thread.QueuedThreadPool
-import scala.collection.mutable.ArrayBuffer
 import javax.servlet.http.HttpServlet
-import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+import me.iamzsx.xyz.TermLevelPayloadFunction
+import org.apache.lucene.queryparser.classic.QueryParser
+import scala.annotation.meta.field
+import me.iamzsx.xyz.TermLevelPayloadSimilarity
 
 class HttpServer {
   val webServer = new Server
@@ -80,26 +88,37 @@ object HttpServer {
 
 object FormulaSearcher {
 
-  val analyzer = new StandardAnalyzer(Version.LUCENE_43)
+  val analyzer = new StandardAnalyzer(Version.LUCENE_36)
 
   val searcher = {
     val dir = FSDirectory.open(new File(Config.get.getString("index.dir")))
     val reader = DirectoryReader.open(dir)
-    new IndexSearcher(reader)
+    val s = new IndexSearcher(reader)
+    s.setSimilarity(new TermLevelPayloadSimilarity)
+    s
   }
 
   def get = {
-	  // TODO
+    val str = new StringBuilder
+    val results = searcher.search(new FormulaQueryParser().parse("test"), 10)
+
+    val hits = results.scoreDocs
+
+    val numTotalHits = results.totalHits
+    println(numTotalHits + " total matching documents")
+    for (i <- 0 until numTotalHits) {
+      str ++= searcher.explain(new FormulaQueryParser().parse("test"), hits(i).doc).toHtml
+    }
+    str.toString
   }
 
 }
-
 
 class SearchServlet extends HttpServlet {
   override def doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-    resp.getWriter().write("Hello World")
+    resp.getWriter().write("<html><body>")
+    resp.getWriter().write(FormulaSearcher.get)
+    resp.getWriter().write("</body></html>")
   }
 }
 
-
- 

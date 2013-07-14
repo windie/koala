@@ -99,7 +99,7 @@ class FormulaDocument(val latex: String, val page: WikiPage) {
     val doc = new Document;
 
     doc.add(new StoredField("formula_id", id))
-    doc.add(new TextField("formula", latex, Field.Store.YES))
+    doc.add(new TextField("formula", "test a b test a a", Field.Store.YES))
     doc.add(new StoredField("doc_id", page.id))
     doc.add(new StoredField("doc_title", page.title))
     doc.add(new StoredField("doc_title", page.title))
@@ -143,7 +143,7 @@ class IndexerImpl(indexPath: File, parallel: Int) extends Indexer {
   val writer = {
     val dir = FSDirectory.open(indexPath)
     val analyzer = new FormulaAnalyzer
-    val iwc = new IndexWriterConfig(Version.LUCENE_43, analyzer)
+    val iwc = new IndexWriterConfig(Version.LUCENE_36, analyzer)
     iwc.setOpenMode(OpenMode.CREATE)
     // iwc.setRAMBufferSizeMB(256.0);
     new IndexWriter(dir, iwc)

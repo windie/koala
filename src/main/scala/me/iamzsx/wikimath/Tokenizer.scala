@@ -1,26 +1,27 @@
 package me.iamzsx.wikimath
 
 import java.io.Reader
+import scala.collection.mutable.ListBuffer
+import scala.xml._
+import scala.xml.Node
+import scala.xml.NodeSeq
 import org.apache.commons.io.IOUtils
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents
 import org.apache.lucene.analysis.Tokenizer
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute
 import org.apache.lucene.analysis.tokenattributes.FlagsAttribute
+import org.apache.lucene.analysis.tokenattributes.PayloadAttribute
 import org.apache.lucene.analysis.tokenattributes.PositionLengthAttribute
 import uk.ac.ed.ph.snuggletex.SerializationMethod
 import uk.ac.ed.ph.snuggletex.SnuggleEngine
 import uk.ac.ed.ph.snuggletex.SnuggleInput
 import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
-import java.io.IOException
-import scala.xml.XML
-import scala.xml.XML
-import scala.xml.XML
-import scala.xml._
-import javax.xml.parsers.SAXParserFactory
-import scala.collection.mutable.ListBuffer
-import scala.xml.Node
-import scala.xml.NodeSeq
+import org.apache.lucene.analysis.payloads.PayloadHelper
+import org.apache.lucene.analysis.payloads.DelimitedPayloadTokenFilter
+import org.apache.lucene.util.BytesRef
+import org.apache.lucene.analysis.payloads.PayloadHelper;  
+import org.apache.lucene.search.similarities.DefaultSimilarity;  
 
 class FormulaAnalyzer extends Analyzer {
 
@@ -50,6 +51,7 @@ class FormulaTokenizer(input: Reader) extends Tokenizer(input) {
   val termAtt: CharTermAttribute = addAttribute(classOf[CharTermAttribute])
   val levelAtt: PositionLengthAttribute = addAttribute(classOf[PositionLengthAttribute])
   val generalizationAtt: FlagsAttribute = addAttribute(classOf[FlagsAttribute])
+  val payloadAtt: PayloadAttribute = addAttribute(classOf[PayloadAttribute])
 
   case class Token(
     val term: String,
@@ -64,33 +66,35 @@ class FormulaTokenizer(input: Reader) extends Tokenizer(input) {
     } else {
       val token = tokens.head
       termAtt.copyBuffer(token.term.toCharArray(), 0, token.term.length)
-      levelAtt.setPositionLength(token.level)
-      generalizationAtt.setFlags(if (token.generalization) 1 else 0)
+      val payload = PayloadHelper.encodeInt(token.level)
+      payloadAtt.setPayload(new BytesRef(payload))
       tokens = tokens.tail
       true
     }
   }
 
   override def reset {
-    val session = engine.createSession
-    println(System.currentTimeMillis / 1000)
+    //    val session = engine.createSession
+    //    println(System.currentTimeMillis / 1000)
+    //    val latex = IOUtils.toString(input)
+    //    val latexInput = new SnuggleInput("$$ " + latex + " $$")
+    //    if (!session.parseInput(latexInput)) {
+    //      throw new IOException("Parse error: " + latexInput)
+    //    }
+    //    val www = session.buildXMLString(options)
+    //    println(www)
+    //    println(System.currentTimeMillis / 1000)
+    //    val xml = XML.loadString(www)
+    //    println(System.currentTimeMillis / 1000)
+    //    xml match {
+    //      case <math>{ contents @ _* }</math> => {
+    //        tokens = toTokens(ListBuffer[Token](), contents, 1).toList
+    //      }
+    //      case _ => throw new IOException("Invalid xml: " + xml)
+    //    }
+    //    println(System.currentTimeMillis / 1000)
     val latex = IOUtils.toString(input)
-    val latexInput = new SnuggleInput("$$ " + latex + " $$")
-    if (!session.parseInput(latexInput)) {
-      throw new IOException("Parse error: " + latexInput)
-    }
-    val www = session.buildXMLString(options)
-    println(www)
-    println(System.currentTimeMillis / 1000)
-    val xml = XML.loadString(www)
-    println(System.currentTimeMillis / 1000)
-    xml match {
-      case <math>{ contents @ _* }</math> => {
-        tokens = toTokens(ListBuffer[Token](), contents, 1).toList
-      }
-      case _ => throw new IOException("Invalid xml: " + xml)
-    }
-    println(System.currentTimeMillis / 1000)
+    tokens = latex.split(" ").map(new Token(_, 1, false)).toList
   }
 
   private def toTokens(buffer: ListBuffer[Token], nodes: NodeSeq, level: Int): ListBuffer[Token] = {
