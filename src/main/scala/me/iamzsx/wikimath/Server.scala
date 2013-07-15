@@ -116,9 +116,9 @@ object FormulaSearcher {
 
 class SearchServlet extends HttpServlet {
   override def doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-    resp.getWriter().write("<html><body>")
-    resp.getWriter().write(FormulaSearcher.get)
-    resp.getWriter().write("</body></html>")
+    resp.setContentType("application/json")
+    resp.getWriter().print("""{ "status" : "OK", "result" : []}""")
+    resp.getWriter().println()
   }
 }
 

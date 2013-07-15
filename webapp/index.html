@@ -2,6 +2,8 @@
 <html>
 	<head>
 		<title>Wikimirs</title>
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="css/bootstrap-notify.css" rel="stylesheet">
 	</head>
 	<body>
 	<div style="text-align: center;">
@@ -76,15 +78,18 @@
 
 
 
+	<div class='notifications top-center'></div>
 	</body>
-	<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap-notify.js"></script>
 	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 	<script type="text/javascript">
 	$(function() {
 		$("#search").click(function() {
 			var query = $("#query").val();
 			renderQuery(query);
-			search(query);
+			search(query, 1);
 		});
 	});
 	
@@ -93,13 +98,42 @@
 		MathJax.Hub.Queue(["Typeset",MathJax.Hub,"query_formula"]);
 	}
 	
-	function search(query) {
-		var url = "search?q=" + encodeURIComponent(query);
+	function search(query, page) {
+		var url = "search?q=" + encodeURIComponent(query) + "&page=" + page;
 		$.get(url, function(data) {
-			alert("success");
-		}).fail(function() {
-			alert("error");
-		})
+			console.log(data)
+			if (data.status == "OK") {
+				renderSearchResult(data.result);
+			}
+			else {
+				error("Request Failed: " + data.status);
+			}
+		}).fail(function( jqxhr, textStatus, error ) {
+		  var err = textStatus + ', ' + error;
+		  error("Request Failed: " + err);
+		});
+	}
+	
+	function error(error) {
+		$('.top-center').notify({
+				type: "error",
+				message: { text: error }
+			}).show();
+		console.log(error);
+	}
+	
+	function renderSearchResult(result) {
+		if(result.length == 0) {
+			renderEmptyResult();
+		}
+		else {
+			// TODO
+			alert(result);
+		}
+	}
+	
+	function renderEmptyResult() {
+		// TODO
 	}
 	</script>
 </html>
