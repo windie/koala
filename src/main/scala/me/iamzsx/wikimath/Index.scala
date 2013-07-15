@@ -7,9 +7,9 @@ import java.util.concurrent.atomic.AtomicLong
 import scala.actors.Actor
 import scala.xml._
 
+import org.apache.lucene.document._
 import org.apache.lucene.document.Document
 import org.apache.lucene.document.Field
-import org.apache.lucene.document._
 import org.apache.lucene.index.IndexWriter
 import org.apache.lucene.index.IndexWriterConfig
 import org.apache.lucene.index.IndexWriterConfig.OpenMode
@@ -99,7 +99,7 @@ class FormulaDocument(val latex: String, val page: WikiPage) {
     val doc = new Document;
 
     doc.add(new StoredField("formula_id", id))
-    doc.add(new TextField("formula", "test a b test a a", Field.Store.YES))
+    doc.add(new TextField("formula", latex, Field.Store.YES))
     doc.add(new StoredField("doc_id", page.id))
     doc.add(new StoredField("doc_title", page.title))
     doc.add(new StoredField("doc_title", page.title))
@@ -141,6 +141,9 @@ trait Indexer extends Actor
 class IndexerImpl(indexPath: File, parallel: Int) extends Indexer {
 
   val writer = {
+    if(indexPath.exists()) {
+      indexPath.delete()
+    }
     val dir = FSDirectory.open(indexPath)
     val analyzer = new FormulaAnalyzer
     val iwc = new IndexWriterConfig(Version.LUCENE_36, analyzer)
