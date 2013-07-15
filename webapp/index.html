@@ -1,11 +1,22 @@
 <!doctype html>
 <html>
 	<head>
-		<title>TODO</title>
+		<title>Wikimirs</title>
 	</head>
 	<body>
+	<div style="text-align: center;">
+		<div>
+			<input type="text" id="query" name="query"></input>
+			<button id="search">Search</button>
+		</div>
+		<div id="box" style="width:300px;overflow: auto;text-align: center;margin-left:auto;margin-right:auto;">
+			<div id="query_formula"></div>
+		</div>
+	</div>
+	$$ e^{ia}=\cos \left(a\right)+i\sin \left(a\right) $$
 	$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
 	
+<!DOCTYPE math SYSTEM "http://www.w3.org/Math/DTD/mathml3/mathml3.dtd">	
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
    <msub>
       <mi>s</mi>
@@ -66,5 +77,29 @@
 
 
 	</body>
+	<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<script type="text/javascript">
+	$(function() {
+		$("#search").click(function() {
+			var query = $("#query").val();
+			renderQuery(query);
+			search(query);
+		});
+	});
+	
+	function renderQuery(query) {
+		$("#query_formula").text("$$ " + query + " $$");
+		MathJax.Hub.Queue(["Typeset",MathJax.Hub,"query_formula"]);
+	}
+	
+	function search(query) {
+		var url = "search?q=" + encodeURIComponent(query);
+		$.get(url, function(data) {
+			alert("success");
+		}).fail(function() {
+			alert("error");
+		})
+	}
+	</script>
 </html>
