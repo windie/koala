@@ -74,7 +74,6 @@
 	}
 	
 	function renderSearchResult(data) {
-		$("#query_detail").html(data.query_detail)
 		if(data.results.length == 0) {
 			renderEmptyResult(data.query);
 		}
@@ -89,6 +88,7 @@
 				renderFormula("formula" + this.doc.formula_id, this.doc.formula);
 			});
 		}
+		$("#query_detail").html(data.query_detail)
 		$("#search_results").show();
 	}
 	
@@ -106,7 +106,7 @@
 	}
 	
 	function renderEmptyResult(query) {
-		$("#search_results").html("Your search - " + em(query) + " - did not match any documents.")
+		$("#search_summary").html("Your search - " + em(query) + " - did not match any documents.")
 	}
 	
 	function em(text) {

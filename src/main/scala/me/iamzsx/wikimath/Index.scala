@@ -3,10 +3,8 @@ package me.iamzsx.wikimath
 import java.io.File
 import java.net.URLEncoder
 import java.util.concurrent.atomic.AtomicLong
-
 import scala.actors.Actor
 import scala.xml._
-
 import org.apache.lucene.document._
 import org.apache.lucene.document.Document
 import org.apache.lucene.document.Field
@@ -15,8 +13,8 @@ import org.apache.lucene.index.IndexWriterConfig
 import org.apache.lucene.index.IndexWriterConfig.OpenMode
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.util.Version
-
 import com.typesafe.config.ConfigFactory
+import org.apache.lucene.util.IOUtils
 
 case class Finish()
 case class Stop()

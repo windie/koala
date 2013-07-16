@@ -245,19 +245,29 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
         val g = node.children.map(child => {
           if (child.label == "mo" || child.label == "mi")
             tailor(child)
-          else
+          else if (child.isText) {
+            child.label
+          } else {
             child.toLabelString
+          }
         }).mkString
-        val formulaTerm = new FormulaTerm(g, level, true)
-        tokens += formulaTerm
+        if (g.length > 1) {
+          val formulaTerm = new FormulaTerm(g, level, true)
+          tokens += formulaTerm
+        }
         val t = node.children.map(child => {
           if (child.label == "mo" || child.label == "mi")
             tailor(child)
-          else
+          else if (child.isText) {
+            child.label
+          } else {
             toTokens(child, level + 1)
+          }
         }).mkString
-        val formulaTerm1 = new FormulaTerm(t, level, false)
-        tokens += formulaTerm1
+        if (t.length > 1) {
+          val formulaTerm1 = new FormulaTerm(t, level, false)
+          tokens += formulaTerm1
+        }
         "<" + node.label + ">" + t + "</" + node.label + ">"
       } else {
         val t = node.children.map(child => {
@@ -269,8 +279,10 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
             child.toLabelString
           }
         }).mkString
-        val formulaTerm1 = new FormulaTerm(t, level, false)
-        tokens += formulaTerm1
+        if (t.length > 1) {
+          val formulaTerm1 = new FormulaTerm(t, level, false)
+          tokens += formulaTerm1
+        }
         "<" + node.label + ">" + t + "</" + node.label + ">"
       }
     }
