@@ -6,24 +6,49 @@
 		<link href="css/bootstrap-notify.css" rel="stylesheet">
 	</head>
 	<body>
-	<div style="text-align: center;">
-		<div>
-			<input type="text" id="query" name="query"></input>
-			<button id="search">Search</button>
-		</div>
+	<div id="main" class="container main-body">
+	<div class="row text-center">
+		<form id="search-form" class="form-search" action="#">
+			<div class="input-append">
+		  	  <input type="text" id="query" name="query" class="input-large search-query" placeholder="Latex formula" />
+		  	  <button id="search" class="btn"><i class="icon-search"></i></button>
+	  		</div>
+		</form>
+	</div>	
+	<div id="search_results" >
 		<div id="box" style="width:300px;overflow: auto;text-align: center;margin-left:auto;margin-right:auto;">
 			<div id="query_formula"></div>
 		</div>
-	</div>	
-	<div id="search_results" class="container main-body">
-		<div id="query_detail"></div>
-		<div id="search_summary">
+		<div id="query_detail" class="row"></div>
+		<div id="search_summary"></div>
+		<div class="pagination pagination-centered">
+		  <ul>
+		    <li><a href="#">Prev</a></li>
+		    <li><a href="#">1</a></li>
+		    <li><a href="#">2</a></li>
+		    <li><a href="#">3</a></li>
+		    <li><a href="#">4</a></li>
+		    <li><a href="#">5</a></li>
+		    <li><a href="#">Next</a></li>
+		  </ul>
 		</div>
 		<div id="search_result_items" class="row">
 			<!-- <div id="search_result_item"></div> -->
 		</div>
+		<div class="pagination pagination-centered">
+		  <ul>
+		    <li><a href="#">Prev</a></li>
+		    <li><a href="#">1</a></li>
+		    <li><a href="#">2</a></li>
+		    <li><a href="#">3</a></li>
+		    <li><a href="#">4</a></li>
+		    <li><a href="#">5</a></li>
+		    <li><a href="#">Next</a></li>
+		  </ul>
+		</div>
 	</div>
 	<div class='notifications top-center'></div>
+	</div>
 	</body>
 	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -36,6 +61,7 @@
 			renderQuery(query);
 			search(query, 1);
 		});
+		$('#search-form').submit(function() {return false;});
 		//$("#search_results").hide();
 	});
 	
@@ -74,13 +100,14 @@
 	}
 	
 	function renderSearchResult(data) {
+		var search_results_div = $("#search_result_items");
+		search_results_div.html("");
 		if(data.results.length == 0) {
 			renderEmptyResult(data.query);
 		}
 		else {
-			var summary = "About" + data.total + "results ("+ data.time +" seconds)";
-			$("#search_summary").text(summary);
-			var search_results_div = $("#search_result_items");
+			var summary = "About " + data.total + " results ( "+ data.time +" seconds)";
+			$("#search_summary").attr("class", "alert alert-success").text(summary);
 			$.each(data.results, function() {
 				search_results_div.append(renderOneResult(this));
 			});
@@ -89,16 +116,19 @@
 			});
 		}
 		$("#query_detail").html(data.query_detail)
-		$("#search_results").show();
 	}
 	
 	function renderOneResult(result) {
 		var title = result.doc.doc_title;
+		var url =result.doc.doc_url;
 		var score = result.score;
 		var formula = result.doc.formula;
 		var explain = result.explain;
-		var wrapper = $("<div class='search_result_item'>");
-		wrapper.append($("<div>").text(title));
+		var wrapper = $("<div class='row search_result_item'>");
+		
+		var title_anchor = $("<a href='" + url + "'>").text(title);
+		
+		wrapper.append($("<div>").append(title_anchor));
 		wrapper.append($("<div>").text(score));
 		wrapper.append($("<div id='formula" + result.doc.formula_id + "'>"));
 		wrapper.append($("<div>").html(explain));
@@ -106,7 +136,7 @@
 	}
 	
 	function renderEmptyResult(query) {
-		$("#search_summary").html("Your search - " + em(query) + " - did not match any documents.")
+		$("#search_summary").attr("class", "alert").html("Your search - " + em(query) + " - did not match any documents.")
 	}
 	
 	function em(text) {

@@ -42,6 +42,7 @@ import uk.ac.ed.ph.snuggletex.SnuggleInput
 import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
 import org.apache.commons.lang3.StringEscapeUtils
 import org.apache.commons.lang3.StringEscapeUtils
+import java.net.URLEncoder
 
 case class FormulaTerm(
   val term: String,
@@ -425,7 +426,9 @@ object FormulaSearcher {
       "formula" -> doc.get("formula"),
       "doc_id" -> doc.get("doc_id").toLong,
       "doc_title" -> doc.get("doc_title"),
-      "doc_url" -> doc.get("doc_url")) // TODO How to get the url
+      "doc_url" -> {
+        "http://en.wikipedia.org/wiki/" + URLEncoder.encode(doc.get("doc_title"), "UTF-8")
+      })
   }
 
 }
