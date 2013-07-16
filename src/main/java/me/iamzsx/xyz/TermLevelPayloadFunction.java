@@ -1,10 +1,11 @@
 package me.iamzsx.xyz;
 
+import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.payloads.PayloadFunction;
 
 public class TermLevelPayloadFunction extends PayloadFunction {
 
-	private int termLevelInQuery;
+	private final int termLevelInQuery;
 
 	public TermLevelPayloadFunction(int termLevelInQuery) {
 		this.termLevelInQuery = termLevelInQuery;
@@ -13,7 +14,8 @@ public class TermLevelPayloadFunction extends PayloadFunction {
 	@Override
 	public float currentScore(int docId, String field, int start, int end,
 			int numPayloadsSeen, float currentScore, float currentPayloadScore) {
-		return currentScore + 1.0F / (1.0F + Math.abs(termLevelInQuery - currentPayloadScore));
+		return currentScore + 1.0F
+				/ (1.0F + Math.abs(termLevelInQuery - currentPayloadScore));
 	}
 
 	@Override
@@ -38,4 +40,16 @@ public class TermLevelPayloadFunction extends PayloadFunction {
 		return this.termLevelInQuery == that.termLevelInQuery;
 	}
 
+	@Override
+	public Explanation explain(int docId, String field, int numPayloadsSeen,
+			float payloadScore) {
+		Explanation termLevel = new Explanation();
+		termLevel.setDescription("term level in query");
+		termLevel.setValue(termLevelInQuery);
+
+		Explanation result = super.explain(docId, field, numPayloadsSeen,
+				payloadScore);
+		result.addDetail(termLevel);
+		return result;
+	}
 }

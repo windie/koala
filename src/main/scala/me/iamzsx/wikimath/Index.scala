@@ -102,7 +102,7 @@ class FormulaDocument(val latex: String, val page: WikiPage) {
     doc.add(new TextField("formula", latex, Field.Store.YES))
     doc.add(new StoredField("doc_id", page.id))
     doc.add(new StoredField("doc_title", page.title))
-    doc.add(new StoredField("doc_title", page.title))
+    // doc.add(new StoredField("doc_url", page.title))
 
     doc
   }
@@ -141,15 +141,11 @@ trait Indexer extends Actor
 class IndexerImpl(indexPath: File, parallel: Int) extends Indexer {
 
   val writer = {
-    if(indexPath.exists()) {
+    if (indexPath.exists()) {
       indexPath.delete()
     }
     val dir = FSDirectory.open(indexPath)
-    val analyzer = new FormulaAnalyzer
-    val iwc = new IndexWriterConfig(Version.LUCENE_36, analyzer)
-    iwc.setOpenMode(OpenMode.CREATE)
-    // iwc.setRAMBufferSizeMB(256.0);
-    new IndexWriter(dir, iwc)
+    new FormulaIndexWriter(dir)
   }
 
   var remainWorker = parallel
@@ -159,7 +155,7 @@ class IndexerImpl(indexPath: File, parallel: Int) extends Indexer {
       react {
         case (latex: String, page: WikiPage) =>
           val formula = new FormulaDocument(latex, page)
-          writer.addDocument(formula.toDocument)
+          writer.add(formula)
         case Stop => {
           remainWorker -= 1
           if (remainWorker == 0) close
@@ -169,8 +165,7 @@ class IndexerImpl(indexPath: File, parallel: Int) extends Indexer {
   }
 
   def close {
-    writer.forceMerge(1)
-    writer.close()
+    writer.close
     exit
   }
 

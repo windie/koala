@@ -1,41 +1,47 @@
 package me.iamzsx.wikimath
 
-import org.apache.lucene.analysis.payloads.PayloadHelper
-import org.apache.lucene.search.BooleanQuery
-import org.apache.lucene.search.Query
-import org.apache.lucene.search.payloads.PayloadTermQuery
-import org.apache.lucene.util.BytesRef
-import org.apache.lucene.index.Term
-import me.iamzsx.xyz.TermLevelPayloadFunction
-import org.apache.lucene.search.BooleanClause
+import java.io.File
+import java.io.IOException
 import java.io.Reader
+import java.io.StringReader
+
+import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
-import scala.xml._
-import scala.xml.Node
-import scala.xml.NodeSeq
+
 import org.apache.commons.io.IOUtils
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents
 import org.apache.lucene.analysis.Tokenizer
+import org.apache.lucene.analysis.payloads.PayloadHelper
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute
-import org.apache.lucene.analysis.tokenattributes.FlagsAttribute
 import org.apache.lucene.analysis.tokenattributes.PayloadAttribute
-import org.apache.lucene.analysis.tokenattributes.PositionLengthAttribute
+import org.apache.lucene.document.Document
+import org.apache.lucene.index.DirectoryReader
+import org.apache.lucene.index.IndexWriter
+import org.apache.lucene.index.IndexWriterConfig
+import org.apache.lucene.index.IndexWriterConfig.OpenMode
+import org.apache.lucene.index.Term
+import org.apache.lucene.search.BooleanClause
+import org.apache.lucene.search.BooleanQuery
+import org.apache.lucene.search.IndexSearcher
+import org.apache.lucene.search.Query
+import org.apache.lucene.search.payloads.PayloadTermQuery
+import org.apache.lucene.store.Directory
+import org.apache.lucene.store.FSDirectory
+import org.apache.lucene.util.BytesRef
+import org.apache.lucene.util.Version
+
+import javax.xml.stream.XMLInputFactory
+import javax.xml.stream.XMLStreamConstants
+import me.iamzsx.xyz.TermLevelPayloadFunction
+import me.iamzsx.xyz.TermLevelPayloadSimilarity
+import play.api.libs.json.JsNull
+import play.api.libs.json.Json
+import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import uk.ac.ed.ph.snuggletex.SerializationMethod
 import uk.ac.ed.ph.snuggletex.SnuggleEngine
 import uk.ac.ed.ph.snuggletex.SnuggleInput
 import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
-import org.apache.lucene.analysis.payloads.PayloadHelper
-import org.apache.lucene.analysis.payloads.DelimitedPayloadTokenFilter
-import org.apache.lucene.util.BytesRef
-import org.apache.lucene.analysis.payloads.PayloadHelper
-import org.apache.lucene.search.similarities.DefaultSimilarity
-import java.io.IOException
-import javax.xml.stream.XMLInputFactory
-import java.io.StringReader
-import javax.xml.stream.XMLStreamReader
-import javax.xml.stream.XMLStreamConstants
-import scala.collection.mutable.ArrayBuffer
 
 case class FormulaTerm(
   val term: String,
@@ -222,40 +228,102 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
   }
 }
 
-object Test {
-  def a = {
+class FormulaIndexWriter(dir: Directory) {
 
-    val engine = new SnuggleEngine
-    val session = engine.createSession
-
-    val input = new SnuggleInput("""$$ s_n(T) = \inf\big\{\, \|T-L\| : L\text{ is an operator of finite rank }<n \,\big\}. $$""");
-    session.parseInput(input);
-
-    val options = new XMLStringOutputOptions
-    options.setSerializationMethod(SerializationMethod.XML)
-    options.setIndenting(true)
-    options.setEncoding("UTF-8")
-    options.setAddingMathSourceAnnotations(false)
-    options.setUsingNamedEntities(true)
-    options.setDoctypeSystem("""http://www.w3.org/Math/DTD/mathml3/mathml3.dtd""")
-
-    // XML.loadString( + session.buildXMLString(options))
-    session.buildXMLString(options)
+  private val writer = {
+    val analyzer = new FormulaAnalyzer
+    val iwc = new IndexWriterConfig(Version.LUCENE_36, analyzer)
+    iwc.setOpenMode(OpenMode.CREATE)
+    iwc.setRAMBufferSizeMB(Config.get.getDouble("index.ram_size"));
+    new IndexWriter(dir, iwc)
   }
 
-  def main(args: Array[String]) {
-    val x = <a>&nbps;</a>
-
-    println(x.child)
+  def add(formulaDoc: FormulaDocument) {
+    writer.addDocument(formulaDoc.toDocument)
   }
 
-  def b = {
-    val x = <a><b>1</b><c></c></a>
-    x match {
-      case <a>{ y @ _* }</a> => println(y)
-      case _ => println()
+  def close {
+    writer.forceMerge(1)
+    writer.close()
+  }
+}
+
+class FormulaSearcher(dir: Directory) {
+
+  private val searcher = {
+    val reader = DirectoryReader.open(dir)
+    new IndexSearcher(reader)
+  }
+  searcher.setSimilarity(new TermLevelPayloadSimilarity)
+
+  def search(query: String, sizeOfResult: Int) = {
+    searcher.search(new FormulaQueryParser().parse(query), sizeOfResult)
+  }
+
+  def explain(query: String, docId: Int) = {
+    searcher.explain(new FormulaQueryParser().parse(query), docId)
+  }
+
+  def doc(docId: Int) = searcher.doc(docId)
+
+}
+
+object FormulaSearcher {
+
+  val searcher = {
+    val dir = FSDirectory.open(new File(Config.get.getString("index.dir")))
+    new FormulaSearcher(dir)
+  }
+
+  /**
+   * @param query
+   * @param page the page id. Start from 1.
+   * @param sizeOfPage the size of every page. Must greater than 0.
+   * @return
+   */
+  def search(query: String, page: Int, pageSize: Int) = {
+    if (page <= 0) {
+      throw new IllegalArgumentException("page <= 0")
     }
+
+    if (pageSize <= 0) {
+      throw new IllegalArgumentException("sizeOfPage <= 0")
+    }
+
+    val str = new StringBuilder
+    val results = searcher.search(query, page * pageSize)
+
+    val hits = results.scoreDocs
+    val numTotalHits = results.totalHits
+
+    val start = (page - 1) * pageSize
+    val resultsJson = for (i <- start until numTotalHits) yield {
+      val docId = hits(i).doc
+      val doc = searcher.doc(docId)
+      str ++= searcher.explain(query, docId).toHtml
+      Json.obj(
+        "doc" -> documentToJson(doc),
+        "score" -> hits(i).score,
+        "explain" -> searcher.explain(query, docId).toHtml)
+    }
+
+    Json.obj(
+      "status" -> "OK",
+      "results" -> Json.arr(resultsJson),
+      "page" -> page,
+      "pageSize" -> pageSize,
+      "total" -> numTotalHits)
   }
+
+  def documentToJson(doc: Document) = {
+    Json.obj(
+      "formula_id" -> doc.get("formula_id").toLong,
+      "formula" -> doc.get("formula"),
+      "doc_id" -> doc.get("doc_id").toLong,
+      "doc_title" -> doc.get("doc_title"),
+      "doc_url" -> doc.get("doc_url")) // TODO How to get the url
+  }
+
 }
 
 

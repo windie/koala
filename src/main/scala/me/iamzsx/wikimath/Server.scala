@@ -26,6 +26,7 @@ import me.iamzsx.xyz.TermLevelPayloadFunction
 import org.apache.lucene.queryparser.classic.QueryParser
 import scala.annotation.meta.field
 import me.iamzsx.xyz.TermLevelPayloadSimilarity
+import play.api.libs.json.Json
 
 class HttpServer {
   val webServer = new Server
@@ -86,38 +87,29 @@ object HttpServer {
   }
 }
 
-object FormulaSearcher {
-
-  val analyzer = new StandardAnalyzer(Version.LUCENE_36)
-
-  val searcher = {
-    val dir = FSDirectory.open(new File(Config.get.getString("index.dir")))
-    val reader = DirectoryReader.open(dir)
-    val s = new IndexSearcher(reader)
-    s.setSimilarity(new TermLevelPayloadSimilarity)
-    s
-  }
-
-  def get = {
-    val str = new StringBuilder
-    val results = searcher.search(new FormulaQueryParser().parse("test"), 10)
-
-    val hits = results.scoreDocs
-
-    val numTotalHits = results.totalHits
-    println(numTotalHits + " total matching documents")
-    for (i <- 0 until numTotalHits) {
-      str ++= searcher.explain(new FormulaQueryParser().parse("test"), hits(i).doc).toHtml
-    }
-    str.toString
-  }
-
-}
-
 class SearchServlet extends HttpServlet {
   override def doGet(req: HttpServletRequest, resp: HttpServletResponse) {
     resp.setContentType("application/json")
-    resp.getWriter().print("""{ "status" : "OK", "result" : []}""")
+
+    val query = req.getParameter("q")
+    if (query == null || query.isEmpty()) {
+      resp.getWriter().print("""{ "status": "need query parameter" }""")
+      resp.getWriter().println()
+      return ;
+    }
+
+    var page = req.getParameter("page")
+    if (page == null) {
+      page = "0"
+    }
+
+    var pageSize = req.getParameter("page_size")
+    if (pageSize == null) {
+      pageSize = "10"
+    }
+
+    val json = FormulaSearcher.search(query, page.toInt, pageSize.toInt)
+    resp.getWriter().print(Json.stringify(json))
     resp.getWriter().println()
   }
 }

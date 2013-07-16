@@ -22,6 +22,10 @@ repositories {
   maven {
     url 'http://www2.ph.ed.ac.uk/maven2'
   }
+  // If play 2.2 releases, we need to remove this temp repository
+  maven {
+    url 'https://raw.github.com/mandubian/mandubian-mvn/master/snapshots'
+  }
 }
 
 dependencies {
@@ -36,6 +40,7 @@ dependencies {
   compile 'uk.ac.ed.ph.snuggletex:snuggletex-core:1.2.2'
   compile 'uk.ac.ed.ph.snuggletex:snuggletex-upconversion:1.2.2'
   compile 'uk.ac.ed.ph.snuggletex:snuggletex-jeuclid:1.2.2'
+  compile 'play:play-json_2.10:2.2-SNAPSHOT'
 
   testCompile 'junit:junit:4.10'
   testCompile 'org.scalatest:scalatest_2.10:1.9.1'
