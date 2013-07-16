@@ -108,9 +108,16 @@ class SearchServlet extends HttpServlet {
       pageSize = "10"
     }
 
-    val json = FormulaSearcher.search(query, page.toInt, pageSize.toInt)
-    resp.getWriter().print(Json.stringify(json))
-    resp.getWriter().println()
+    try {
+      val json = FormulaSearcher.search(query, page.toInt, pageSize.toInt)
+      resp.getWriter().print(Json.stringify(json))
+      resp.getWriter().println()
+    } catch {
+      case e: Exception => {
+        resp.getWriter().print("""{ "status": """" + e.getMessage + """" }""")
+        resp.getWriter().println()
+      }
+    }
   }
 }
 
