@@ -290,7 +290,6 @@ object FormulaSearcher {
       throw new IllegalArgumentException("sizeOfPage <= 0")
     }
 
-    val str = new StringBuilder
     val results = searcher.search(query, page * pageSize)
 
     val hits = results.scoreDocs
@@ -300,7 +299,6 @@ object FormulaSearcher {
     val resultsJson = for (i <- start until numTotalHits) yield {
       val docId = hits(i).doc
       val doc = searcher.doc(docId)
-      str ++= searcher.explain(query, docId).toHtml
       Json.obj(
         "doc" -> documentToJson(doc),
         "score" -> hits(i).score,
