@@ -1,16 +1,10 @@
 package me.iamzsx.wikimath
 
 import java.io._
+
+import scala.annotation.meta.field
 import scala.collection.mutable.ArrayBuffer
-import org.apache.lucene.analysis.standard.StandardAnalyzer
-import org.apache.lucene.index.DirectoryReader
-import org.apache.lucene.index.Term
-import org.apache.lucene.search.IndexSearcher
-import org.apache.lucene.search.payloads.AveragePayloadFunction
-import org.apache.lucene.search.payloads.PayloadFunction
-import org.apache.lucene.search.payloads.PayloadTermQuery
-import org.apache.lucene.store.FSDirectory
-import org.apache.lucene.util.Version
+
 import org.mortbay.jetty.Server
 import org.mortbay.jetty.handler.HandlerList
 import org.mortbay.jetty.handler.ResourceHandler
@@ -19,13 +13,10 @@ import org.mortbay.jetty.servlet.ServletHandler
 import org.mortbay.jetty.servlet.ServletHolder
 import org.mortbay.jetty.servlet.ServletMapping
 import org.mortbay.thread.QueuedThreadPool
+
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import me.iamzsx.xyz.TermLevelPayloadFunction
-import org.apache.lucene.queryparser.classic.QueryParser
-import scala.annotation.meta.field
-import me.iamzsx.xyz.TermLevelPayloadSimilarity
 import play.api.libs.json.Json
 
 class HttpServer {
@@ -38,9 +29,9 @@ class HttpServer {
 
   def init {
     val connector = new SelectChannelConnector
-    connector.setPort(8080)
+    connector.setPort(Config.get.getInt("webserver.port"))
     webServer.addConnector(connector)
-
+    
     webServer.setThreadPool(new QueuedThreadPool)
 
     val mainHandler = new HandlerList
@@ -114,6 +105,7 @@ class SearchServlet extends HttpServlet {
       resp.getWriter().println()
     } catch {
       case e: Exception => {
+        e.printStackTrace
         resp.getWriter().print("""{ "status": """" + e.getMessage + """" }""")
         resp.getWriter().println()
       }

@@ -14,73 +14,12 @@
 		<div id="box" style="width:300px;overflow: auto;text-align: center;margin-left:auto;margin-right:auto;">
 			<div id="query_formula"></div>
 		</div>
-	</div>
-	$$ e^{ia}=\cos \left(a\right)+i\sin \left(a\right) $$
-	$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
-	
-<!DOCTYPE math SYSTEM "http://www.w3.org/Math/DTD/mathml3/mathml3.dtd">	
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-   <msub>
-      <mi>s</mi>
-      <mi>n</mi>
-   </msub>
-   <mfenced close=")" open="(">
-      <mi>T</mi>
-   </mfenced>
-   <mo>=</mo>
-   <mi>inf</mi>
-   <mrow>
-      <mo>{</mo>
-      <mrow>
-         <mspace width="0.167em"/>
-         <mo>&shortparallel;</mo>
-         <mi>T</mi>
-         <mo>-</mo>
-         <mi>L</mi>
-         <mo>&shortparallel;</mo>
-         <mi>:</mi>
-         <mi>L</mi>
-         <mrow>
-            <mi>i</mi>
-            <mi>s</mi>
-            <mi>a</mi>
-            <mi>n</mi>
-            <mi>o</mi>
-            <mi>p</mi>
-            <mi>e</mi>
-            <mi>r</mi>
-            <mi>a</mi>
-            <mi>t</mi>
-            <mi>o</mi>
-            <mi>r</mi>
-            <mi>o</mi>
-            <mi>f</mi>
-            <mi>f</mi>
-            <mi>i</mi>
-            <mi>n</mi>
-            <mi>i</mi>
-            <mi>t</mi>
-            <mi>e</mi>
-            <mi>r</mi>
-            <mi>a</mi>
-            <mi>n</mi>
-            <mi>k</mi>
-         </mrow>
-         <mo>&lt;</mo>
-         <mi>n</mi>
-         <mspace width="0.167em"/>
-         <mo>}</mo>
-      </mrow>
-      <mo>.</mo>
-   </mrow>
-</math>
-
-
-
-	<div id="search_results">
+	</div>	
+	<div id="search_results" class="container main-body">
+		<div id="query_detail"></div>
 		<div id="search_summary">
 		</div>
-		<div id="search_result_items">
+		<div id="search_result_items" class="row">
 			<!-- <div id="search_result_item"></div> -->
 		</div>
 	</div>
@@ -97,12 +36,16 @@
 			renderQuery(query);
 			search(query, 1);
 		});
-		$("#search_results").hide();
+		//$("#search_results").hide();
 	});
 	
 	function renderQuery(query) {
-		$("#query_formula").text("$$ " + query + " $$");
-		MathJax.Hub.Queue(["Typeset",MathJax.Hub,"query_formula"]);
+		renderFormula("query_formula", query);
+	}
+	
+	function renderFormula(id, formula) {
+		$("#" + id).text("$$ " + formula + " $$");
+		MathJax.Hub.Queue(["Typeset",MathJax.Hub, id]);
 	}
 	
 	function search(query, page) {
@@ -131,27 +74,43 @@
 	}
 	
 	function renderSearchResult(data) {
+		$("#query_detail").html(data.query_detail)
 		if(data.results.length == 0) {
 			renderEmptyResult(data.query);
 		}
 		else {
 			var summary = "About" + data.total + "results ("+ data.time +" seconds)";
 			$("#search_summary").text(summary);
-			var search_results_html = "";
+			var search_results_div = $("#search_result_items");
 			$.each(data.results, function() {
-				search_results_html += renderOneResult(this);
+				search_results_div.append(renderOneResult(this));
 			});
-			$("#search_result_items").html(search_results_html);
+			$.each(data.results, function() {
+				renderFormula("formula" + this.doc.formula_id, this.doc.formula);
+			});
 		}
 		$("#search_results").show();
 	}
 	
 	function renderOneResult(result) {
-		result // TODO
+		var title = result.doc.doc_title;
+		var score = result.score;
+		var formula = result.doc.formula;
+		var explain = result.explain;
+		var wrapper = $("<div class='search_result_item'>");
+		wrapper.append($("<div>").text(title));
+		wrapper.append($("<div>").text(score));
+		wrapper.append($("<div id='formula" + result.doc.formula_id + "'>"));
+		wrapper.append($("<div>").html(explain));
+		return wrapper;
 	}
 	
 	function renderEmptyResult(query) {
-		$("#search_results").text("Your search - " + query + " - did not match any documents.")
+		$("#search_results").html("Your search - " + em(query) + " - did not match any documents.")
+	}
+	
+	function em(text) {
+		return $("<em>").text(text).wrap('<div>').parent().html();
 	}
 	</script>
 </html>

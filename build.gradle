@@ -37,6 +37,7 @@ dependencies {
   compile 'com.typesafe:config:1.0.2'
   compile 'org.mortbay.jetty:jetty:6.1.26'
   compile 'org.apache.commons:commons-io:1.3.2'
+  compile 'org.apache.commons:commons-lang3:3.1'
   compile 'uk.ac.ed.ph.snuggletex:snuggletex-core:1.2.2'
   compile 'uk.ac.ed.ph.snuggletex:snuggletex-upconversion:1.2.2'
   compile 'uk.ac.ed.ph.snuggletex:snuggletex-jeuclid:1.2.2'

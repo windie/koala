@@ -4,16 +4,15 @@ import java.io.File
 import java.io.IOException
 import java.io.Reader
 import java.io.StringReader
-
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
-
 import org.apache.commons.io.IOUtils
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents
 import org.apache.lucene.analysis.Tokenizer
 import org.apache.lucene.analysis.payloads.PayloadHelper
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute
+import org.apache.lucene.analysis.tokenattributes.FlagsAttribute
 import org.apache.lucene.analysis.tokenattributes.PayloadAttribute
 import org.apache.lucene.document.Document
 import org.apache.lucene.index.DirectoryReader
@@ -25,23 +24,24 @@ import org.apache.lucene.search.BooleanClause
 import org.apache.lucene.search.BooleanQuery
 import org.apache.lucene.search.IndexSearcher
 import org.apache.lucene.search.Query
+import org.apache.lucene.search.ScoreDoc
 import org.apache.lucene.search.payloads.PayloadTermQuery
 import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.util.BytesRef
 import org.apache.lucene.util.Version
-
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLStreamConstants
 import me.iamzsx.xyz.TermLevelPayloadFunction
 import me.iamzsx.xyz.TermLevelPayloadSimilarity
-import play.api.libs.json.JsNull
 import play.api.libs.json.Json
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import uk.ac.ed.ph.snuggletex.SerializationMethod
 import uk.ac.ed.ph.snuggletex.SnuggleEngine
 import uk.ac.ed.ph.snuggletex.SnuggleInput
 import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
+import org.apache.commons.lang3.StringEscapeUtils
+import org.apache.commons.lang3.StringEscapeUtils
 
 case class FormulaTerm(
   val term: String,
@@ -63,11 +63,60 @@ case class FormulaTerm(
 
 class FormulaQueryParser {
 
-  def parse(query: String): Query = {
+  private val analyzer = new FormulaAnalyzer
+
+  def parse(query: String): Option[Query] = {
+    val source = analyzer.tokenStream("formula", new StringReader(query));
+    source.reset()
     val combinedQuery = new BooleanQuery(true) // TODO true or false
-    val formulaTerm = new FormulaTerm(query, 3, false)
-    combinedQuery.add(formulaTerm.toTermQuery, BooleanClause.Occur.SHOULD)
-    combinedQuery
+    var numTokens = 0
+
+    val termAtt: CharTermAttribute = source.getAttribute(classOf[CharTermAttribute])
+    val payloadAtt: PayloadAttribute = source.getAttribute(classOf[PayloadAttribute])
+    val generalizationAtt: FlagsAttribute = source.getAttribute(classOf[FlagsAttribute])
+    while (source.incrementToken()) {
+      numTokens += 1
+      val formulaTerm = new FormulaTerm(
+        termAtt.toString,
+        PayloadHelper.decodeInt(payloadAtt.getPayload().bytes, payloadAtt.getPayload().offset),
+        generalizationAtt.getFlags() == 1)
+      combinedQuery.add(formulaTerm.toTermQuery, BooleanClause.Occur.SHOULD)
+    }
+
+    if (numTokens == 0)
+      return None
+
+    Some(combinedQuery)
+  }
+
+  def explain(query: String): Option[String] = {
+    val source = analyzer.tokenStream("formula", new StringReader(query));
+    source.reset()
+    val combinedQuery = new BooleanQuery(true) // TODO true or false
+    var numTokens = 0
+
+    val termAtt: CharTermAttribute = source.getAttribute(classOf[CharTermAttribute])
+    val payloadAtt: PayloadAttribute = source.getAttribute(classOf[PayloadAttribute])
+    val generalizationAtt: FlagsAttribute = source.getAttribute(classOf[FlagsAttribute])
+
+    val explain = new StringBuilder
+    explain ++= "<ul>"
+    while (source.incrementToken()) {
+      numTokens += 1
+      val formulaTerm = new FormulaTerm(
+        termAtt.toString,
+        PayloadHelper.decodeInt(payloadAtt.getPayload().bytes, payloadAtt.getPayload().offset),
+        generalizationAtt.getFlags() == 1)
+      explain ++= "<li>"
+      explain ++= StringEscapeUtils.escapeHtml4(formulaTerm.toString)
+      explain ++= "</li>"
+    }
+
+    explain ++= "</ul>"
+    if (numTokens == 0)
+      return None
+
+    Some(explain.toString)
   }
 }
 
@@ -125,6 +174,7 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
 
   val termAtt: CharTermAttribute = addAttribute(classOf[CharTermAttribute])
   val payloadAtt: PayloadAttribute = addAttribute(classOf[PayloadAttribute])
+  val generalizationAtt: FlagsAttribute = addAttribute(classOf[FlagsAttribute])
 
   var tokens = ListBuffer[FormulaTerm]()
 
@@ -135,6 +185,7 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
       val formulaTerm = tokens.head
       termAtt.setEmpty().append(formulaTerm.term)
       payloadAtt.setPayload(formulaTerm.toPayload)
+      generalizationAtt.setFlags(if (formulaTerm.generalization) 1 else 0)
       tokens = tokens.tail
       true
     }
@@ -156,6 +207,7 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
     println(node)
 
     toTokens(node.children(0), 1)
+    println(tokens)
   }
 
   def xmlToTree(xml: String): Tag = {
@@ -211,9 +263,14 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
         val t = node.children.map(child => {
           if (child.label == "mo" || child.label == "mi")
             tailor(child)
-          else
+          else if (child.isText) {
+            child.label
+          } else {
             child.toLabelString
+          }
         }).mkString
+        val formulaTerm1 = new FormulaTerm(t, level, false)
+        tokens += formulaTerm1
         "<" + node.label + ">" + t + "</" + node.label + ">"
       }
     }
@@ -257,11 +314,15 @@ class FormulaSearcher(dir: Directory) {
   searcher.setSimilarity(new TermLevelPayloadSimilarity)
 
   def search(query: String, sizeOfResult: Int) = {
-    searcher.search(new FormulaQueryParser().parse(query), sizeOfResult)
+    new FormulaQueryParser().parse(query) map { searcher.search(_, sizeOfResult) }
   }
 
   def explain(query: String, docId: Int) = {
-    searcher.explain(new FormulaQueryParser().parse(query), docId)
+    new FormulaQueryParser().parse(query) map { searcher.explain(_, docId) }
+  }
+
+  def explainQuery(query: String) = {
+    new FormulaQueryParser().explain(query)
   }
 
   def doc(docId: Int) = searcher.doc(docId)
@@ -295,30 +356,58 @@ object FormulaSearcher {
     val results = searcher.search(query, page * pageSize)
 
     val endTime = System.currentTimeMillis()
+    results match {
+      case Some(topDocs) => {
+        val hits = topDocs.scoreDocs
+        val numTotalHits = topDocs.totalHits
 
-    val hits = results.scoreDocs
-    val numTotalHits = results.totalHits
+        val start = (page - 1) * pageSize
+        val end = (start + pageSize) min numTotalHits
+        val resultsJson = for (i <- start until end) yield {
+          scoreDocToJson(query, hits(i))
+        }
 
-    val start = (page - 1) * pageSize
-    val resultsJson = for (i <- start until numTotalHits) yield {
-      val docId = hits(i).doc
-      val doc = searcher.doc(docId)
-      Json.obj(
-        "doc" -> documentToJson(doc),
-        "score" -> hits(i).score,
-        "explain" -> searcher.explain(query, docId).toHtml)
+        Json.obj(
+          "status" -> "OK",
+          "query_detail" -> {
+            searcher.explainQuery(query) match {
+              case Some(e) => e
+              case None => ""
+            }
+          },
+          "results" -> resultsJson,
+          "page" -> page,
+          "pageSize" -> pageSize,
+          "total" -> numTotalHits,
+          "time" -> ((endTime - beginTime) / 1000.0).toString)
+      }
+      case None => {
+        Json.obj(
+          "status" -> "OK",
+          "query_detail" -> {
+            searcher.explainQuery(query) match {
+              case Some(e) => e
+              case None => ""
+            }
+          },
+          "results" -> Json.arr())
+      }
     }
-
-    Json.obj(
-      "status" -> "OK",
-      "results" -> resultsJson,
-      "page" -> page,
-      "pageSize" -> pageSize,
-      "total" -> numTotalHits,
-      "time" -> ((endTime - beginTime) / 1000.0).toString)
   }
 
-  def documentToJson(doc: Document) = {
+  private def scoreDocToJson(query: String, scoreDoc: ScoreDoc) = {
+    val docId = scoreDoc.doc
+    val doc = searcher.doc(docId)
+    Json.obj(
+      "doc" -> documentToJson(doc),
+      "score" -> scoreDoc.score,
+      "explain" -> (searcher.explain(query, docId) match {
+        case Some(e) => e.toHtml
+        case None => ""
+      }))
+  }
+
+  private def documentToJson(doc: Document) = {
     Json.obj(
       "formula_id" -> doc.get("formula_id").toLong,
       "formula" -> doc.get("formula"),
