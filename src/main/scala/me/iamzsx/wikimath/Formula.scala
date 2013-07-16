@@ -290,7 +290,11 @@ object FormulaSearcher {
       throw new IllegalArgumentException("sizeOfPage <= 0")
     }
 
+    val beginTime = System.currentTimeMillis()
+
     val results = searcher.search(query, page * pageSize)
+
+    val endTime = System.currentTimeMillis()
 
     val hits = results.scoreDocs
     val numTotalHits = results.totalHits
@@ -307,10 +311,11 @@ object FormulaSearcher {
 
     Json.obj(
       "status" -> "OK",
-      "results" -> Json.arr(resultsJson),
+      "results" -> resultsJson,
       "page" -> page,
       "pageSize" -> pageSize,
-      "total" -> numTotalHits)
+      "total" -> numTotalHits,
+      "time" -> ((endTime - beginTime) / 1000.0).toString)
   }
 
   def documentToJson(doc: Document) = {

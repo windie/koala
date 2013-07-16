@@ -77,7 +77,13 @@
 
 
 
-
+	<div id="search_results">
+		<div id="search_summary">
+		</div>
+		<div id="search_result_items">
+			<!-- <div id="search_result_item"></div> -->
+		</div>
+	</div>
 	<div class='notifications top-center'></div>
 	</body>
 	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
@@ -91,6 +97,7 @@
 			renderQuery(query);
 			search(query, 1);
 		});
+		$("#search_results").hide();
 	});
 	
 	function renderQuery(query) {
@@ -103,7 +110,8 @@
 		$.get(url, function(data) {
 			console.log(data)
 			if (data.status == "OK") {
-				renderSearchResult(data.result);
+				data.query = query
+				renderSearchResult(data);
 			}
 			else {
 				error("Request Failed: " + data.status);
@@ -122,18 +130,28 @@
 		console.log(error);
 	}
 	
-	function renderSearchResult(result) {
-		if(result.length == 0) {
-			renderEmptyResult();
+	function renderSearchResult(data) {
+		if(data.results.length == 0) {
+			renderEmptyResult(data.query);
 		}
 		else {
-			// TODO
-			alert(result);
+			var summary = "About" + data.total + "results ("+ data.time +" seconds)";
+			$("#search_summary").text(summary);
+			var search_results_html = "";
+			$.each(data.results, function() {
+				search_results_html += renderOneResult(this);
+			});
+			$("#search_result_items").html(search_results_html);
 		}
+		$("#search_results").show();
 	}
 	
-	function renderEmptyResult() {
-		// TODO
+	function renderOneResult(result) {
+		result // TODO
+	}
+	
+	function renderEmptyResult(query) {
+		$("#search_results").text("Your search - " + query + " - did not match any documents.")
 	}
 	</script>
 </html>
