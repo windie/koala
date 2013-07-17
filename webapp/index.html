@@ -224,8 +224,8 @@
 		}
 		
 		for(var i = startPage; i <= endPage; i++) {
-			var item = $("<li><a href='#'>"+i+"</a></li>");
-			var itemHandler;
+			var item = $("<li><a href='#' id='"+i+"' >"+i+"</a></li>");
+			var itemHandler = null;
 			if(i==page) {
 				item.attr("class", "active");
 				itemHandler = function(event) {
@@ -235,7 +235,7 @@
 			else {
 				itemHandler = function(event) {
 					event.preventDefault();
-					search(query, i, pageSize);
+					search(query, this.id, pageSize);
 				};
 			}
 			addPageClick(top_page_nav, item.clone(), itemHandler);
