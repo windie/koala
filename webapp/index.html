@@ -22,28 +22,14 @@
 		<div id="query_detail" class="row"></div>
 		<div id="search_summary"></div>
 		<div class="pagination pagination-centered">
-		  <ul>
-		    <li><a href="#">Prev</a></li>
-		    <li><a href="#">1</a></li>
-		    <li><a href="#">2</a></li>
-		    <li><a href="#">3</a></li>
-		    <li><a href="#">4</a></li>
-		    <li><a href="#">5</a></li>
-		    <li><a href="#">Next</a></li>
+		  <ul id="top_page_nav" >
 		  </ul>
 		</div>
 		<div id="search_result_items" class="row">
 			<!-- <div id="search_result_item"></div> -->
 		</div>
 		<div class="pagination pagination-centered">
-		  <ul>
-		    <li><a href="#">Prev</a></li>
-		    <li><a href="#">1</a></li>
-		    <li><a href="#">2</a></li>
-		    <li><a href="#">3</a></li>
-		    <li><a href="#">4</a></li>
-		    <li><a href="#">5</a></li>
-		    <li><a href="#">Next</a></li>
+		  <ul id="bottom_page_nav">
 		  </ul>
 		</div>
 	</div>
@@ -54,16 +40,68 @@
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap-notify.js"></script>
 	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-	<script type="text/javascript">
+	<script type="text/javascript">	
 	$(function() {
 		$("#search").click(function() {
 			var query = $("#query").val();
 			renderQuery(query);
-			search(query, 1);
+			search(query, 1, 10);
 		});
 		$('#search-form').submit(function() {return false;});
-		//$("#search_results").hide();
+		$(window).on('popstate', reloadFromHistory);
 	});
+	
+	function reloadFromHistory(event) {
+		var data = event.originalEvent.state;
+		if(data) {
+			console.log(data);
+			var query = data.query;
+			$("#query").val(query);
+			renderQuery(query);
+			renderSearchResult(data);
+		}
+		else {
+			searchUsingGetParameter();
+		}
+	}
+	
+	function clearup() {
+		$("#query").val("");
+		$("#query_formula").html("");
+		$("#query_detail").html("");
+		$("#search_summary").hide();
+		$("#top_page_nav").html("");
+		$("#bottom_page_nav").html("");
+		$("#search_result_items").html("");
+	}
+	
+	function searchUsingGetParameter() {
+		var query = getParameterByName("q");
+		if(query == "" || query == null) {
+			clearup();
+			return;
+		}
+		
+		$("#query").val(query);
+		renderQuery(query);
+		
+		var page = getParameterByName("page");
+		var pageSize = getParameterByName("page_size");
+		if(page == "" || page == null) {
+			page = 1;
+		}
+		if(pageSize == "" || pageSize == null) {
+			pageSize = 10;
+		}
+		search(query, page, pageSize, true);
+		return true;
+	}
+	
+	function getParameterByName(name) {
+		name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
+		return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
 	
 	function renderQuery(query) {
 		renderFormula("query_formula", query);
@@ -74,20 +112,26 @@
 		MathJax.Hub.Queue(["Typeset",MathJax.Hub, id]);
 	}
 	
-	function search(query, page) {
-		var url = "search?q=" + encodeURIComponent(query) + "&page=" + page;
+	function search(query, page, pageSize, noload) {
+		var parameter = "q=" + encodeURIComponent(query) + "&page=" + page + "&page_size=" + pageSize;
+		var url = "search?" + parameter;
 		$.get(url, function(data) {
 			console.log(data)
 			if (data.status == "OK") {
 				data.query = query
 				renderSearchResult(data);
+				if(noload) {
+				}
+				else {
+					window.history.pushState(data, query + " - Wikimirs", "/?" + parameter);
+				}
 			}
 			else {
 				error("Request Failed: " + data.status);
 			}
 		}).fail(function( jqxhr, textStatus, error ) {
-		  var err = textStatus + ', ' + error;
-		  error("Request Failed: " + err);
+			var err = textStatus + ', ' + error;
+			error("Request Failed: " + err);
 		});
 	}
 	
@@ -107,13 +151,14 @@
 		}
 		else {
 			var summary = "About " + data.total + " results ( "+ data.time +" seconds)";
-			$("#search_summary").attr("class", "alert alert-success").text(summary);
+			$("#search_summary").attr("class", "alert alert-success").text(summary).show();
 			$.each(data.results, function() {
 				search_results_div.append(renderOneResult(this));
 			});
 			$.each(data.results, function() {
 				renderFormula("formula" + this.doc.formula_id, this.doc.formula);
 			});
+			setPage(data.query, data.page, data.pageSize, data.total);
 		}
 		$("#query_detail").html(data.query_detail)
 	}
@@ -137,10 +182,80 @@
 	
 	function renderEmptyResult(query) {
 		$("#search_summary").attr("class", "alert").html("Your search - " + em(query) + " - did not match any documents.")
+		setNoPage();
 	}
 	
 	function em(text) {
 		return $("<em>").text(text).wrap('<div>').parent().html();
+	}
+	
+	function setNoPage() {
+		var top_page_nav = $("#top_page_nav");
+		top_page_nav.html("");
+		var bottom_page_nav = $("#bottom_page_nav");
+		bottom_page_nav.html("");
+	}
+	
+	function setPage(query, page, pageSize, total) {
+		var totalPage = Math.ceil(total / pageSize);
+		
+		var startPage = Math.floor(( page - 1 ) / 10) * pageSize + 1;
+		console.log("s:  " + startPage);
+		var endPage = Math.floor(( page - 1 ) / 10) * pageSize + 10;
+		endPage = endPage > totalPage ? totalPage : endPage;
+		console.log("e:  " + endPage);
+
+		var isFirstTenPage = startPage == 1;
+		var isLastTenPage = endPage == totalPage;
+
+		var top_page_nav = $("#top_page_nav");
+		top_page_nav.html("");
+		var bottom_page_nav = $("#bottom_page_nav");
+		bottom_page_nav.html("");
+		
+		if(!isFirstTenPage) {
+			var prev = $("<li><a href='#'>&lt;&lt;</a></li>");
+			var prevHandler = function(event) {
+				event.preventDefault();
+				search(query, startPage - 10, pageSize);
+			};
+			addPageClick(top_page_nav, prev.clone(), prevHandler);
+			addPageClick(bottom_page_nav, prev.clone(), prevHandler);
+		}
+		
+		for(var i = startPage; i <= endPage; i++) {
+			var item = $("<li><a href='#'>"+i+"</a></li>");
+			var itemHandler;
+			if(i==page) {
+				item.attr("class", "active");
+				itemHandler = function(event) {
+					event.preventDefault();
+				};
+			}
+			else {
+				itemHandler = function(event) {
+					event.preventDefault();
+					search(query, i, pageSize);
+				};
+			}
+			addPageClick(top_page_nav, item.clone(), itemHandler);
+			addPageClick(bottom_page_nav, item.clone(), itemHandler);
+		}
+		
+		if(!isLastTenPage) {
+			var next = $("<li><a href='#'>&gt;&gt;</a></li>");
+			var nextHandler = function(event) {
+				event.preventDefault();
+				search(query, startPage + 10, pageSize);
+			};
+			addPageClick(top_page_nav, next.clone(), nextHandler);
+			addPageClick(bottom_page_nav, next.clone(), nextHandler);
+		}
+	}
+	
+	function addPageClick(parent, child, handler) {
+		parent.append(child);
+		child.children(0).click(handler);
 	}
 	</script>
 </html>
