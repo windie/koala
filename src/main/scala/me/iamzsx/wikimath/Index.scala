@@ -23,6 +23,7 @@ class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 
 
   val xmlInputFactory = XMLInputFactory.newInstance()
   xmlInputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
+  xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 
   val workers: Seq[IndexWorker] = (0 until parallel) map { x =>
     val worker = new IndexWorker(writer, this)
@@ -40,6 +41,7 @@ class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 
     var title: String = ""
     var text: String = ""
     var status = Status.OTHER
+    var pageCount = 0
     while (streamReader.hasNext()) {
       streamReader.next() match {
         case XMLStreamConstants.START_ELEMENT =>
@@ -75,6 +77,10 @@ class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 
               val page = new WikiPage(title, text)
               sendPage(page)
               status = Status.OTHER
+              pageCount += 1
+              if (pageCount % 10000 == 0) {
+                println(pageCount)
+              }
             case "text" =>
               status = Status.PAGE
             case "title" =>

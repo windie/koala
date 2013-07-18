@@ -165,6 +165,7 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
 
   val xmlInputFactory = XMLInputFactory.newInstance()
   xmlInputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
+  xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 
   val options = new XMLStringOutputOptions
   options.setSerializationMethod(SerializationMethod.XML)

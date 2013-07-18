@@ -62,5 +62,6 @@ task server(type: JavaExec, dependsOn: build) {
   main = 'me.iamzsx.wikimath.HttpServer'
   classpath sourceSets.main.runtimeClasspath
   classpath configurations.runtime
+  maxHeapSize "1512m"
 }
 
