@@ -174,7 +174,7 @@ object IndexApp {
     val parallel = Config.get.getInt("index.parallel")
     val dir = FSDirectory.open(new File(Config.get.getString("index.dir")))
     val writer = new FormulaIndexWriter(dir)
-    val data = new File("""D:\workspace-scala\wikimath\data\Wikipedia-20130713031340.xml""");
+    val data = new File(Config.get.getString("index.wikipedia_export_file"));
     val scanner = new WikiXMLScanner(writer, data, parallel)
     scanner.start
   }
