@@ -55,6 +55,7 @@ task index(type: JavaExec, dependsOn: build) {
   main = 'me.iamzsx.wikimath.IndexApp'
   classpath sourceSets.main.runtimeClasspath
   classpath configurations.runtime
+  jvmArgs "-Dactors.corePoolSize=6"
 }
 
 task server(type: JavaExec, dependsOn: build) {

@@ -202,13 +202,8 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
     val www = session.buildXMLString(options)
       .replace("""<math xmlns="http://www.w3.org/1998/Math/MathML"""", "<math ")
 
-    println(www)
-
     val node = xmlToTree(www)
-    println(node)
-
     toTokens(node.children(0), 1)
-    println(tokens)
   }
 
   def xmlToTree(xml: String): Tag = {

@@ -1,92 +1,137 @@
 package me.iamzsx.wikimath
 
 import java.io.File
-import java.net.URLEncoder
+import java.io.FileInputStream
 import java.util.concurrent.atomic.AtomicLong
+
 import scala.actors.Actor
-import scala.xml._
+
 import org.apache.lucene.document._
 import org.apache.lucene.document.Document
 import org.apache.lucene.document.Field
-import org.apache.lucene.index.IndexWriter
-import org.apache.lucene.index.IndexWriterConfig
-import org.apache.lucene.index.IndexWriterConfig.OpenMode
 import org.apache.lucene.store.FSDirectory
-import org.apache.lucene.util.Version
+
 import com.typesafe.config.ConfigFactory
-import org.apache.lucene.util.IOUtils
+
+import javax.xml.stream.XMLInputFactory
+import javax.xml.stream.XMLStreamConstants
 
 case class Finish()
 case class Stop()
 
-trait FileScanner extends Actor
+class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 4) extends Actor {
 
-class FileScannerImpl(root: File, parallel: Int, indexer: Indexer) extends FileScanner {
+  val xmlInputFactory = XMLInputFactory.newInstance()
+  xmlInputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
 
-  val workers: Seq[ParseWorker] = (0 until parallel) map { x =>
-    val worker = new ParseWorker(this, indexer)
+  val workers: Seq[IndexWorker] = (0 until parallel) map { x =>
+    val worker = new IndexWorker(writer, this)
     worker.start
     this ! worker
     worker
   }
 
-  def scan(file: File) {
-    if (file.isDirectory()) {
-      for (subFile <- file.listFiles()) {
-        scan(subFile)
+  object Status extends Enumeration {
+    val TEXT, TITLE, PAGE, OTHER = Value
+  }
+
+  private def scan(file: File) {
+    val streamReader = xmlInputFactory.createXMLStreamReader(new FileInputStream(file))
+    var title: String = ""
+    var text: String = ""
+    var status = Status.OTHER
+    while (streamReader.hasNext()) {
+      streamReader.next() match {
+        case XMLStreamConstants.START_ELEMENT =>
+          streamReader.getLocalName() match {
+            case "page" =>
+              status = Status.PAGE
+            case "text" =>
+              text = ""
+              status = Status.TEXT
+            case "title" =>
+              title = ""
+              status = Status.TITLE
+            case _ =>
+          }
+        case XMLStreamConstants.CHARACTERS => {
+          status match {
+            case Status.TEXT => {
+              text += streamReader.getText()
+            }
+            case Status.TITLE => {
+              title += streamReader.getText()
+            }
+            case _ =>
+          }
+        }
+        case XMLStreamConstants.ENTITY_REFERENCE =>
+          {
+            println("entity: " + streamReader.getLocalName())
+          }
+        case XMLStreamConstants.END_ELEMENT =>
+          streamReader.getLocalName() match {
+            case "page" =>
+              val page = new WikiPage(title, text)
+              sendPage(page)
+              status = Status.OTHER
+            case "text" =>
+              status = Status.PAGE
+            case "title" =>
+              status = Status.PAGE
+            case _ =>
+          }
+        case _ =>
       }
-    } else {
-      sendFile(file)
     }
   }
 
-  private def sendFile(file: File) {
+  private def sendPage(page: WikiPage) {
     receive {
-      case worker: ParseWorker => {
-        worker ! file
+      case worker: IndexWorker => {
+        worker ! page
       }
     }
   }
 
   private def noticeStop() {
     workers foreach (_ ! Stop)
+    var remainWorkers = workers.length
+    while (remainWorkers > 0) {
+      receive {
+        case Finish => {
+          remainWorkers -= 1
+        }
+      }
+    }
+    writer.close
     exit
   }
 
-  def act() {
-    scan(root)
+  override def act() {
+    scan(xmlFile)
     noticeStop
   }
-
 }
 
-class ParseWorker(val scanner: FileScanner, val indexer: Indexer) extends Actor {
-
+class IndexWorker(val writer: FormulaIndexWriter, val scanner: WikiXMLScanner) extends Actor {
   def act() {
     loop {
       react {
-        case file: File => {
-
-          val xml = XML.loadFile(file)
-          for (pageNode <- xml \\ "page") {
-            val page = new WikiPage(pageNode)
-            for (math <- page.mathes) {
-              indexer ! (math, page)
-            }
+        case page: WikiPage => {
+          for (math <- page.mathes) {
+            val formula = new FormulaDocument(math, page)
+            writer.add(formula)
           }
           scanner ! this
         }
         case Stop => {
-          indexer ! Stop
+          scanner ! Finish
           exit
         }
       }
     }
   }
-}
-
-object ParseWorker {
-  val MATH = """(?s)\<math\>(.*?)\</math\>""".r
 }
 
 class FormulaDocument(val latex: String, val page: WikiPage) {
@@ -95,78 +140,27 @@ class FormulaDocument(val latex: String, val page: WikiPage) {
 
   def toDocument: Document = {
     val doc = new Document;
-
     doc.add(new StoredField("formula_id", id))
     doc.add(new TextField("formula", latex, Field.Store.YES))
     doc.add(new StoredField("doc_id", page.id))
     doc.add(new StoredField("doc_title", page.title))
-    // doc.add(new StoredField("doc_url", page.title))
 
     doc
   }
 }
 
 object FormulaDocument {
-
   val ID = new AtomicLong(0)
 }
 
-class WikiPage(pageNode: Node) {
-
-  val titleNodes = (pageNode \\ "title")
-
-  assert(titleNodes.length == 1)
-
-  val title = titleNodes.text
-
-  val content = (pageNode \\ "text")
-
-  assert(content.length == 1)
-
-  val mathes = for (ParseWorker.MATH(math) <- ParseWorker.MATH findAllIn content.text) yield math
-
+case class WikiPage(val title: String, text: String) {
+  val mathes = for (WikiPage.MATH(math) <- WikiPage.MATH findAllIn text) yield math
   val id = WikiPage.ID.incrementAndGet()
-
-  val url = "http://en.wikipedia.org/wiki/" + URLEncoder.encode(title, "UTF-8")
 }
 
 object WikiPage {
   val ID = new AtomicLong(0)
-}
-
-trait Indexer extends Actor
-
-class IndexerImpl(indexPath: File, parallel: Int) extends Indexer {
-
-  val writer = {
-    if (indexPath.exists()) {
-      indexPath.delete()
-    }
-    val dir = FSDirectory.open(indexPath)
-    new FormulaIndexWriter(dir)
-  }
-
-  var remainWorker = parallel
-
-  def act {
-    loop {
-      react {
-        case (latex: String, page: WikiPage) =>
-          val formula = new FormulaDocument(latex, page)
-          writer.add(formula)
-        case Stop => {
-          remainWorker -= 1
-          if (remainWorker == 0) close
-        }
-      }
-    }
-  }
-
-  def close {
-    writer.close
-    exit
-  }
-
+  val MATH = """(?s)\<math\>(.*?)\</math\>""".r
 }
 
 object Config {
@@ -178,11 +172,10 @@ object IndexApp {
 
   def main(args: Array[String]) {
     val parallel = Config.get.getInt("index.parallel")
-
-    val indexer = new IndexerImpl(new File(Config.get.getString("index.dir")), parallel)
-    indexer.start
-
-    val scanner = new FileScannerImpl(new File(Config.get.getString("datasource.dir")), parallel, indexer)
+    val dir = FSDirectory.open(new File(Config.get.getString("index.dir")))
+    val writer = new FormulaIndexWriter(dir)
+    val data = new File("""D:\workspace-scala\wikimath\data\Wikipedia-20130713031340.xml""");
+    val scanner = new WikiXMLScanner(writer, data, parallel)
     scanner.start
   }
 }
