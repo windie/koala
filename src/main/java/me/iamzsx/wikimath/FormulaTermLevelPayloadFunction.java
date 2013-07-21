@@ -1,13 +1,17 @@
-package me.iamzsx.xyz;
+package me.iamzsx.wikimath;
 
 import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.payloads.PayloadFunction;
 
-public class TermLevelPayloadFunction extends PayloadFunction {
+/**
+ * The term level is stored in the payload of the formula term.
+ * 
+ */
+public class FormulaTermLevelPayloadFunction extends PayloadFunction {
 
 	private final int termLevelInQuery;
 
-	public TermLevelPayloadFunction(int termLevelInQuery) {
+	public FormulaTermLevelPayloadFunction(int termLevelInQuery) {
 		this.termLevelInQuery = termLevelInQuery;
 	}
 
@@ -33,10 +37,10 @@ public class TermLevelPayloadFunction extends PayloadFunction {
 	public boolean equals(Object o) {
 		if (o == null)
 			return false;
-		if (!(o instanceof TermLevelPayloadFunction)) {
+		if (!(o instanceof FormulaTermLevelPayloadFunction)) {
 			return false;
 		}
-		TermLevelPayloadFunction that = (TermLevelPayloadFunction) o;
+		FormulaTermLevelPayloadFunction that = (FormulaTermLevelPayloadFunction) o;
 		return this.termLevelInQuery == that.termLevelInQuery;
 	}
 

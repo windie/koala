@@ -42,6 +42,7 @@ dependencies {
   compile 'uk.ac.ed.ph.snuggletex:snuggletex-upconversion:1.2.2'
   compile 'uk.ac.ed.ph.snuggletex:snuggletex-jeuclid:1.2.2'
   compile 'play:play-json_2.10:2.2-SNAPSHOT'
+  compile 'xerces:xercesImpl:2.11.0'
 
   testCompile 'junit:junit:4.10'
   testCompile 'org.scalatest:scalatest_2.10:1.9.1'
@@ -55,13 +56,13 @@ task index(type: JavaExec, dependsOn: build) {
   main = 'me.iamzsx.wikimath.IndexApp'
   classpath sourceSets.main.runtimeClasspath
   classpath configurations.runtime
-  jvmArgs "-Dactors.corePoolSize=6"
+  jvmArgs "-Dactors.corePoolSize=6 -XX:+HeapDumpOnOutOfMemoryError"
+  maxHeapSize "2048m"
 }
 
 task server(type: JavaExec, dependsOn: build) {
   main = 'me.iamzsx.wikimath.HttpServer'
   classpath sourceSets.main.runtimeClasspath
   classpath configurations.runtime
-  maxHeapSize "1512m"
 }
 

@@ -4,9 +4,11 @@ import java.io.File
 import java.io.IOException
 import java.io.Reader
 import java.io.StringReader
+import java.net.URLEncoder
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
 import org.apache.commons.io.IOUtils
+import org.apache.commons.lang3.StringEscapeUtils
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents
 import org.apache.lucene.analysis.Tokenizer
@@ -26,23 +28,27 @@ import org.apache.lucene.search.IndexSearcher
 import org.apache.lucene.search.Query
 import org.apache.lucene.search.ScoreDoc
 import org.apache.lucene.search.payloads.PayloadTermQuery
+import org.apache.lucene.search.similarities.DefaultSimilarity
 import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.util.BytesRef
 import org.apache.lucene.util.Version
+import org.apache.xerces.parsers.SAXParser
+import org.xml.sax.Attributes
+import org.xml.sax.ContentHandler
+import org.xml.sax.ErrorHandler
+import org.xml.sax.Locator
+import org.xml.sax.SAXParseException
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLStreamConstants
-import me.iamzsx.xyz.TermLevelPayloadFunction
-import me.iamzsx.xyz.TermLevelPayloadSimilarity
+import me.iamzsx.xyz.MyHandler
 import play.api.libs.json.Json
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import uk.ac.ed.ph.snuggletex.SerializationMethod
 import uk.ac.ed.ph.snuggletex.SnuggleEngine
 import uk.ac.ed.ph.snuggletex.SnuggleInput
 import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
-import org.apache.commons.lang3.StringEscapeUtils
-import org.apache.commons.lang3.StringEscapeUtils
-import java.net.URLEncoder
+import org.xml.sax.InputSource
 
 case class FormulaTerm(
   val term: String,
@@ -56,7 +62,7 @@ case class FormulaTerm(
   def toTermQuery = {
     val termQuery = new PayloadTermQuery(
       new Term("formula", term),
-      new TermLevelPayloadFunction(level))
+      new FormulaTermLevelPayloadFunction(level))
     termQuery.setBoost(normalizeScore)
     termQuery
   }
@@ -180,6 +186,8 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
 
   var tokens = ListBuffer[FormulaTerm]()
 
+  val handler = new MathmlXMLHandler
+
   override def incrementToken = {
     if (tokens.isEmpty) {
       false
@@ -194,17 +202,35 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
   }
 
   override def reset {
+
     val session = engine.createSession
     val latex = IOUtils.toString(input)
     val latexInput = new SnuggleInput("$$ " + latex + " $$")
     if (!session.parseInput(latexInput)) {
       throw new IOException("Parse error: " + latexInput)
     }
-    val www = session.buildXMLString(options)
-      .replace("""<math xmlns="http://www.w3.org/1998/Math/MathML"""", "<math ")
-
-    val node = xmlToTree(www)
-    toTokens(node.children(0), 1)
+    //    try {
+    //    val www = session.buildXMLString(options)
+    //    val formulaTerm = new FormulaTerm(www, 1, false)
+    //    tokens += formulaTerm
+    //    }
+    //    catch {
+    //       case _ => {
+    //         println(latex)
+    //       }
+    //    }
+    val mathml = session.buildXMLString(options)
+    //      .replace("""<math xmlns="http://www.w3.org/1998/Math/MathML"""", "<math ")
+    try {
+      handler.clear
+      val node = parser2.parse(new InputSource(new StringReader(mathml)))
+      handler.toTokens(handler.node.children(0), 1, tokens)
+    } catch {
+      case e => {
+        println(mathml)
+        throw new RuntimeException(e)
+      }
+    }
   }
 
   def xmlToTree(xml: String): Tag = {
@@ -228,11 +254,83 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
     node
   }
 
-  def tailor(node: Tag) = {
-    node.children(0).toString
+  val parser2 = new SAXParser
+  parser2.setFeature("http://xml.org/sax/features/validation", false);
+  parser2.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+  parser2.setFeature("http://xml.org/sax/features/namespaces", false)
+  parser2.setFeature("http://apache.org/xml/features/validation/unparsed-entity-checking", false)
+  parser2.setFeature("http://apache.org/xml/features/continue-after-fatal-error", true)
+  parser2.setContentHandler(handler);
+  parser2.setErrorHandler(handler);
+
+  //xml.parse(new InputSource(new StringReader("""<!DOCTYPE math SYSTEM "http://www.w3.org/Math/DTD/mathml3/mathml3.dtd"><math><mo open='&shortparallel;'>&shortparallel;</mo></math>""")))
+
+  override def end {
+    super.end
   }
 
-  def toTokens(node: Tag, level: Int): String = {
+  override def close {
+    super.close
+  }
+}
+
+class MathmlXMLHandler extends ContentHandler with ErrorHandler {
+
+  var node: Tag = null
+  var text: StringBuilder = null
+
+  def clear() {
+    node = new Tag(null, "")
+    text = null
+  }
+
+  override def characters(ch: Array[Char], start: Int, length: Int) {
+    if (text == null) {
+      text = new StringBuilder
+    }
+    text.append(ch, start, length)
+  }
+
+  override def endDocument() {}
+  override def endElement(uri: String, name: String, qName: String) {
+    if (text != null) {
+      node.add(new Text(node, text.toString.trim))
+    }
+    node = node.parent
+  }
+
+  override def endPrefixMapping(prefix: String) {}
+
+  override def ignorableWhitespace(ch: Array[Char], start: Int, length: Int) {}
+
+  override def processingInstruction(target: String, data: String) {}
+
+  override def setDocumentLocator(locator: Locator) {}
+
+  override def skippedEntity(name: String) {
+    if (text == null) {
+      text = new StringBuilder
+    }
+    text.append('&')
+    text.append(name)
+    text.append(';')
+  }
+
+  override def startDocument() {}
+
+  override def startElement(uri: String, name: String, qName: String,
+    attrs: Attributes) {
+    val childNode = new Tag(node, qName)
+    node.add(childNode)
+    node = childNode
+  }
+
+  override def startPrefixMapping(prefix: String, uri: String) {}
+  override def error(expection: SAXParseException) {}
+  override def fatalError(expection: SAXParseException) {}
+  override def warning(expection: SAXParseException) {}
+
+  def toTokens(node: Tag, level: Int, tokens: ListBuffer[FormulaTerm]): String = {
     if (node.label == "mo" || node.label == "mi") {
       tailor(node)
     } else if (node.isText) {
@@ -258,7 +356,7 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
           else if (child.isText) {
             child.label
           } else {
-            toTokens(child, level + 1)
+            toTokens(child, level + 1, tokens)
           }
         }).mkString
         if (t.length > 1) {
@@ -285,13 +383,10 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
     }
   }
 
-  override def end {
-    super.end
+  def tailor(node: Tag) = {
+    node.children(0).toString
   }
 
-  override def close {
-    super.close
-  }
 }
 
 class FormulaIndexWriter(dir: Directory) {
@@ -320,7 +415,7 @@ class FormulaSearcher(dir: Directory) {
     val reader = DirectoryReader.open(dir)
     new IndexSearcher(reader)
   }
-  searcher.setSimilarity(new TermLevelPayloadSimilarity)
+  searcher.setSimilarity(new FormulaTermLevelPayloadSimilarity)
 
   def search(query: String, sizeOfResult: Int) = {
     new FormulaQueryParser().parse(query) map { searcher.search(_, sizeOfResult) }
@@ -427,6 +522,13 @@ object FormulaSearcher {
       })
   }
 
+}
+
+class FormulaTermLevelPayloadSimilarity extends DefaultSimilarity {
+
+  override def scorePayload(doc: Int, start: Int, end: Int, payload: BytesRef): Float = {
+    PayloadHelper.decodeInt(payload.bytes, payload.offset);
+  }
 }
 
 

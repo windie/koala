@@ -38,10 +38,11 @@ class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 
 
   private def scan(file: File) {
     val streamReader = xmlInputFactory.createXMLStreamReader(new FileInputStream(file))
-    var title: String = ""
-    var text: String = ""
+    var title: StringBuilder = new StringBuilder
+    var text: StringBuilder = new StringBuilder
     var status = Status.OTHER
     var pageCount = 0
+    var begin = System.currentTimeMillis()
     while (streamReader.hasNext()) {
       streamReader.next() match {
         case XMLStreamConstants.START_ELEMENT =>
@@ -49,20 +50,20 @@ class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 
             case "page" =>
               status = Status.PAGE
             case "text" =>
-              text = ""
+              text.clear
               status = Status.TEXT
             case "title" =>
-              title = ""
+              title.clear
               status = Status.TITLE
             case _ =>
           }
         case XMLStreamConstants.CHARACTERS => {
           status match {
             case Status.TEXT => {
-              text += streamReader.getText()
+              text.append(streamReader.getText())
             }
             case Status.TITLE => {
-              title += streamReader.getText()
+              title.append(streamReader.getText())
             }
             case _ =>
           }
@@ -74,12 +75,15 @@ class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 
         case XMLStreamConstants.END_ELEMENT =>
           streamReader.getLocalName() match {
             case "page" =>
-              val page = new WikiPage(title, text)
+              val page = new WikiPage(title.toString, text.toString)
               sendPage(page)
               status = Status.OTHER
               pageCount += 1
               if (pageCount % 10000 == 0) {
+                val end = System.currentTimeMillis()
+                println("time: " + ((end - begin) / 1000))
                 println(pageCount)
+                begin = end;
               }
             case "text" =>
               status = Status.PAGE
