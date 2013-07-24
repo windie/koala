@@ -20,6 +20,12 @@ import javax.xml.stream.XMLStreamConstants
 case class Finish()
 case class Stop()
 
+/**
+ * Scan the Wikipedia export file. {@link WikiXMLScanner} parses the file
+ *  and send every {@link WikiPage} to one of {@link IndexWorker}.
+ *
+ * @see <a href="http://en.wikipedia.org/wiki/Help:Export">Help:Export</a>
+ */
 class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 4) extends Actor {
 
   val xmlInputFactory = XMLInputFactory.newInstance()
