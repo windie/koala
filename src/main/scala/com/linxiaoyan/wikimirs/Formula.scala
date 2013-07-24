@@ -398,7 +398,7 @@ class FormulaIndexWriter(dir: Directory) {
     val analyzer = new FormulaAnalyzer
     val iwc = new IndexWriterConfig(Version.LUCENE_36, analyzer)
     iwc.setOpenMode(OpenMode.CREATE)
-    iwc.setRAMBufferSizeMB(Config.get.getDouble("index.ram_size"));
+    iwc.setRAMBufferSizeMB(Settings.getDouble("index.ram_size"));
     new IndexWriter(dir, iwc)
   }
 
@@ -439,7 +439,7 @@ class FormulaSearcher(dir: Directory) {
 object FormulaSearcher {
 
   val searcher = {
-    val dir = FSDirectory.open(new File(Config.get.getString("index.dir")))
+    val dir = FSDirectory.open(new File(Settings.getString("index.dir")))
     new FormulaSearcher(dir)
   }
 

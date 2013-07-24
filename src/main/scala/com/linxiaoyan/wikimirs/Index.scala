@@ -174,18 +174,13 @@ object WikiPage {
   val MATH = """(?s)\<math\>(.*?)\</math\>""".r
 }
 
-object Config {
-  val config = ConfigFactory.load()
-  def get = config
-}
-
 object IndexApp {
 
   def main(args: Array[String]) {
-    val parallel = Config.get.getInt("index.parallel")
-    val dir = FSDirectory.open(new File(Config.get.getString("index.dir")))
+    val parallel = Settings.getInt("index.parallel")
+    val dir = FSDirectory.open(new File(Settings.getString("index.dir")))
     val writer = new FormulaIndexWriter(dir)
-    val data = new File(Config.get.getString("index.wikipedia_export_file"));
+    val data = new File(Settings.getString("index.wikipedia_export_file"));
     val scanner = new WikiXMLScanner(writer, data, parallel)
     scanner.start
   }
