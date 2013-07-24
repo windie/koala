@@ -12,17 +12,18 @@ eclipse {
   }
 }
 
-group = 'me.iamzsx'
-archivesBaseName = 'wikimath'
+group = 'com.linxiaoyan'
+archivesBaseName = 'wikimirs'
 version = '0.1-SNAPSHOT'
-description = 'A scala implementation of svm'
+description = 'A retrieval system for formulas on Wikipedia'
 
 repositories {
   mavenCentral()
+  // latex to mathml: snuggletex
   maven {
     url 'http://www2.ph.ed.ac.uk/maven2'
   }
-  // If play 2.2 releases, we need to remove this temp repository
+  // play-json: If play 2.2 releases, we need to remove this temp repository
   maven {
     url 'https://raw.github.com/mandubian/mandubian-mvn/master/snapshots'
   }
@@ -53,15 +54,17 @@ tasks.withType(ScalaCompile) {
 }
 
 task index(type: JavaExec, dependsOn: build) {
-  main = 'me.iamzsx.wikimath.IndexApp'
+  main = 'com.linxiaoyan.wikimirs.IndexApp'
+  println sourceSets.main.runtimeClasspath
+  println configurations.runtime
   classpath sourceSets.main.runtimeClasspath
   classpath configurations.runtime
   jvmArgs "-Dactors.corePoolSize=6 -XX:+HeapDumpOnOutOfMemoryError"
-  maxHeapSize "2048m"
+  maxHeapSize "1024m"
 }
 
 task server(type: JavaExec, dependsOn: build) {
-  main = 'me.iamzsx.wikimath.HttpServer'
+  main = 'com.linxiaoyan.wikimirs.HttpServer'
   classpath sourceSets.main.runtimeClasspath
   classpath configurations.runtime
 }

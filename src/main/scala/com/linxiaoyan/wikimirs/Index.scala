@@ -1,4 +1,4 @@
-package me.iamzsx.wikimath
+package com.linxiaoyan.wikimirs
 
 import java.io.File
 import java.io.FileInputStream
@@ -6,9 +6,10 @@ import java.util.concurrent.atomic.AtomicLong
 
 import scala.actors.Actor
 
-import org.apache.lucene.document._
 import org.apache.lucene.document.Document
 import org.apache.lucene.document.Field
+import org.apache.lucene.document.StoredField
+import org.apache.lucene.document.TextField
 import org.apache.lucene.store.FSDirectory
 
 import com.typesafe.config.ConfigFactory

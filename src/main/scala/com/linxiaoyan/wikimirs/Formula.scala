@@ -1,12 +1,14 @@
-package me.iamzsx.wikimath
+package com.linxiaoyan.wikimirs
 
 import java.io.File
 import java.io.IOException
 import java.io.Reader
 import java.io.StringReader
 import java.net.URLEncoder
+
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
+
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringEscapeUtils
 import org.apache.lucene.analysis.Analyzer
@@ -37,18 +39,18 @@ import org.apache.xerces.parsers.SAXParser
 import org.xml.sax.Attributes
 import org.xml.sax.ContentHandler
 import org.xml.sax.ErrorHandler
+import org.xml.sax.InputSource
 import org.xml.sax.Locator
 import org.xml.sax.SAXParseException
+
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLStreamConstants
-import me.iamzsx.xyz.MyHandler
 import play.api.libs.json.Json
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import uk.ac.ed.ph.snuggletex.SerializationMethod
 import uk.ac.ed.ph.snuggletex.SnuggleEngine
 import uk.ac.ed.ph.snuggletex.SnuggleInput
 import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
-import org.xml.sax.InputSource
 
 case class FormulaTerm(
   val term: String,
@@ -226,8 +228,9 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
       val node = parser2.parse(new InputSource(new StringReader(mathml)))
       handler.toTokens(handler.node.children(0), 1, tokens)
     } catch {
-      case e => {
+      case e: Exception => {
         println(mathml)
+        // TODO
         throw new RuntimeException(e)
       }
     }

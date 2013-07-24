@@ -1,4 +1,4 @@
-package me.iamzsx.wikimath
+package com.linxiaoyan.wikimirs
 
 import java.io._
 

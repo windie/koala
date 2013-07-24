@@ -1,4 +1,4 @@
-package me.iamzsx.wikimath;
+package com.linxiaoyan.wikimirs;
 
 import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.payloads.PayloadFunction;
