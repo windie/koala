@@ -234,14 +234,13 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
 
   override def reset {
     val latex = IOUtils.toString(input)
-    val mathml = latex2mathml.toMathml(latex)
     try {
+      val mathml = latex2mathml.toMathml(latex)
+      tokens.clear
       parser.parse(mathml, tokens)
     } catch {
-      case e: Exception => {
-        println(mathml)
-        // TODO
-        throw new RuntimeException(e)
+      case e: Throwable => {
+        println("find error: latex")
       }
     }
   }
@@ -275,7 +274,7 @@ class MathmlXMLHandler extends org.xml.sax.helpers.DefaultHandler {
   override def endElement(uri: String, name: String, qName: String) {
     if (text != null) {
       node.add(new Text(node, text.toString.trim))
-      text = null
+      text.setLength(0);
     }
     node = node.parent
   }
@@ -385,7 +384,9 @@ class FormulaSearcher(dir: Directory) {
     val reader = DirectoryReader.open(dir)
     new IndexSearcher(reader)
   }
-  searcher.setSimilarity(new FormulaTermLevelPayloadSimilarity)
+  val similarity = new FormulaTermLevelPayloadSimilarity
+  similarity.setDiscountOverlaps(false)
+  searcher.setSimilarity(similarity)
 
   def search(query: String, sizeOfResult: Int) = {
     new FormulaQueryParser().parse(query) map { searcher.search(_, sizeOfResult) }
@@ -499,6 +500,8 @@ class FormulaTermLevelPayloadSimilarity extends DefaultSimilarity {
   override def scorePayload(doc: Int, start: Int, end: Int, payload: BytesRef): Float = {
     PayloadHelper.decodeInt(payload.bytes, payload.offset);
   }
+
+  override def queryNorm(sumOfSquaredWeights: Float): Float = 1.0F
 }
 
 
