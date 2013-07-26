@@ -167,20 +167,49 @@ class Text(parent: Tag, label: String) extends Tag(parent, label) {
   override def toString = label
 }
 
-// Thread-safe?
-class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
-  val engine = new SnuggleEngine
+class MathmlParser {
+  private val handler = new MathmlXMLHandler
 
-  val xmlInputFactory = XMLInputFactory.newInstance()
-  xmlInputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
-  xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+  private val parser = new SAXParser
+  parser.setFeature("http://xml.org/sax/features/validation", false);
+  parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+  parser.setFeature("http://xml.org/sax/features/namespaces", false)
+  parser.setFeature("http://apache.org/xml/features/validation/unparsed-entity-checking", false)
+  parser.setFeature("http://apache.org/xml/features/continue-after-fatal-error", true)
+  parser.setContentHandler(handler)
+  parser.setErrorHandler(handler)
 
-  val options = new XMLStringOutputOptions
+  def parse(mathml: String, tokens: ListBuffer[FormulaTerm]) {
+    handler.clear
+    parser.parse(new InputSource(new StringReader(mathml)))
+    handler.toTokens(handler.node.children(0), 1, tokens)
+  }
+}
+
+class LatexToMathml {
+  private val engine = new SnuggleEngine
+
+  private val options = new XMLStringOutputOptions
   options.setSerializationMethod(SerializationMethod.XML)
   options.setIndenting(true)
   options.setEncoding("UTF-8")
   options.setAddingMathSourceAnnotations(false)
   options.setUsingNamedEntities(true)
+
+  def toMathml(latex: String) = {
+    val session = engine.createSession
+    val latexInput = new SnuggleInput("$$ " + latex + " $$")
+    if (!session.parseInput(latexInput)) {
+      throw new IOException("Parse error: " + latexInput)
+    }
+    session.buildXMLString(options).replace("""<math xmlns="http://www.w3.org/1998/Math/MathML"""", "<math ")
+  }
+}
+
+// Thread-safe?
+class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
+
+  val latex2mathml = new LatexToMathml
 
   val termAtt: CharTermAttribute = addAttribute(classOf[CharTermAttribute])
   val payloadAtt: PayloadAttribute = addAttribute(classOf[PayloadAttribute])
@@ -188,7 +217,7 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
 
   var tokens = ListBuffer[FormulaTerm]()
 
-  val handler = new MathmlXMLHandler
+  val parser = new MathmlParser
 
   override def incrementToken = {
     if (tokens.isEmpty) {
@@ -204,29 +233,10 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
   }
 
   override def reset {
-
-    val session = engine.createSession
     val latex = IOUtils.toString(input)
-    val latexInput = new SnuggleInput("$$ " + latex + " $$")
-    if (!session.parseInput(latexInput)) {
-      throw new IOException("Parse error: " + latexInput)
-    }
-    //    try {
-    //    val www = session.buildXMLString(options)
-    //    val formulaTerm = new FormulaTerm(www, 1, false)
-    //    tokens += formulaTerm
-    //    }
-    //    catch {
-    //       case _ => {
-    //         println(latex)
-    //       }
-    //    }
-    val mathml = session.buildXMLString(options)
-    //      .replace("""<math xmlns="http://www.w3.org/1998/Math/MathML"""", "<math ")
+    val mathml = latex2mathml.toMathml(latex)
     try {
-      handler.clear
-      val node = parser2.parse(new InputSource(new StringReader(mathml)))
-      handler.toTokens(handler.node.children(0), 1, tokens)
+      parser.parse(mathml, tokens)
     } catch {
       case e: Exception => {
         println(mathml)
@@ -235,38 +245,6 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
       }
     }
   }
-
-  def xmlToTree(xml: String): Tag = {
-    val streamReader = xmlInputFactory.createXMLStreamReader(new StringReader(xml))
-    var node = new Tag(null, "")
-    while (streamReader.hasNext()) {
-      streamReader.next() match {
-        case XMLStreamConstants.START_ELEMENT =>
-          val childNode = new Tag(node, streamReader.getLocalName())
-          node.add(childNode)
-          node = childNode
-        case XMLStreamConstants.CHARACTERS =>
-          node.add(new Text(node, streamReader.getText.trim))
-        case XMLStreamConstants.ENTITY_REFERENCE =>
-          node.add(new Text(node, "&" + streamReader.getLocalName + ";"))
-        case XMLStreamConstants.END_ELEMENT =>
-          node = node.parent
-        case _ =>
-      }
-    }
-    node
-  }
-
-  val parser2 = new SAXParser
-  parser2.setFeature("http://xml.org/sax/features/validation", false);
-  parser2.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
-  parser2.setFeature("http://xml.org/sax/features/namespaces", false)
-  parser2.setFeature("http://apache.org/xml/features/validation/unparsed-entity-checking", false)
-  parser2.setFeature("http://apache.org/xml/features/continue-after-fatal-error", true)
-  parser2.setContentHandler(handler);
-  parser2.setErrorHandler(handler);
-
-  //xml.parse(new InputSource(new StringReader("""<!DOCTYPE math SYSTEM "http://www.w3.org/Math/DTD/mathml3/mathml3.dtd"><math><mo open='&shortparallel;'>&shortparallel;</mo></math>""")))
 
   override def end {
     super.end
@@ -277,7 +255,7 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
   }
 }
 
-class MathmlXMLHandler extends ContentHandler with ErrorHandler {
+class MathmlXMLHandler extends org.xml.sax.helpers.DefaultHandler {
 
   var node: Tag = new Tag(null, "")
   var text: java.lang.StringBuilder = null
@@ -294,7 +272,6 @@ class MathmlXMLHandler extends ContentHandler with ErrorHandler {
     text.append(ch, start, length)
   }
 
-  override def endDocument() {}
   override def endElement(uri: String, name: String, qName: String) {
     if (text != null) {
       node.add(new Text(node, text.toString.trim))
@@ -302,14 +279,6 @@ class MathmlXMLHandler extends ContentHandler with ErrorHandler {
     }
     node = node.parent
   }
-
-  override def endPrefixMapping(prefix: String) {}
-
-  override def ignorableWhitespace(ch: Array[Char], start: Int, length: Int) {}
-
-  override def processingInstruction(target: String, data: String) {}
-
-  override def setDocumentLocator(locator: Locator) {}
 
   override def skippedEntity(name: String) {
     if (text == null) {
@@ -320,8 +289,6 @@ class MathmlXMLHandler extends ContentHandler with ErrorHandler {
     text.append(';')
   }
 
-  override def startDocument() {}
-
   override def startElement(uri: String, name: String, qName: String,
     attrs: Attributes) {
     val childNode = new Tag(node, qName)
@@ -329,10 +296,9 @@ class MathmlXMLHandler extends ContentHandler with ErrorHandler {
     node = childNode
   }
 
-  override def startPrefixMapping(prefix: String, uri: String) {}
-  override def error(expection: SAXParseException) { expection.printStackTrace }
-  override def fatalError(expection: SAXParseException) { expection.printStackTrace }
-  override def warning(expection: SAXParseException) { expection.printStackTrace }
+  override def fatalError(expection: SAXParseException) {
+    // no op
+  }
 
   def toTokens(node: Tag, level: Int, tokens: ListBuffer[FormulaTerm]): String = {
     if (node.label == "mo" || node.label == "mi") {

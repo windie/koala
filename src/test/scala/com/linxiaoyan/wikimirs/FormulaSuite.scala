@@ -9,47 +9,49 @@ import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 import org.xml.sax.InputSource
+import org.junit.Assert._
 
 @RunWith(classOf[JUnitRunner])
 class FormulaSuite extends FunSuite {
 
-  val parser2 = new SAXParser
-  parser2.setFeature("http://xml.org/sax/features/validation", false);
-  parser2.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
-  parser2.setFeature("http://xml.org/sax/features/namespaces", false)
-  parser2.setFeature("http://apache.org/xml/features/validation/unparsed-entity-checking", false)
-  parser2.setFeature("http://apache.org/xml/features/continue-after-fatal-error", true)
+  val parser = new MathmlParser
 
   test("latex: a") {
-
-    val handler = new MathmlXMLHandler
-    parser2.setContentHandler(handler);
-    parser2.setErrorHandler(handler);
     val mathml = "<math><mi>a</mi></math>"
-    val expected = "a"
-    parser2.parse(new InputSource(new StringReader(mathml)))
+    val expected = "<mi>a</mi>"
+
     val tokens = ListBuffer[FormulaTerm]()
-    handler.toTokens(handler.node.children(0), 1, tokens)
+    parser.parse(mathml, tokens)
+    assertTrue(tokens.isEmpty)
+  }
+
+  test("latex: ||") {
+    val mathml = "<math><mi>&shortparallel;</mi></math>"
+    val expected = "&shortparallel;"
+
+    val tokens = ListBuffer[FormulaTerm]()
+    parser.parse(mathml, tokens)
+    assertEquals(1, tokens.size)
+    assertEquals(new FormulaTerm(expected, 1, false), tokens.head)
   }
 
   test("latex: ab") {
-    val handler = new MathmlXMLHandler
-    parser2.setContentHandler(handler);
-    parser2.setErrorHandler(handler);
     val mathml = "<math><mi>a</mi><mi>b</mi></math>"
     val expected = "ab"
-    parser2.parse(new InputSource(new StringReader(mathml)))
+
     val tokens = ListBuffer[FormulaTerm]()
-    handler.toTokens(handler.node.children(0), 1, tokens)
-    println(tokens)
+    parser.parse(mathml, tokens)
+    assertEquals(1, tokens.size)
+    assertEquals(new FormulaTerm(expected, 1, false), tokens.head)
   }
 
   test("latex: x ^ y") {
-    val handler = new MathmlXMLHandler
     val mathml = "<math><msup><mi>x</mi><mi>y</mi></msup></math>"
-    val expected = List("<msup></msup>", "<msup>xy</msup>")
+    val expected = List("<msup></msup>", "<msup>xy</msup>", "xy")
+
+    val tokens = ListBuffer[FormulaTerm]()
+    parser.parse(mathml, tokens)
+    println(tokens)
   }
 
-  // <math><mi>a</mi></math>
-  // <math><mi>a</mi><mi>b</mi></math>
 }
