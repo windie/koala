@@ -142,7 +142,7 @@ class FormulaAnalyzer extends Analyzer {
   }
 }
 
-class Tag(val parent: Tag, val label: String) {
+case class Tag(val parent: Tag, val label: String) {
   val children = ArrayBuffer[Tag]()
 
   def add(node: Tag) {
@@ -279,8 +279,8 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
 
 class MathmlXMLHandler extends ContentHandler with ErrorHandler {
 
-  var node: Tag = null
-  var text: StringBuilder = null
+  var node: Tag = new Tag(null, "")
+  var text: java.lang.StringBuilder = null
 
   def clear() {
     node = new Tag(null, "")
@@ -289,7 +289,7 @@ class MathmlXMLHandler extends ContentHandler with ErrorHandler {
 
   override def characters(ch: Array[Char], start: Int, length: Int) {
     if (text == null) {
-      text = new StringBuilder
+      text = new java.lang.StringBuilder
     }
     text.append(ch, start, length)
   }
@@ -298,6 +298,7 @@ class MathmlXMLHandler extends ContentHandler with ErrorHandler {
   override def endElement(uri: String, name: String, qName: String) {
     if (text != null) {
       node.add(new Text(node, text.toString.trim))
+      text = null
     }
     node = node.parent
   }
@@ -312,7 +313,7 @@ class MathmlXMLHandler extends ContentHandler with ErrorHandler {
 
   override def skippedEntity(name: String) {
     if (text == null) {
-      text = new StringBuilder
+      text = new java.lang.StringBuilder
     }
     text.append('&')
     text.append(name)
@@ -329,9 +330,9 @@ class MathmlXMLHandler extends ContentHandler with ErrorHandler {
   }
 
   override def startPrefixMapping(prefix: String, uri: String) {}
-  override def error(expection: SAXParseException) {}
-  override def fatalError(expection: SAXParseException) {}
-  override def warning(expection: SAXParseException) {}
+  override def error(expection: SAXParseException) { expection.printStackTrace }
+  override def fatalError(expection: SAXParseException) { expection.printStackTrace }
+  override def warning(expection: SAXParseException) { expection.printStackTrace }
 
   def toTokens(node: Tag, level: Int, tokens: ListBuffer[FormulaTerm]): String = {
     if (node.label == "mo" || node.label == "mi") {
