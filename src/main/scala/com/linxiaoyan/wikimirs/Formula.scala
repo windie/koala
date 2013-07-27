@@ -68,9 +68,10 @@ case class FormulaTerm(
     termQuery.setBoost(normalizeScore)
     termQuery
   }
-  
+
   def explain = {
-    "term: <code class='xml'>" + StringEscapeUtils.escapeHtml4(term) + "</code>, level: " + level + ", generalization: " + generalization
+    val escapedTerm = StringEscapeUtils.escapeHtml4(term)
+    s"""term: <code class='xml'>$escapedTerm</code>, level: <code>$level</code>, generalization: <code>$generalization</code>"""
   }
 
 }
