@@ -201,7 +201,25 @@
 		wrapper.append($("<div>").append(title_anchor));
 		wrapper.append($("<div>").text(score));
 		wrapper.append($("<div id='formula" + result.doc.formula_id + "'>"));
-		wrapper.append($("<div>").html(explain));
+		var explain = $("<div>").html(explain);
+		explain.hide();
+		
+		
+		var slideControler = $("<div class='text-center'><i class='icon-chevron-down'></i></div>");
+		var show = false;
+		wrapper.append(slideControler);
+		slideControler.click(function() {
+			if(show) {
+				$("i", slideControler).removeClass("icon-chevron-up").addClass("icon-chevron-down");
+				show = false;
+			}
+			else {
+				$("i", slideControler).removeClass("icon-chevron-down").addClass("icon-chevron-up");
+				show = true;
+			}
+			explain.slideToggle();
+		});
+		wrapper.append(explain);
 		return wrapper;
 	}
 	
