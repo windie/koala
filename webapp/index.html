@@ -4,6 +4,18 @@
 		<title>Wikimirs</title>
 		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="css/bootstrap-notify.css" rel="stylesheet">
+		<link href="css/prettify.css" rel="stylesheet">
+		<style type="text/css">
+		.box {
+			margin-left: 0;
+			margin-right: 0;
+			background-color: #fff;
+			border-radius: 4px 4px 4px 4px;
+			border: 1px solid #ddd;
+			box-shadow: none;
+			padding: 9px 14px;
+		}
+		</style>
 	</head>
 	<body>
 	<div id="main" class="container main-body">
@@ -15,12 +27,20 @@
 	  		</div>
 		</form>
 	</div>	
-	<div id="search_results" >
-		<div id="box" style="width:300px;overflow: auto;text-align: center;margin-left:auto;margin-right:auto;">
-			<div id="query_formula"></div>
+	<div id="search_results" class="row">
+		<div id="query_box" class="box">
+			<div id="box" class="text-center" >
+				<div id="query_formula"></div>
+			</div>
+			<h4>latex</h4>
+			<div id="query_latex"><pre class="prettyprint linenums lang-tex"></pre></div>
+			<h4>mathml</h4>
+			<div id="query_mathml"><pre class="prettyprint linenums lang-xml"></pre></div>
+			<h4>terms</h4>
+			<div id="query_detail"></div>
 		</div>
-		<div id="query_detail" class="row"></div>
-		<div id="search_summary"></div>
+		<hr />
+		<div id="search_summary" class="row"></div>
 		<div class="pagination pagination-centered">
 		  <ul id="top_page_nav" >
 		  </ul>
@@ -40,6 +60,8 @@
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap-notify.js"></script>
 	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<script type="text/javascript" src="js/prettify.js"></script>
+	<script type="text/javascript" src="js/lang-tex.js"></script>
 	<script type="text/javascript">	
 	$(function() {
 		$("#search").click(function() {
@@ -119,6 +141,9 @@
 			console.log(data)
 			if (data.status == "OK") {
 				data.query = query
+				$("#query_mathml pre").text(data.query_mathml)
+				$("#query_latex pre").text(data.query)
+				prettyPrint();
 				renderSearchResult(data);
 				if(noload) {
 				}
@@ -169,7 +194,7 @@
 		var score = result.score;
 		var formula = result.doc.formula;
 		var explain = result.explain;
-		var wrapper = $("<div class='row search_result_item'>");
+		var wrapper = $("<div class='row search_result_item box'>");
 		
 		var title_anchor = $("<a href='" + url + "'>").text(title);
 		

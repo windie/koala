@@ -68,6 +68,11 @@ case class FormulaTerm(
     termQuery.setBoost(normalizeScore)
     termQuery
   }
+  
+  def explain = {
+    "term: <code class='xml'>" + StringEscapeUtils.escapeHtml4(term) + "</code>, level: " + level + ", generalization: " + generalization
+  }
+
 }
 
 class FormulaQueryParser {
@@ -117,7 +122,7 @@ class FormulaQueryParser {
         PayloadHelper.decodeInt(payloadAtt.getPayload().bytes, payloadAtt.getPayload().offset),
         generalizationAtt.getFlags() == 1)
       explain ++= "<li>"
-      explain ++= StringEscapeUtils.escapeHtml4(formulaTerm.toString)
+      explain ++= formulaTerm.explain
       explain ++= "</li>"
     }
 
@@ -431,6 +436,9 @@ object FormulaSearcher {
     val results = searcher.search(query, page * pageSize)
 
     val endTime = System.currentTimeMillis()
+
+    val mathml = new LatexToMathml().toMathml(query)
+
     results match {
       case Some(topDocs) => {
         val hits = topDocs.scoreDocs
@@ -444,6 +452,7 @@ object FormulaSearcher {
 
         Json.obj(
           "status" -> "OK",
+          "query_mathml" -> mathml,
           "query_detail" -> {
             searcher.explainQuery(query) match {
               case Some(e) => e
@@ -459,6 +468,7 @@ object FormulaSearcher {
       case None => {
         Json.obj(
           "status" -> "OK",
+          "query_mathml" -> mathml,
           "query_detail" -> {
             searcher.explainQuery(query) match {
               case Some(e) => e
