@@ -141,8 +141,10 @@
 			console.log(data)
 			if (data.status == "OK") {
 				data.query = query
-				$("#query_mathml pre").text(data.query_mathml)
-				$("#query_latex pre").text(data.query)
+				var mathml = $("#query_mathml pre");
+				mathml.text(data.query_mathml);
+				mathml.html(mathml.html().replace(/ /g, "&nbsp;"));
+				$("#query_latex pre").text(data.query);
 				prettyPrint();
 				renderSearchResult(data);
 				if(noload) {
