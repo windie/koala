@@ -10,7 +10,6 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
 
 import org.apache.commons.io.IOUtils
-import org.apache.commons.lang3.StringEscapeUtils
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents
 import org.apache.lucene.analysis.Tokenizer
@@ -23,7 +22,6 @@ import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.index.IndexWriter
 import org.apache.lucene.index.IndexWriterConfig
 import org.apache.lucene.index.IndexWriterConfig.OpenMode
-import org.apache.lucene.index.Term
 import org.apache.lucene.search.BooleanClause
 import org.apache.lucene.search.BooleanQuery
 import org.apache.lucene.search.IndexSearcher
@@ -37,14 +35,9 @@ import org.apache.lucene.util.BytesRef
 import org.apache.lucene.util.Version
 import org.apache.xerces.parsers.SAXParser
 import org.xml.sax.Attributes
-import org.xml.sax.ContentHandler
-import org.xml.sax.ErrorHandler
 import org.xml.sax.InputSource
-import org.xml.sax.Locator
 import org.xml.sax.SAXParseException
 
-import javax.xml.stream.XMLInputFactory
-import javax.xml.stream.XMLStreamConstants
 import play.api.libs.json.Json
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import uk.ac.ed.ph.snuggletex.SerializationMethod
@@ -52,29 +45,29 @@ import uk.ac.ed.ph.snuggletex.SnuggleEngine
 import uk.ac.ed.ph.snuggletex.SnuggleInput
 import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
 
-case class FormulaTerm(
-  val term: String,
-  val level: Int,
-  val generalization: Boolean) {
-
-  def normalizeScore = if (generalization) 0.5F else 1F
-
-  def toPayload = new BytesRef(PayloadHelper.encodeInt(level))
-
-  def toTermQuery = {
-    val termQuery = new PayloadTermQuery(
-      new Term("formula", term),
-      new FormulaTermLevelPayloadFunction(level))
-    termQuery.setBoost(normalizeScore)
-    termQuery
-  }
-
-  def explain = {
-    val escapedTerm = StringEscapeUtils.escapeHtml4(term)
-    s"""term: <code class='xml'>$escapedTerm</code>, level: <code>$level</code>, generalization: <code>$generalization</code>"""
-  }
-
-}
+//case class FormulaTerm(
+//  val term: String,
+//  val level: Int,
+//  val generalization: Boolean) {
+//
+//  def normalizeScore = if (generalization) 0.5F else 1F
+//
+//  def toPayload = new BytesRef(PayloadHelper.encodeInt(level))
+//
+//  def toTermQuery = {
+//    val termQuery = new PayloadTermQuery(
+//      new Term("formula", term),
+//      new FormulaTermLevelPayloadFunction(level))
+//    termQuery.setBoost(normalizeScore)
+//    termQuery
+//  }
+//
+//  def explain = {
+//    val escapedTerm = StringEscapeUtils.escapeHtml4(term)
+//    s"""term: <code class='xml'>$escapedTerm</code>, level: <code>$level</code>, generalization: <code>$generalization</code>"""
+//  }
+//
+//}
 
 class FormulaQueryParser {
 
@@ -148,33 +141,35 @@ class FormulaAnalyzer extends Analyzer {
   }
 }
 
-case class Tag(val parent: Tag, val label: String) {
-  val children = ArrayBuffer[Tag]()
-
-  def add(node: Tag) {
-    children += node
-  }
-
-  def isText = false
-
-  def isOnlyText = {
-    children.isEmpty || children.forall(child => {
-      child.label == "mo" || child.label == "mi" || child.isText
-    })
-  }
-
-  def toLabelString = "<" + label + "></" + label + ">"
-
-  override def toString = "<" + label + ">" + children.map(_.toString).mkString + "</" + label + ">"
-}
-
-class Text(parent: Tag, label: String) extends Tag(parent, label) {
-  override def isText = true
-  override def toString = label
-}
+//case class Tag(val parent: Tag, val label: String) {
+//  val children = ArrayBuffer[Tag]()
+//
+//  def add(node: Tag) {
+//    children += node
+//  }
+//
+//  def isText = false
+//
+//  def isOnlyText = {
+//    children.isEmpty || children.forall(child => {
+//      child.label == "mo" || child.label == "mi" || child.isText
+//    })
+//  }
+//
+//  def toLabelString = "<" + label + "></" + label + ">"
+//
+//  override def toString = "<" + label + ">" + children.map(_.toString).mkString + "</" + label + ">"
+//}
+//
+//class Text(parent: Tag, label: String) extends Tag(parent, label) {
+//  override def isText = true
+//  override def toString = label
+//}
 
 class MathmlParser {
   private val handler = new MathmlXMLHandler
+
+  private val tokenizer = new MathmlTokenizer
 
   private val parser = new SAXParser
   parser.setFeature("http://xml.org/sax/features/validation", false);
@@ -185,10 +180,10 @@ class MathmlParser {
   parser.setContentHandler(handler)
   parser.setErrorHandler(handler)
 
-  def parse(mathml: String, tokens: ListBuffer[FormulaTerm]) {
+  def parse(mathml: String, tokens: java.util.List[FormulaTerm]) {
     handler.clear
     parser.parse(new InputSource(new StringReader(mathml)))
-    handler.toTokens(handler.node.children(0), 1, tokens)
+    tokenizer.toTokens(handler.node.iterator.next, tokens)
   }
 }
 
@@ -208,32 +203,30 @@ class LatexToMathml {
     if (!session.parseInput(latexInput)) {
       throw new IOException("Parse error: " + latexInput)
     }
-    session.buildXMLString(options).replace("""<math xmlns="http://www.w3.org/1998/Math/MathML"""", "<math ")
+    session.buildXMLString(options).replace("""<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"""", "<math")
   }
 }
 
-// Thread-safe?
 class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
 
-  val latex2mathml = new LatexToMathml
+  private val latex2mathml = new LatexToMathml
 
-  val termAtt: CharTermAttribute = addAttribute(classOf[CharTermAttribute])
-  val payloadAtt: PayloadAttribute = addAttribute(classOf[PayloadAttribute])
-  val generalizationAtt: FlagsAttribute = addAttribute(classOf[FlagsAttribute])
+  private val termAtt: CharTermAttribute = addAttribute(classOf[CharTermAttribute])
+  private val payloadAtt: PayloadAttribute = addAttribute(classOf[PayloadAttribute])
+  private val generalizationAtt: FlagsAttribute = addAttribute(classOf[FlagsAttribute])
 
-  var tokens = ListBuffer[FormulaTerm]()
+  private var tokens = new java.util.LinkedList[FormulaTerm]()
 
-  val parser = new MathmlParser
+  private val parser = new MathmlParser
 
   override def incrementToken = {
     if (tokens.isEmpty) {
       false
     } else {
-      val formulaTerm = tokens.head
-      termAtt.setEmpty().append(formulaTerm.term)
+      val formulaTerm = tokens.removeFirst()
+      termAtt.setEmpty().append(formulaTerm.getTerm)
       payloadAtt.setPayload(formulaTerm.toPayload)
-      generalizationAtt.setFlags(if (formulaTerm.generalization) 1 else 0)
-      tokens = tokens.tail
+      generalizationAtt.setFlags(if (formulaTerm.getGeneralization) 1 else 0);
       true
     }
   }
@@ -262,105 +255,103 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
 
 class MathmlXMLHandler extends org.xml.sax.helpers.DefaultHandler {
 
-  var node: Tag = new Tag(null, "")
-  var text: java.lang.StringBuilder = null
+  var node: MathmlTag = new MathmlTag(null, "dummy")
+  var text = new java.lang.StringBuilder
 
-  def clear() {
-    node = new Tag(null, "")
-    text = null
-  }
+  def getTree = node.iterator().next
 
-  override def characters(ch: Array[Char], start: Int, length: Int) {
-    if (text == null) {
-      text = new java.lang.StringBuilder
-    }
-    text.append(ch, start, length)
-  }
-
-  override def endElement(uri: String, name: String, qName: String) {
-    if (text != null) {
-      node.add(new Text(node, text.toString.trim))
-      text.setLength(0);
-    }
-    node = node.parent
-  }
-
-  override def skippedEntity(name: String) {
-    if (text == null) {
-      text = new java.lang.StringBuilder
-    }
-    text.append('&')
-    text.append(name)
-    text.append(';')
+  def clear {
+    node = new MathmlTag(null, "dummy")
   }
 
   override def startElement(uri: String, name: String, qName: String,
     attrs: Attributes) {
-    val childNode = new Tag(node, qName)
-    node.add(childNode)
+    val childNode = new MathmlTag(node, qName)
+    node.addChild(childNode)
     node = childNode
+  }
+
+  override def endElement(uri: String, name: String, qName: String) {
+    if (text.length() != 0) {
+      val trim = text.toString.trim;
+      if (trim.length() != 0) {
+        node.addChild(new MathmlText(node, trim))
+      }
+      text.setLength(0);
+    }
+    node = node.getParent
+  }
+
+  override def characters(ch: Array[Char], start: Int, length: Int) {
+    text.append(ch, start, length)
+  }
+
+  override def skippedEntity(name: String) {
+    text.append('&')
+    text.append(name)
+    text.append(';')
   }
 
   override def fatalError(expection: SAXParseException) {
     // no op
   }
 
-  def toTokens(node: Tag, level: Int, tokens: ListBuffer[FormulaTerm]): String = {
-    if (node.label == "mo" || node.label == "mi") {
-      tailor(node)
-    } else if (node.isText) {
-      node.toString
-    } else {
-      if (!node.isOnlyText) {
-        val g = node.children.map(child => {
-          if (child.label == "mo" || child.label == "mi")
-            tailor(child)
-          else if (child.isText) {
-            child.label
-          } else {
-            child.toLabelString
-          }
-        }).mkString
-        if (g.length > 1) {
-          val formulaTerm = new FormulaTerm(g, level, true)
-          tokens += formulaTerm
-        }
-        val t = node.children.map(child => {
-          if (child.label == "mo" || child.label == "mi")
-            tailor(child)
-          else if (child.isText) {
-            child.label
-          } else {
-            toTokens(child, level + 1, tokens)
-          }
-        }).mkString
-        if (t.length > 1) {
-          val formulaTerm1 = new FormulaTerm(t, level, false)
-          tokens += formulaTerm1
-        }
-        "<" + node.label + ">" + t + "</" + node.label + ">"
-      } else {
-        val t = node.children.map(child => {
-          if (child.label == "mo" || child.label == "mi")
-            tailor(child)
-          else if (child.isText) {
-            child.label
-          } else {
-            child.toLabelString
-          }
-        }).mkString
-        if (t.length > 1) {
-          val formulaTerm1 = new FormulaTerm(t, level, false)
-          tokens += formulaTerm1
-        }
-        "<" + node.label + ">" + t + "</" + node.label + ">"
-      }
-    }
-  }
-
-  def tailor(node: Tag) = {
-    node.children(0).toString
-  }
+  //  def toTokens(node: Tag, level: Int, tokens: ListBuffer[FormulaTerm]): String = {
+  //    if (node.label == "mo" || node.label == "mi") {
+  //      tailor(node)
+  //    } else if (node.isText) {
+  //      node.toString
+  //    } else {
+  //      if (!node.isOnlyText) {
+  //        val g = node.children.map(child => {
+  //          if (child.label == "mo" || child.label == "mi")
+  //            tailor(child)
+  //          else if (child.isText) {
+  //            child.label
+  //          } else {
+  //            child.toLabelString
+  //          }
+  //        }).mkString
+  //        if (g.length > 1) {
+  //          val formulaTerm = new FormulaTerm(g, level, true)
+  //          tokens += formulaTerm
+  //        }
+  //        val t = node.children.map(child => {
+  //          if (child.label == "mo" || child.label == "mi")
+  //            tailor(child)
+  //          else if (child.isText) {
+  //            child.label
+  //          } else {
+  //            toTokens(child, level + 1, tokens)
+  //          }
+  //        }).mkString
+  //        if (t.length > 1) {
+  //          val formulaTerm1 = new FormulaTerm(t, level, false)
+  //          tokens += formulaTerm1
+  //        }
+  //        "<" + node.label + ">" + t + "</" + node.label + ">"
+  //      } else {
+  //        val t = node.children.map(child => {
+  //          if (child.label == "mo" || child.label == "mi")
+  //            tailor(child)
+  //          else if (child.isText) {
+  //            child.label
+  //          } else {
+  //            child.toLabelString
+  //          }
+  //        }).mkString
+  //        if (t.length > 1) {
+  //          val formulaTerm1 = new FormulaTerm(t, level, false)
+  //          tokens += formulaTerm1
+  //        }
+  //        "<" + node.label + ">" + t + "</" + node.label + ">"
+  //      }
+  //    }
+  //  }
+  //
+  //  def tailor(node: Tag) = {
+  //    node.children(0).toString
+  //  }
 
 }
 
@@ -390,7 +381,7 @@ class FormulaSearcher(dir: Directory) {
     val reader = DirectoryReader.open(dir)
     new IndexSearcher(reader)
   }
-  val similarity = new FormulaTermLevelPayloadSimilarity
+  private val similarity = new FormulaSimilarity
   similarity.setDiscountOverlaps(false)
   searcher.setSimilarity(similarity)
 
@@ -505,14 +496,3 @@ object FormulaSearcher {
   }
 
 }
-
-class FormulaTermLevelPayloadSimilarity extends DefaultSimilarity {
-
-  override def scorePayload(doc: Int, start: Int, end: Int, payload: BytesRef): Float = {
-    PayloadHelper.decodeInt(payload.bytes, payload.offset);
-  }
-
-  override def queryNorm(sumOfSquaredWeights: Float): Float = 1.0F
-}
-
-

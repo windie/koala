@@ -20,10 +20,10 @@ import javax.servlet.http.HttpServletResponse
 import play.api.libs.json.Json
 
 class HttpServer(port: Int) {
-  val webServer = new Server
+  private val webServer = new Server
 
-  val holders = ArrayBuffer[ServletHolder]();
-  val mappings = ArrayBuffer[ServletMapping]();
+  private val holders = ArrayBuffer[ServletHolder]();
+  private val mappings = ArrayBuffer[ServletMapping]();
 
   init
 
@@ -31,7 +31,7 @@ class HttpServer(port: Int) {
     val connector = new SelectChannelConnector
     connector.setPort(port)
     webServer.addConnector(connector)
-    
+
     webServer.setThreadPool(new QueuedThreadPool)
 
     val mainHandler = new HandlerList

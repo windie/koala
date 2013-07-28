@@ -28,11 +28,11 @@ case class Stop()
  */
 class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 4) extends Actor {
 
-  val xmlInputFactory = XMLInputFactory.newInstance()
+  private val xmlInputFactory = XMLInputFactory.newInstance()
   xmlInputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
   xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 
-  val workers: Seq[IndexWorker] = (0 until parallel) map { x =>
+  private val workers: Seq[IndexWorker] = (0 until parallel) map { x =>
     val worker = new IndexWorker(writer, this)
     worker.start
     this ! worker
@@ -131,7 +131,7 @@ class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 
   }
 }
 
-class IndexWorker(val writer: FormulaIndexWriter, val scanner: WikiXMLScanner) extends Actor {
+class IndexWorker(writer: FormulaIndexWriter, scanner: WikiXMLScanner) extends Actor {
   def act() {
     loop {
       react {
@@ -151,7 +151,7 @@ class IndexWorker(val writer: FormulaIndexWriter, val scanner: WikiXMLScanner) e
   }
 }
 
-class FormulaDocument(val latex: String, val page: WikiPage) {
+class FormulaDocument(latex: String, page: WikiPage) {
 
   val id = WikiPage.ID.incrementAndGet()
 

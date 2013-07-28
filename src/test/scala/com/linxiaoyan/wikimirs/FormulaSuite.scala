@@ -3,12 +3,14 @@ package com.linxiaoyan.wikimirs
 import java.io.StringReader
 
 import scala.collection.mutable.ListBuffer
+import scala.collection.JavaConverters._
 
 import org.apache.xerces.parsers.SAXParser
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 import org.xml.sax.InputSource
+
 import org.junit.Assert._
 
 @RunWith(classOf[JUnitRunner])
@@ -18,40 +20,45 @@ class FormulaSuite extends FunSuite {
 
   test("latex: a") {
     val mathml = "<math><mi>a</mi></math>"
-    val expected = "<mi>a</mi>"
+    val expected = List(new FormulaTerm("<mi></mi>", 1, true),
+      new FormulaTerm("<mi>a</mi>", 1, false))
 
-    val tokens = ListBuffer[FormulaTerm]()
+    val tokens = new java.util.LinkedList[FormulaTerm]()
     parser.parse(mathml, tokens)
-    assertTrue(tokens.isEmpty)
+    assertEquals(expected, tokens.asScala)
   }
 
   test("latex: ||") {
     val mathml = "<math><mi>&shortparallel;</mi></math>"
-    val expected = "&shortparallel;"
+    val expected = List(new FormulaTerm("<mi></mi>", 1, true),
+      new FormulaTerm("<mi>&shortparallel;</mi>", 1, false),
+      new FormulaTerm("&shortparallel;", 2, false))
 
-    val tokens = ListBuffer[FormulaTerm]()
+    val tokens = new java.util.LinkedList[FormulaTerm]()
     parser.parse(mathml, tokens)
-    assertEquals(1, tokens.size)
-    assertEquals(new FormulaTerm(expected, 1, false), tokens.head)
+    assertEquals(expected, tokens.asScala)
   }
 
   test("latex: ab") {
     val mathml = "<math><mi>a</mi><mi>b</mi></math>"
-    val expected = "ab"
+    val expected = List(new FormulaTerm("<mi></mi><mi></mi>", 1, true),
+      new FormulaTerm("<mi>a</mi><mi>b</mi>", 1, false))
 
-    val tokens = ListBuffer[FormulaTerm]()
+    val tokens = new java.util.LinkedList[FormulaTerm]()
     parser.parse(mathml, tokens)
-    assertEquals(1, tokens.size)
-    assertEquals(new FormulaTerm(expected, 1, false), tokens.head)
+    assertEquals(expected, tokens.asScala)
   }
 
   test("latex: x ^ y") {
     val mathml = "<math><msup><mi>x</mi><mi>y</mi></msup></math>"
-    val expected = List("<msup></msup>", "<msup>xy</msup>", "xy")
+    val expected = List(new FormulaTerm("<msup></msup>", 1, true),
+      new FormulaTerm("<msup><mi>x</mi><mi>y</mi></msup>", 1, false),
+      new FormulaTerm("<mi></mi><mi></mi>", 2, true),
+      new FormulaTerm("<mi>x</mi><mi>y</mi>", 2, false))
 
-    val tokens = ListBuffer[FormulaTerm]()
+    val tokens = new java.util.LinkedList[FormulaTerm]()
     parser.parse(mathml, tokens)
-    println(tokens)
+    assertEquals(expected, tokens.asScala)
   }
 
 }
