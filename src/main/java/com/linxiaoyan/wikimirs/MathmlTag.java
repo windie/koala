@@ -53,4 +53,9 @@ public class MathmlTag implements MathmlNode {
 		return "<" + tag + ">" + StringUtils.join(children, "") + "</" + tag
 				+ ">";
 	}
+
+	@Override
+	public int size() {
+		return children.size();
+	}
 }

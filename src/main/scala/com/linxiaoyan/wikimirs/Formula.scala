@@ -429,7 +429,7 @@ object FormulaSearcher {
 
     val endTime = System.currentTimeMillis()
 
-    val mathml = new LatexToMathml().toMathml(query)
+    val mathml = new LatexToMathml().toMathml(query);
 
     results match {
       case Some(topDocs) => {

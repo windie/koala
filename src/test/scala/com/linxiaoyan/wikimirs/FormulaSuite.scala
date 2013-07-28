@@ -52,9 +52,20 @@ class FormulaSuite extends FunSuite {
   test("latex: x ^ y") {
     val mathml = "<math><msup><mi>x</mi><mi>y</mi></msup></math>"
     val expected = List(new FormulaTerm("<msup></msup>", 1, true),
-      new FormulaTerm("<msup><mi>x</mi><mi>y</mi></msup>", 1, false),
-      new FormulaTerm("<mi></mi><mi></mi>", 2, true),
-      new FormulaTerm("<mi>x</mi><mi>y</mi>", 2, false))
+      new FormulaTerm("<msup><mi></mi><mi></mi></msup>", 2, true),
+      new FormulaTerm("<msup><mi>x</mi><mi>y</mi></msup>", 2, false))
+
+    val tokens = new java.util.LinkedList[FormulaTerm]()
+    parser.parse(mathml, tokens)
+    assertEquals(expected, tokens.asScala)
+  }
+
+  test("latex: x ^ y + z") {
+    val mathml = "<math><msup><mi>x</mi><mi>y</mi></msup><mo>+</mo><mi>z</mi></math>"
+    val expected = List(new FormulaTerm("<msup></msup><mo>+</mo><mi></mi>", 1, true),
+      new FormulaTerm("<msup><mi>x</mi><mi>y</mi></msup><mo>+</mo><mi>z</mi>", 1, false),
+      new FormulaTerm("<msup><mi></mi><mi></mi></msup>", 2, true),
+      new FormulaTerm("<msup><mi>x</mi><mi>y</mi></msup>", 2, false))
 
     val tokens = new java.util.LinkedList[FormulaTerm]()
     parser.parse(mathml, tokens)

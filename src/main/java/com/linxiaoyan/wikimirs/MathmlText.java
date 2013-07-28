@@ -43,4 +43,9 @@ public class MathmlText implements MathmlNode {
 	public String toString() {
 		return text;
 	}
+
+	@Override
+	public int size() {
+		return 0;
+	}
 }

@@ -21,8 +21,27 @@ public class MathmlTokenizer {
 			}
 			return;
 		} else {
-			tokens.add(new FormulaTerm(getChildrenTagString(node), level, true));
-			tokens.add(new FormulaTerm(getChildrenString(node), level, false));
+			String gene = getChildrenTagString(node);
+			String nonGene = getChildrenString(node);
+			boolean doNotGenerateNonGene = false;
+			if (node.getLabel().equals("math")
+					|| node.getLabel().equals("mrow")) {
+				if (node.size() == 1) {
+					if (isNaiveNode(node.iterator().next())) {
+					} else {
+						doNotGenerateNonGene = true;
+					}
+				}
+			} else {
+				gene = getTagString(node, gene);
+				nonGene = getTagString(node, nonGene);
+			}
+			if (!gene.equals(nonGene)) {
+				tokens.add(new FormulaTerm(gene, level, true));
+			}
+			if (!doNotGenerateNonGene) {
+				tokens.add(new FormulaTerm(nonGene, level, false));
+			}
 			for (MathmlNode child : node) {
 				toTokens(child, level + 1, tokens);
 			}
@@ -32,13 +51,21 @@ public class MathmlTokenizer {
 	private boolean isNaiveNode(MathmlNode node) {
 		return !node.isLeaf()
 				&& (node.getLabel().equals("mi")
-						|| node.getLabel().equals("mc")
 						|| node.getLabel().equals("mo") || node.getLabel()
 						.equals("mn"));
 	}
 
+	private boolean isOperator(MathmlNode node) {
+		return !node.isLeaf() && node.getLabel().equals("mo");
+	}
+
 	private String getTagString(MathmlNode node) {
 		return "<" + node.getLabel() + "></" + node.getLabel() + ">";
+	}
+
+	private String getTagString(MathmlNode node, String content) {
+		return "<" + node.getLabel() + ">" + content + "</" + node.getLabel()
+				+ ">";
 	}
 
 	private String getChildrenTagString(MathmlNode node) {
@@ -46,6 +73,8 @@ public class MathmlTokenizer {
 		for (MathmlNode child : node) {
 			if (child.isText()) {
 				builder.append(child.getLabel());
+			} else if (isOperator(child)) {
+				builder.append(child.toString());
 			} else {
 				builder.append(getTagString(child));
 			}
