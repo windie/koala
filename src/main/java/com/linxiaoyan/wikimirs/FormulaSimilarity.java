@@ -44,4 +44,9 @@ public class FormulaSimilarity extends DefaultSimilarity {
 		return super.idf(docFreq, numDocs);
 	}
 
+	@Override
+	public float sloppyFreq(int distance) {
+		return distance;
+	}
+
 }
