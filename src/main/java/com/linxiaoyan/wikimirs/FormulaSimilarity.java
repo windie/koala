@@ -31,12 +31,14 @@ public class FormulaSimilarity extends DefaultSimilarity {
 
 	@Override
 	public void computeNorm(FieldInvertState state, Norm norm) {
-		super.computeNorm(state, norm);
+		int numTerms = state.getLength();
+		norm.setByte(encodeNormValue(state.getBoost()
+				* ((float) (1.0 / numTerms))));
 	}
 
 	@Override
 	public float tf(float freq) {
-		return super.tf(freq);
+		return 1.0F;
 	}
 
 	@Override

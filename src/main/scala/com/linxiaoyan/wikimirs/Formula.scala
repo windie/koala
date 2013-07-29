@@ -360,7 +360,8 @@ class FormulaIndexWriter(dir: Directory) {
     val analyzer = new FormulaAnalyzer
     val iwc = new IndexWriterConfig(Version.LUCENE_36, analyzer)
     iwc.setOpenMode(OpenMode.CREATE)
-    iwc.setRAMBufferSizeMB(Settings.getDouble("index.ram_size"));
+    iwc.setRAMBufferSizeMB(Settings.getDouble("index.ram_size"))
+    iwc.setSimilarity(new FormulaSimilarity)
     new IndexWriter(dir, iwc)
   }
 
