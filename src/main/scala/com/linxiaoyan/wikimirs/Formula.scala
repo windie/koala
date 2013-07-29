@@ -6,10 +6,8 @@ import java.io.Reader
 import java.io.StringReader
 import java.net.URLEncoder
 
-import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.ListBuffer
-
 import org.apache.commons.io.IOUtils
+import org.apache.commons.lang3.StringEscapeUtils
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents
 import org.apache.lucene.analysis.Tokenizer
@@ -22,16 +20,17 @@ import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.index.IndexWriter
 import org.apache.lucene.index.IndexWriterConfig
 import org.apache.lucene.index.IndexWriterConfig.OpenMode
+import org.apache.lucene.index.Term
 import org.apache.lucene.search.BooleanClause
 import org.apache.lucene.search.BooleanQuery
 import org.apache.lucene.search.IndexSearcher
 import org.apache.lucene.search.Query
 import org.apache.lucene.search.ScoreDoc
+import org.apache.lucene.search.payloads.PayloadFunction
 import org.apache.lucene.search.payloads.PayloadTermQuery
-import org.apache.lucene.search.similarities.DefaultSimilarity
 import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
-import org.apache.lucene.util.BytesRef
+import org.apache.lucene.util.ToStringUtils
 import org.apache.lucene.util.Version
 import org.apache.xerces.parsers.SAXParser
 import org.xml.sax.Attributes

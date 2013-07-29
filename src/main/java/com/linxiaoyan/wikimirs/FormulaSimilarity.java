@@ -26,7 +26,7 @@ public class FormulaSimilarity extends DefaultSimilarity {
 
 	@Override
 	public float coord(int overlap, int maxOverlap) {
-		return super.coord(overlap, maxOverlap);
+		return 1.0F;
 	}
 
 	@Override

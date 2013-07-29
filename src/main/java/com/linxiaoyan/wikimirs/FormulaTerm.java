@@ -3,7 +3,6 @@ package com.linxiaoyan.wikimirs;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.lucene.analysis.payloads.PayloadHelper;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.payloads.PayloadTermQuery;
 import org.apache.lucene.util.BytesRef;
 
 public class FormulaTerm {
@@ -38,8 +37,8 @@ public class FormulaTerm {
 		return new BytesRef(PayloadHelper.encodeInt(level));
 	}
 
-	public PayloadTermQuery toTermQuery() {
-		PayloadTermQuery termQuery = new PayloadTermQuery(new Term("formula",
+	public TermLevelTermQuery toTermQuery() {
+		TermLevelTermQuery termQuery = new TermLevelTermQuery(new Term("formula",
 				term), new FormulaTermLevelPayloadFunction(level));
 		termQuery.setBoost(getNormalizeScore());
 		return termQuery;
