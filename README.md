@@ -20,6 +20,11 @@ $ gradle index
 $ gradle server
 </pre>
 
+## Performance
+On my Macbook pro:
+* Multi-thread index: only 20 mimutes for 40G+ (13M+ pages, 360K+ formulas)
+* Multi-thread search: 10+ millisecond average
+
 ## Contributors
 * Xiaoyan Lin ([@lin_xiaoyan](http://twitter.com/lin_xiaoyan))
 * Shixiong Zhu ([@iamzsx](http://twitter.com/iamzsx))
