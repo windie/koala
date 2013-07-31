@@ -58,4 +58,9 @@ public class MathmlTag implements MathmlNode {
 	public int size() {
 		return children.size();
 	}
+
+	@Override
+	public void setParent(MathmlTag parent) {
+		this.parent = parent;
+	}
 }

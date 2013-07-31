@@ -10,5 +10,7 @@ public interface MathmlNode extends Iterable<MathmlNode> {
 	
 	public MathmlTag getParent();
 	
+	public void setParent(MathmlTag parent);
+	
 	public int size();
 }

@@ -48,4 +48,9 @@ public class MathmlText implements MathmlNode {
 	public int size() {
 		return 0;
 	}
+	
+	@Override
+	public void setParent(MathmlTag parent) {
+		this.parent = parent;
+	}
 }
