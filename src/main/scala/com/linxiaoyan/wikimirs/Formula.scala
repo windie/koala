@@ -5,7 +5,6 @@ import java.io.IOException
 import java.io.Reader
 import java.io.StringReader
 import java.net.URLEncoder
-
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringEscapeUtils
 import org.apache.lucene.analysis.Analyzer
@@ -36,13 +35,13 @@ import org.apache.xerces.parsers.SAXParser
 import org.xml.sax.Attributes
 import org.xml.sax.InputSource
 import org.xml.sax.SAXParseException
-
 import play.api.libs.json.Json
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import uk.ac.ed.ph.snuggletex.SerializationMethod
 import uk.ac.ed.ph.snuggletex.SnuggleEngine
 import uk.ac.ed.ph.snuggletex.SnuggleInput
 import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
+import org.apache.lucene.index.LogByteSizeMergePolicy
 
 //case class FormulaTerm(
 //  val term: String,
@@ -358,10 +357,13 @@ class FormulaIndexWriter(dir: Directory) {
 
   private val writer = {
     val analyzer = new FormulaAnalyzer
+    val mergePolicy = new LogByteSizeMergePolicy
+    mergePolicy.setUseCompoundFile(false)
     val iwc = new IndexWriterConfig(Version.LUCENE_36, analyzer)
-    iwc.setOpenMode(OpenMode.CREATE)
-    iwc.setRAMBufferSizeMB(Settings.getDouble("index.ram_size"))
-    iwc.setSimilarity(new FormulaSimilarity)
+      .setOpenMode(OpenMode.CREATE)
+      .setRAMBufferSizeMB(Settings.getDouble("index.ram_size"))
+      .setSimilarity(new FormulaSimilarity)
+      .setMergePolicy(mergePolicy)
     new IndexWriter(dir, iwc)
   }
 

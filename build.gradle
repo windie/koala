@@ -60,7 +60,7 @@ task index(type: JavaExec, dependsOn: build) {
   classpath sourceSets.main.runtimeClasspath
   classpath configurations.runtime
   jvmArgs "-Dactors.corePoolSize=6 -XX:+HeapDumpOnOutOfMemoryError"
-  maxHeapSize "1024m"
+  maxHeapSize "1512m"
 }
 
 task server(type: JavaExec, dependsOn: build) {
