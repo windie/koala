@@ -6,30 +6,39 @@ import java.io.Reader
 import java.io.StringReader
 import java.net.URLEncoder
 
+import scala.collection.mutable.ListBuffer
+
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringEscapeUtils
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents
 import org.apache.lucene.analysis.Tokenizer
 import org.apache.lucene.analysis.payloads.PayloadHelper
+import org.apache.lucene.analysis.payloads.PayloadHelper
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute
 import org.apache.lucene.analysis.tokenattributes.FlagsAttribute
 import org.apache.lucene.analysis.tokenattributes.PayloadAttribute
 import org.apache.lucene.document.Document
 import org.apache.lucene.index.DirectoryReader
+import org.apache.lucene.index.FieldInvertState
 import org.apache.lucene.index.IndexWriter
 import org.apache.lucene.index.IndexWriterConfig
 import org.apache.lucene.index.IndexWriterConfig.OpenMode
+import org.apache.lucene.index.Norm
 import org.apache.lucene.index.Term
 import org.apache.lucene.search.BooleanClause
 import org.apache.lucene.search.BooleanQuery
+import org.apache.lucene.search.Explanation
 import org.apache.lucene.search.IndexSearcher
 import org.apache.lucene.search.Query
 import org.apache.lucene.search.ScoreDoc
 import org.apache.lucene.search.payloads.PayloadFunction
 import org.apache.lucene.search.payloads.PayloadTermQuery
+import org.apache.lucene.search.similarities.DefaultSimilarity
 import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
+import org.apache.lucene.util.BytesRef
+import org.apache.lucene.util.BytesRef
 import org.apache.lucene.util.ToStringUtils
 import org.apache.lucene.util.Version
 import org.apache.xerces.parsers.SAXParser
@@ -44,29 +53,37 @@ import uk.ac.ed.ph.snuggletex.SnuggleEngine
 import uk.ac.ed.ph.snuggletex.SnuggleInput
 import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
 
-//case class FormulaTerm(
-//  val term: String,
-//  val level: Int,
-//  val generalization: Boolean) {
-//
-//  def normalizeScore = if (generalization) 0.5F else 1F
-//
-//  def toPayload = new BytesRef(PayloadHelper.encodeInt(level))
-//
-//  def toTermQuery = {
-//    val termQuery = new PayloadTermQuery(
-//      new Term("formula", term),
-//      new FormulaTermLevelPayloadFunction(level))
-//    termQuery.setBoost(normalizeScore)
-//    termQuery
-//  }
-//
-//  def explain = {
-//    val escapedTerm = StringEscapeUtils.escapeHtml4(term)
-//    s"""term: <code class='xml'>$escapedTerm</code>, level: <code>$level</code>, generalization: <code>$generalization</code>"""
-//  }
-//
-//}
+class TermLevelTermQuery(term: Term, function: PayloadFunction) extends PayloadTermQuery(term, function) {
+
+  override def toString(field: String): String = {
+    val buffer = new StringBuilder;
+    if (!term.field.equals(field)) {
+      buffer.append(term.field + ":")
+    }
+    buffer.append("<code>" + StringEscapeUtils.escapeHtml4(term.text) + "</code>")
+    buffer.append(ToStringUtils.boost(getBoost))
+    return buffer.toString;
+  }
+}
+
+case class FormulaTerm(val term: String, val level: Int, val generalization: Boolean) {
+
+  private def getNormalizeScore: Float = if (generalization) 0.5F else 1F
+
+  def toPayload(): BytesRef = new BytesRef(PayloadHelper.encodeInt(level))
+
+  def toTermQuery(): TermLevelTermQuery = {
+    val termQuery = new TermLevelTermQuery(new Term("formula",
+      term), new FormulaTermLevelPayloadFunction(level));
+    termQuery.setBoost(getNormalizeScore);
+    termQuery;
+  }
+
+  def explain: String = {
+    val escapedTerm = StringEscapeUtils.escapeHtml4(term);
+    s"""term: <code class='xml'>$escapedTerm</code>, level: <code>$level</code>, generalization: <code>$generalization</code>""";
+  }
+}
 
 class FormulaQueryParser {
 
@@ -179,7 +196,7 @@ class MathmlParser {
   parser.setContentHandler(handler)
   parser.setErrorHandler(handler)
 
-  def parse(mathml: String, tokens: java.util.List[FormulaTerm]) {
+  def parse(mathml: String, tokens: ListBuffer[FormulaTerm]) {
     handler.clear
     parser.parse(new InputSource(new StringReader(mathml)))
     tokenizer.toTokens(handler.node.iterator.next, tokens)
@@ -214,7 +231,7 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
   private val payloadAtt: PayloadAttribute = addAttribute(classOf[PayloadAttribute])
   private val generalizationAtt: FlagsAttribute = addAttribute(classOf[FlagsAttribute])
 
-  private var tokens = new java.util.LinkedList[FormulaTerm]()
+  private var tokens = ListBuffer[FormulaTerm]()
 
   private val parser = new MathmlParser
 
@@ -222,10 +239,11 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
     if (tokens.isEmpty) {
       false
     } else {
-      val formulaTerm = tokens.removeFirst()
-      termAtt.setEmpty().append(formulaTerm.getTerm)
+      val formulaTerm = tokens.head
+      termAtt.setEmpty().append(formulaTerm.term)
       payloadAtt.setPayload(formulaTerm.toPayload)
-      generalizationAtt.setFlags(if (formulaTerm.getGeneralization) 1 else 0);
+      generalizationAtt.setFlags(if (formulaTerm.generalization) 1 else 0)
+      tokens = tokens.tail
       true
     }
   }
@@ -257,7 +275,7 @@ class MathmlXMLHandler extends org.xml.sax.helpers.DefaultHandler {
   var node: MathmlTag = new MathmlTag(null, "dummy")
   var text = new java.lang.StringBuilder
 
-  def getTree = node.iterator().next
+  def getTree = node.iterator.next
 
   def clear {
     node = new MathmlTag(null, "dummy")
@@ -278,7 +296,7 @@ class MathmlXMLHandler extends org.xml.sax.helpers.DefaultHandler {
       }
       text.setLength(0);
     }
-    node = node.getParent
+    node = node.parent
   }
 
   override def characters(ch: Array[Char], start: Int, length: Int) {
@@ -294,64 +312,6 @@ class MathmlXMLHandler extends org.xml.sax.helpers.DefaultHandler {
   override def fatalError(expection: SAXParseException) {
     // no op
   }
-
-  //  def toTokens(node: Tag, level: Int, tokens: ListBuffer[FormulaTerm]): String = {
-  //    if (node.label == "mo" || node.label == "mi") {
-  //      tailor(node)
-  //    } else if (node.isText) {
-  //      node.toString
-  //    } else {
-  //      if (!node.isOnlyText) {
-  //        val g = node.children.map(child => {
-  //          if (child.label == "mo" || child.label == "mi")
-  //            tailor(child)
-  //          else if (child.isText) {
-  //            child.label
-  //          } else {
-  //            child.toLabelString
-  //          }
-  //        }).mkString
-  //        if (g.length > 1) {
-  //          val formulaTerm = new FormulaTerm(g, level, true)
-  //          tokens += formulaTerm
-  //        }
-  //        val t = node.children.map(child => {
-  //          if (child.label == "mo" || child.label == "mi")
-  //            tailor(child)
-  //          else if (child.isText) {
-  //            child.label
-  //          } else {
-  //            toTokens(child, level + 1, tokens)
-  //          }
-  //        }).mkString
-  //        if (t.length > 1) {
-  //          val formulaTerm1 = new FormulaTerm(t, level, false)
-  //          tokens += formulaTerm1
-  //        }
-  //        "<" + node.label + ">" + t + "</" + node.label + ">"
-  //      } else {
-  //        val t = node.children.map(child => {
-  //          if (child.label == "mo" || child.label == "mi")
-  //            tailor(child)
-  //          else if (child.isText) {
-  //            child.label
-  //          } else {
-  //            child.toLabelString
-  //          }
-  //        }).mkString
-  //        if (t.length > 1) {
-  //          val formulaTerm1 = new FormulaTerm(t, level, false)
-  //          tokens += formulaTerm1
-  //        }
-  //        "<" + node.label + ">" + t + "</" + node.label + ">"
-  //      }
-  //    }
-  //  }
-  //
-  //  def tailor(node: Tag) = {
-  //    node.children(0).toString
-  //  }
-
 }
 
 class FormulaIndexWriter(dir: Directory) {
@@ -373,6 +333,66 @@ class FormulaIndexWriter(dir: Directory) {
     writer.forceMerge(1)
     writer.close()
   }
+}
+
+/**
+ * The term level is stored in the payload of the formula term.
+ *
+ */
+class FormulaTermLevelPayloadFunction(val termLevelInQuery: Int) extends PayloadFunction {
+
+  override def currentScore(docId: Int, field: String, start: Int, end: Int,
+    numPayloadsSeen: Int, currentScore: Float, currentPayloadScore: Float): Float = {
+    currentScore + 1.0F / (1.0F + (termLevelInQuery - currentPayloadScore).abs);
+  }
+
+  override def docScore(docId: Int, field: String, numPayloadsSeen: Int, payloadScore: Float): Float = payloadScore
+
+  override def hashCode = termLevelInQuery
+
+  override def equals(o: Any): Boolean = o match {
+    case that: FormulaTermLevelPayloadFunction => this.termLevelInQuery == that.termLevelInQuery
+    case _ => false
+  }
+
+  override def explain(docId: Int, field: String, numPayloadsSeen: Int,
+    payloadScore: Float): Explanation = {
+    val termLevel = new Explanation();
+    termLevel.setDescription("term level in query");
+    termLevel.setValue(termLevelInQuery);
+
+    val result = super.explain(docId, field, numPayloadsSeen,
+      payloadScore);
+    result.addDetail(termLevel);
+    result;
+  }
+}
+
+/**
+ * Read the document of {@link TFIDFSimilarity} to know the meaning of every
+ * method.
+ */
+class FormulaSimilarity extends DefaultSimilarity {
+  override def queryNorm(sumOfSquaredWeights: Float) = 1.0F
+
+  override def scorePayload(doc: Int, start: Int, end: Int, payload: BytesRef): Float = {
+    // decode the term level
+    PayloadHelper.decodeInt(payload.bytes, payload.offset);
+  }
+
+  override def coord(overlap: Int, maxOverlap: Int) = 1.0F
+
+  override def computeNorm(state: FieldInvertState, norm: Norm) {
+    val numTerms = state.getLength();
+    norm.setByte(encodeNormValue(state.getBoost()
+      * ((1.0 / numTerms).toFloat)));
+  }
+
+  override def tf(freq: Float) = 1.0F
+
+  override def idf(docFreq: Long, numDocs: Long): Float = super.idf(docFreq, numDocs)
+
+  override def sloppyFreq(distance: Int): Float = distance
 }
 
 class FormulaSearcher(dir: Directory) {
