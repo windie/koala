@@ -1,17 +1,12 @@
 package com.linxiaoyan.wikimirs
 
-import java.io.StringReader
-
-import scala.collection.mutable.ListBuffer
 import scala.collection.JavaConverters._
+import scala.collection.mutable.ListBuffer
 
-import org.apache.xerces.parsers.SAXParser
+import org.junit.Assert._
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-import org.xml.sax.InputSource
-
-import org.junit.Assert._
 
 @RunWith(classOf[JUnitRunner])
 class FormulaSuite extends FunSuite {
@@ -23,9 +18,9 @@ class FormulaSuite extends FunSuite {
     val expected = List(new FormulaTerm("<mi></mi>", 1, true),
       new FormulaTerm("<mi>a</mi>", 1, false))
 
-    val tokens = new java.util.LinkedList[FormulaTerm]()
+    val tokens = ListBuffer[FormulaTerm]()
     parser.parse(mathml, tokens)
-    assertEquals(expected, tokens.asScala)
+    assertEquals(expected, tokens)
   }
 
   test("latex: ||") {
@@ -34,9 +29,9 @@ class FormulaSuite extends FunSuite {
       new FormulaTerm("<mi>&shortparallel;</mi>", 1, false),
       new FormulaTerm("&shortparallel;", 2, false))
 
-    val tokens = new java.util.LinkedList[FormulaTerm]()
+    val tokens = ListBuffer[FormulaTerm]()
     parser.parse(mathml, tokens)
-    assertEquals(expected, tokens.asScala)
+    assertEquals(expected, tokens)
   }
 
   test("latex: ab") {
@@ -44,9 +39,9 @@ class FormulaSuite extends FunSuite {
     val expected = List(new FormulaTerm("<mi></mi><mi></mi>", 1, true),
       new FormulaTerm("<mi>a</mi><mi>b</mi>", 1, false))
 
-    val tokens = new java.util.LinkedList[FormulaTerm]()
+    val tokens = ListBuffer[FormulaTerm]()
     parser.parse(mathml, tokens)
-    assertEquals(expected, tokens.asScala)
+    assertEquals(expected, tokens)
   }
 
   test("latex: x ^ y") {
@@ -55,9 +50,9 @@ class FormulaSuite extends FunSuite {
       new FormulaTerm("<msup><mi></mi><mi></mi></msup>", 2, true),
       new FormulaTerm("<msup><mi>x</mi><mi>y</mi></msup>", 2, false))
 
-    val tokens = new java.util.LinkedList[FormulaTerm]()
+    val tokens = ListBuffer[FormulaTerm]()
     parser.parse(mathml, tokens)
-    assertEquals(expected, tokens.asScala)
+    assertEquals(expected, tokens)
   }
 
   test("latex: x ^ y + z") {
@@ -67,9 +62,9 @@ class FormulaSuite extends FunSuite {
       new FormulaTerm("<msup><mi></mi><mi></mi></msup>", 2, true),
       new FormulaTerm("<msup><mi>x</mi><mi>y</mi></msup>", 2, false))
 
-    val tokens = new java.util.LinkedList[FormulaTerm]()
+    val tokens = ListBuffer[FormulaTerm]()
     parser.parse(mathml, tokens)
-    assertEquals(expected, tokens.asScala)
+    assertEquals(expected, tokens)
   }
 
 }

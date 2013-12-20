@@ -1,68 +1,86 @@
 package com.linxiaoyan.wikimirs
 
-import java.io._
-
-import scala.annotation.meta.field
-import scala.collection.mutable.ArrayBuffer
-
+import org.glassfish.jersey.server.ResourceConfig
+import org.glassfish.jersey.servlet.ServletContainer
+import org.mortbay.jetty.Handler
 import org.mortbay.jetty.Server
 import org.mortbay.jetty.handler.HandlerList
 import org.mortbay.jetty.handler.ResourceHandler
 import org.mortbay.jetty.nio.SelectChannelConnector
-import org.mortbay.jetty.servlet.ServletHandler
+import org.mortbay.jetty.servlet.Context
 import org.mortbay.jetty.servlet.ServletHolder
-import org.mortbay.jetty.servlet.ServletMapping
+import org.mortbay.log.Log
 import org.mortbay.thread.QueuedThreadPool
 
-import javax.servlet.http.HttpServlet
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.DefaultValue
+import javax.ws.rs.GET
+import javax.ws.rs.Path
+import javax.ws.rs.PathParam
+import javax.ws.rs.Produces
+import javax.ws.rs.QueryParam
+
 import play.api.libs.json.Json
+
+@Path("/api/search")
+class SearchService {
+
+  @GET
+  @Path("{query}/{page}")
+  @Produces(Array(MediaType.APPLICATION_JSON))
+  def search(@PathParam("query") query: String, @PathParam("page")@DefaultValue("1") page: Int, @QueryParam("size")@DefaultValue("10") pageSize: Int): String = {
+    if (query == null || query.isEmpty()) {
+      return error("need query parameter")
+    }
+
+    try {
+      val json = FormulaSearcher.search(query, page, pageSize)
+      Json.stringify(json)
+    } catch {
+      case e: Throwable => {
+        error(e.getMessage)
+      }
+    }
+  }
+
+  private[this] def error(message: String): String = {
+    s"""{
+    "status": "${message}"
+}
+"""
+  }
+}
 
 class HttpServer(port: Int) {
   private val webServer = new Server
 
-  private val holders = ArrayBuffer[ServletHolder]();
-  private val mappings = ArrayBuffer[ServletMapping]();
-
   init
 
-  def init {
+  private[this] def init {
     val connector = new SelectChannelConnector
     connector.setPort(port)
     webServer.addConnector(connector)
-
     webServer.setThreadPool(new QueuedThreadPool)
 
     val mainHandler = new HandlerList
+    mainHandler.addHandler(createResouceHandler)
+    mainHandler.addHandler(createRESTfulHandler(mainHandler))
 
-    val resourceHandler = new ResourceHandler()
-    resourceHandler.setResourceBase("webapp/")
-    mainHandler.addHandler(resourceHandler)
-
-    val servletHandler = new ServletHandler
-
-    registerServlet(classOf[SearchServlet], "/search")
-
-    servletHandler.setServlets(holders.toArray)
-    servletHandler.setServletMappings(mappings.toArray)
-
-    mainHandler.addHandler(servletHandler)
-
-    webServer.setHandler(mainHandler)
-
+    webServer.addHandler(mainHandler)
   }
 
-  private def registerServlet(servlet: Class[_], path: String) {
-    val holder = new ServletHolder()
-    holder.setName(servlet.getName())
-    holder.setClassName(servlet.getName())
-    holders += holder
+  private[this] def createResouceHandler: Handler = {
+    val resourceHandler = new ResourceHandler()
+    resourceHandler.setResourceBase("webapp/")
+    resourceHandler
+  }
 
-    val mapping = new ServletMapping;
-    mapping.setPathSpec(path)
-    mapping.setServletName(servlet.getName())
-    mappings += mapping
+  private[this] def createRESTfulHandler(mainHandler: HandlerList): Handler = {
+    val handler = new Context(mainHandler, "/", Context.SESSIONS);
+    val config = new ResourceConfig().packages(classOf[SearchService].getPackage().getName())
+    val holder = new ServletHolder(new ServletContainer(config))
+    handler.addServlet(holder, "/")
+    handler
   }
 
   def start {
@@ -71,45 +89,9 @@ class HttpServer(port: Int) {
 }
 
 object HttpServer {
-
   def main(args: Array[String]) {
+    Log.getLog().setDebugEnabled(true)
     val server = new HttpServer(Settings.getInt("webserver.port"));
     server.start
   }
 }
-
-class SearchServlet extends HttpServlet {
-  override def doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-    resp.setContentType("application/json")
-
-    val query = req.getParameter("q")
-    if (query == null || query.isEmpty()) {
-      resp.getWriter().print("""{ "status": "need query parameter" }""")
-      resp.getWriter().println()
-      return ;
-    }
-
-    var page = req.getParameter("page")
-    if (page == null) {
-      page = "0"
-    }
-
-    var pageSize = req.getParameter("page_size")
-    if (pageSize == null) {
-      pageSize = "10"
-    }
-
-    try {
-      val json = FormulaSearcher.search(query, page.toInt, pageSize.toInt)
-      resp.getWriter().print(Json.stringify(json))
-      resp.getWriter().println()
-    } catch {
-      case e: Exception => {
-        e.printStackTrace
-        resp.getWriter().print("""{ "status": """" + e.getMessage + """" }""")
-        resp.getWriter().println()
-      }
-    }
-  }
-}
-

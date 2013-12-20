@@ -44,6 +44,8 @@ dependencies {
   compile 'uk.ac.ed.ph.snuggletex:snuggletex-jeuclid:1.2.2'
   compile 'play:play-json_2.10:2.2-SNAPSHOT'
   compile 'xerces:xercesImpl:2.11.0'
+  compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.1'
+  compile 'org.glassfish.jersey.core:jersey-server:2.1'
 
   testCompile 'junit:junit:4.10'
   testCompile 'org.scalatest:scalatest_2.10:1.9.1'
