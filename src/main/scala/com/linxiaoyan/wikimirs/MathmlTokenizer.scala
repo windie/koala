@@ -53,6 +53,52 @@ class MathmlText(val parent: MathmlTag, val text: String) extends MathmlNode {
   override val size = 0
 }
 
+abstract class MathmlLeafNode(val parent: MathmlTag, val text: String) extends MathmlNode {
+  override val isText = false
+
+  override def iterator = List[MathmlText]().iterator
+
+  override val isLeaf = true
+
+  override val toString = s"<${label}>${text}</${label}>"
+
+  override val size = 0
+}
+
+class MSpace(val parent: MathmlTag) extends MathmlNode {
+  override val isText = false
+
+  override def iterator = List[MathmlText]().iterator
+
+  override val label: String = "mspace"
+
+  override val isLeaf = true
+
+  override val toString = "<mspace/>"
+
+  override val size = 0
+}
+
+class MText(parent: MathmlTag, text: String) extends MathmlLeafNode(parent, text) {
+  override val label: String = "mtext"
+}
+
+class MI(parent: MathmlTag, text: String) extends MathmlLeafNode(parent, text) {
+  override val label: String = "mi"
+}
+
+class MN(parent: MathmlTag, text: String) extends MathmlLeafNode(parent, text) {
+  override val label: String = "mn"
+}
+
+class MO(parent: MathmlTag, text: String) extends MathmlLeafNode(parent, text) {
+  override val label: String = "mo"
+}
+
+class MS(parent: MathmlTag, text: String) extends MathmlLeafNode(parent, text) {
+  override val label: String = "ms"
+}
+
 class MathmlTokenizer {
 
   def toTokens(node: MathmlNode, tokens: ListBuffer[FormulaTerm]) {
