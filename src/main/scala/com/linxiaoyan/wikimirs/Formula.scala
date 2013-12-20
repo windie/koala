@@ -418,7 +418,6 @@ class FormulaSearcher(dir: Directory) {
   }
 
   def doc(docId: Int) = searcher.doc(docId)
-
 }
 
 object FormulaSearcher {
@@ -511,7 +510,7 @@ object FormulaSearcher {
       "doc_id" -> doc.get("doc_id").toLong,
       "doc_title" -> doc.get("doc_title"),
       "doc_url" -> {
-        "http://en.wikipedia.org/wiki/" + URLEncoder.encode(doc.get("doc_title"), "UTF-8")
+        "http://en.wikipedia.org/wiki/" + URLEncoder.encode(doc.get("doc_title").replaceAll(" ", "_"), "UTF-8")
       })
   }
 
