@@ -46,6 +46,7 @@ dependencies {
   compile 'xerces:xercesImpl:2.11.0'
   compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.1'
   compile 'org.glassfish.jersey.core:jersey-server:2.1'
+  compile 'berkeleydb:je:3.2.76'
 
   testCompile 'junit:junit:4.10'
   testCompile 'org.scalatest:scalatest_2.10:1.9.1'
