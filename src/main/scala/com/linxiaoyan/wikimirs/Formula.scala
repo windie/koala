@@ -5,9 +5,7 @@ import java.io.IOException
 import java.io.Reader
 import java.io.StringReader
 import java.net.URLEncoder
-
 import scala.collection.mutable.ListBuffer
-
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringEscapeUtils
 import org.apache.lucene.analysis.Analyzer
@@ -19,17 +17,16 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute
 import org.apache.lucene.analysis.tokenattributes.FlagsAttribute
 import org.apache.lucene.analysis.tokenattributes.PayloadAttribute
 import org.apache.lucene.document.Document
-import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.index.FieldInvertState
 import org.apache.lucene.index.IndexWriter
 import org.apache.lucene.index.IndexWriterConfig
 import org.apache.lucene.index.IndexWriterConfig.OpenMode
+import org.apache.lucene.index.LogByteSizeMergePolicy
 import org.apache.lucene.index.Norm
 import org.apache.lucene.index.Term
 import org.apache.lucene.search.BooleanClause
 import org.apache.lucene.search.BooleanQuery
 import org.apache.lucene.search.Explanation
-import org.apache.lucene.search.IndexSearcher
 import org.apache.lucene.search.Query
 import org.apache.lucene.search.ScoreDoc
 import org.apache.lucene.search.payloads.PayloadFunction
@@ -51,7 +48,9 @@ import uk.ac.ed.ph.snuggletex.SerializationMethod
 import uk.ac.ed.ph.snuggletex.SnuggleEngine
 import uk.ac.ed.ph.snuggletex.SnuggleInput
 import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
-import org.apache.lucene.index.LogByteSizeMergePolicy
+import org.apache.lucene.index.DirectoryReader
+import org.apache.lucene.search.IndexSearcher
+import com.typesafe.scalalogging.slf4j.Logging
 
 class TermLevelTermQuery(term: Term, function: PayloadFunction) extends PayloadTermQuery(term, function) {
 
@@ -398,9 +397,10 @@ class FormulaSimilarity extends DefaultSimilarity {
   override def sloppyFreq(distance: Int): Float = distance
 }
 
-class FormulaSearcher(dir: Directory) {
+class FormulaSearcher(dir: Directory) extends Logging {
 
   private val searcher = {
+    logger.info(s"Opening index dir: ${dir}")
     val reader = DirectoryReader.open(dir)
     new IndexSearcher(reader)
   }
@@ -409,7 +409,8 @@ class FormulaSearcher(dir: Directory) {
   searcher.setSimilarity(similarity)
 
   def search(query: String, sizeOfResult: Int) = {
-    new FormulaQueryParser().parse(query) map { searcher.search(_, sizeOfResult) }
+    new FormulaQueryParser()
+      .parse(query) map { searcher.search(_, sizeOfResult) }
   }
 
   def explain(query: String, docId: Int) = {

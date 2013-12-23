@@ -55,9 +55,7 @@
 	</div>
 	<div class='notifications top-center'></div>
 	</div>
-	<div> 
-	<input class="rating" data-clearable="remove" id="some_id" name="your_awesome_parameter" type="number" />
-	</div>
+	<div id="myratingtest" />
 	</body>
 	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -65,7 +63,17 @@
 	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 	<script type="text/javascript" src="js/prettify.js"></script>
 	<script type="text/javascript" src="js/lang-tex.js"></script>
-	<script type="text/javascript" src="js/bootstrap-rating-input.js"></script>
+	<script type="text/javascript" src="js/jquery.raty.js"></script>
+	<script type="text/javascript">
+	function error(error) {
+		$('.top-center').notify({
+				type: "error",
+				message: { text: error }
+			}).show();
+		console.log(error);
+	}
+	</script>
+	<script type="text/javascript" src="js/rating.js"></script>
 	<script type="text/javascript">	
 	$(function() {
 		$("#search").click(function() {
@@ -166,14 +174,6 @@
 		});
 	}
 	
-	function error(error) {
-		$('.top-center').notify({
-				type: "error",
-				message: { text: error }
-			}).show();
-		console.log(error);
-	}
-	
 	function renderSearchResult(data) {
 		var search_results_div = $("#search_result_items");
 		search_results_div.html("");
@@ -184,7 +184,7 @@
 			var summary = "About " + data.total + " results ( "+ data.time +" seconds)";
 			$("#search_summary").attr("class", "alert alert-success").text(summary).show();
 			$.each(data.results, function() {
-				search_results_div.append(renderOneResult(this));
+				search_results_div.append(renderOneResult(data.query, this));
 			});
 			$.each(data.results, function() {
 				renderFormula("formula" + this.doc.formula_id, this.doc.formula);
@@ -194,7 +194,7 @@
 		$("#query_detail").html(data.query_detail)
 	}
 	
-	function renderOneResult(result) {
+	function renderOneResult(query, result) {
 		var title = result.doc.doc_title;
 		var url =result.doc.doc_url;
 		var score = result.score;
@@ -210,6 +210,41 @@
 		var explain = $("<div>").html(explain);
 		explain.hide();
 		
+		var rating = $("<div/>");
+		
+		var cache = {
+			"query": query,
+			"formula": result.doc.formula,
+			"url": result.doc.doc_url,
+			"label": -1
+		};
+		
+		rating.raty({
+			starHalf      : 'img/star-half.png',
+			starOff       : 'img/star-off.png',
+			starOn        : 'img/star-on.png',
+			cancel      : true,
+			cancelOff   : 'img/cancel-off.png',                         
+			cancelOn    : 'img/cancel-on.png',
+			readOnly	: true,
+			click : function(score) {
+				if(score == null) {
+					score = -1;
+				}
+				var oldScore = cache.label;
+				if(oldScore != score) {
+					if(score == -1) {
+						deleteRating(rating, cache);
+					}
+					else {
+						putRating(rating, cache, score);
+					}
+				}
+			}
+		});
+
+		getRating(rating, cache);
+		wrapper.append(rating);
 		
 		var slideControler = $("<div class='text-center'><i class='icon-chevron-down'></i></div>");
 		var show = false;

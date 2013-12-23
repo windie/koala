@@ -22,12 +22,18 @@ import javax.ws.rs.QueryParam
 import play.api.libs.json.Json
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import javax.ws.rs.core.MediaType
+import com.typesafe.scalalogging.slf4j.Logging
 
-trait Service {
-  private[this] def error(message: String): String = {
+trait Service extends Logging {
+  protected def handleError(message: String): String = {
     Json.stringify(Json.obj(
       "status" -> "Fail",
       "message" -> message))
+  }
+
+  protected def handleError(e: Throwable): String = {
+    logger.error(e.getMessage, e)
+    handleError(e.getMessage)
   }
 }
 
@@ -41,6 +47,8 @@ class LabelService extends Service {
     @PathParam("formula") formula: String,
     @PathParam("url") url: String,
     @PathParam("label")@DefaultValue("-1") label: Int): String = {
+    logger.debug(s"put: ${query}, ${formula}, ${url}, ${label}")
+
     try {
       LabelStorager().put(new LabelUnit(query, formula, url), label)
       """{
@@ -49,8 +57,7 @@ class LabelService extends Service {
 """
     } catch {
       case e: Throwable => {
-        e.printStackTrace
-        error(e.getMessage)
+        handleError(e.getMessage)
       }
     }
   }
@@ -61,6 +68,8 @@ class LabelService extends Service {
   def get(@PathParam("query") query: String,
     @PathParam("formula") formula: String,
     @PathParam("url") url: String): String = {
+    logger.debug(s"get: ${query}, ${formula}, ${url}")
+
     try {
       val label = LabelStorager().get(new LabelUnit(query, formula, url))
       Json.stringify(Json.obj(
@@ -68,8 +77,7 @@ class LabelService extends Service {
         "label" -> label))
     } catch {
       case e: Throwable => {
-        e.printStackTrace
-        error(e.getMessage)
+        handleError(e.getMessage)
       }
     }
   }
@@ -80,14 +88,15 @@ class LabelService extends Service {
   def delete(@PathParam("query") query: String,
     @PathParam("formula") formula: String,
     @PathParam("url") url: String): String = {
+    logger.debug(s"delete: ${query}, ${formula}, ${url}")
+
     try {
       LabelStorager().put(new LabelUnit(query, formula, url), -1)
       Json.stringify(Json.obj(
         "status" -> "OK"))
     } catch {
       case e: Throwable => {
-        e.printStackTrace
-        error(e.getMessage)
+        handleError(e.getMessage)
       }
     }
   }
@@ -100,8 +109,10 @@ class SearchService extends Service {
   @Path("{query}/{page}")
   @Produces(Array(MediaType.APPLICATION_JSON))
   def search(@PathParam("query") query: String, @PathParam("page")@DefaultValue("1") page: Int, @QueryParam("size")@DefaultValue("10") pageSize: Int): String = {
+    logger.debug(s"request: ${query}, ${page}, ${pageSize}")
+
     if (query == null || query.isEmpty()) {
-      return error("need query parameter")
+      return handleError("need query parameter")
     }
 
     try {
@@ -109,7 +120,7 @@ class SearchService extends Service {
       Json.stringify(json)
     } catch {
       case e: Throwable => {
-        error(e.getMessage)
+        handleError(e)
       }
     }
   }
@@ -155,8 +166,7 @@ class HttpServer(port: Int) {
 
 object HttpServer {
   def main(args: Array[String]) {
-    Log.getLog().setDebugEnabled(true)
-    val server = new HttpServer(Settings.getInt("webserver.port"));
+    val server = new HttpServer(Settings.getInt("webserver.port"))
     server.start
   }
 }
