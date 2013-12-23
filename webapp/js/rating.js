@@ -14,9 +14,9 @@
             }
           })
           .fail(
-          function( jqxhr, textStatus, error ) {
+          function( jqxhr, textStatus, e ) {
                 setRating(ratingObject, result.label);
-                var err = textStatus + ', ' + error;
+                var err = textStatus + ', ' + e;
                 error("Request Failed: " + err);
             });
     }
@@ -38,9 +38,9 @@
             }
           })
           .fail(
-          function( jqxhr, textStatus, error ) {
+          function( jqxhr, textStatus, e ) {
                 ratingObject.raty("readOnly", false);
-                var err = textStatus + ', ' + error;
+                var err = textStatus + ', ' + e;
                 error("Request Failed: " + err);
             });
     }
@@ -61,9 +61,9 @@
             }
           })
           .fail(
-          function( jqxhr, textStatus, error ) {
+          function( jqxhr, textStatus, e ) {
                 setRating(ratingObject, result.label);
-                var err = textStatus + ', ' + error;
+                var err = textStatus + ', ' + e;
                 error("Request Failed: " + err);
             });
     }
