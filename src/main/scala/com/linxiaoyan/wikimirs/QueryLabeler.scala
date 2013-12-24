@@ -13,6 +13,7 @@ import play.api.libs.json.JsArray
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import java.nio.charset.Charset
+import scala.collection.mutable.ListBuffer
 
 case class LabelUnit(val query: String, val formula: String, val url: String) {
 }
@@ -23,6 +24,7 @@ trait LabelStorager {
 
   def put(labelUnit: LabelUnit, relevance: Int): Unit
 
+  def allQueries: Seq[String]
 }
 
 object LabelStorager {
@@ -120,6 +122,23 @@ object BDBLabelStorager extends LabelStorager {
       } else {
         val value = new DatabaseEntry(Json.stringify(JsArray(r)).getBytes(UTF8))
         db.put(null, key, value)
+      }
+    }
+  }
+
+  def allQueries: Seq[String] = {
+    synchronized {
+      val cursor = db.openCursor(null, null)
+      try {
+        val key = new DatabaseEntry
+        val value = new DatabaseEntry
+        val queries = ListBuffer[String]()
+        while (cursor.getNext(key, value, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+          queries += new String(key.getData(), UTF8)
+        }
+        queries.toList
+      } finally {
+        cursor.close()
       }
     }
   }

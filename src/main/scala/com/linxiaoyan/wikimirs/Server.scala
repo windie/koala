@@ -46,16 +46,28 @@ class DCGService extends Service {
   @Path("{position}")
   @Produces(Array(MediaType.APPLICATION_JSON))
   def get(@PathParam("position") rankPosition: Int): String = {
-    val queries = "a" :: "b" :: Nil
-    val dcgs = queries.map(query => dcg(query, rankPosition))
-    val average = dcgs.map(_._1).sum / dcgs.length
-    ""
+    val queries = LabelStorager().allQueries
+    val dcgs = queries.map(query => {
+      val (dcg, active) = calcDCG(query, rankPosition)
+      (query, dcg, active)
+    })
+    val average = dcgs.map(_._2).sum / dcgs.length
+    Json.prettyPrint(Json.obj(
+      "dcg" -> average,
+      "details" ->
+        (dcgs map {
+          case (query, dcg, active) => {
+            Json.obj("query" -> query, "dcg" -> dcg, "active" -> active)
+          }
+        })))
   }
 
-  private[this] def dcg(query: String, rankPosition: Int): (Double, Int) = {
+  private[this] def calcDCG(query: String, rankPosition: Int): (Double, Int) = {
     val json = FormulaSearcher.search(query, 1, rankPosition)
-    val relevances = (json \ "results").asInstanceOf[JsArray].value.map(
-      o => ((o \ "formula").as[String], (o \ "doc_url").as[String]))
+    val relevances = (json \ "results").asInstanceOf[JsArray].value.map({
+      o =>
+        ((o \ "doc" \ "formula").as[String], (o \ "doc" \ "doc_url").as[String])
+    })
       .map(p => LabelStorager().get(new LabelUnit(query, p._1, p._2)))
     val active = relevances.count(_ > 0)
     val dcg = relevances.zipWithIndex.map({

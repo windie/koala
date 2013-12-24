@@ -49,6 +49,13 @@ class BDBLabelStoragerSuite extends FunSuite with BeforeAndAfter {
     assertEquals(-1, BDBLabelStorager.get(new LabelUnit("test_query", "test_formula", "test_url")))
   }
 
+  test("allQueires") {
+    BDBLabelStorager.put(new LabelUnit("test_query1", "test_formula", "test_url"), 1)
+    BDBLabelStorager.put(new LabelUnit("test_query2", "test_formula", "test_url"), 2)
+    BDBLabelStorager.put(new LabelUnit("test_query3", "test_formula", "test_url"), 3)
+    assertEquals(Set("test_query", "test_query1", "test_query2", "test_query3"), BDBLabelStorager.allQueries.toSet)
+  }
+
   after {
     Settings.reset
     FileUtils.deleteDirectory(new File("build/label_test"))
