@@ -147,6 +147,7 @@
 	}
 	
 	function search(query, page, pageSize, noload) {
+		var getParamter = "query=" + encodeURIComponent(query) + "&page=" + encodeURIComponent(page) + "&pageSize=" + encodeURIComponent(pageSize);
 		var parameter = encodeURIComponent(query) + "/" + page + "?size=" + pageSize;
 		var url = "/api/search/" + parameter;
 		$.get(url, function(data) {
@@ -162,7 +163,7 @@
 				if(noload) {
 				}
 				else {
-					window.history.pushState(data, query + " - Wikimirs", "/?" + parameter);
+					window.history.pushState(data, query + " - Wikimirs", "/?" + getParamter);
 				}
 			}
 			else {
