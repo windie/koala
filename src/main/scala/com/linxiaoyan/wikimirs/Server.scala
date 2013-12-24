@@ -25,6 +25,8 @@ import javax.ws.rs.core.MediaType
 import com.typesafe.scalalogging.slf4j.Logging
 import play.api.libs.json.JsArray
 import scala.math._
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
 trait Service extends Logging {
   protected def handleError(message: String): String = {
@@ -42,6 +44,12 @@ trait Service extends Logging {
 @Path("/api/dcg")
 class DCGService extends Service {
 
+  case class QueryDCG(query: String, dcg: Double, active: Int)
+  implicit val queryDCGWrites = Json.writes[QueryDCG]
+
+  case class DCGResult(dcg: Double, details: Seq[QueryDCG])
+  implicit val dcgResultWrites = Json.writes[DCGResult]
+
   @GET
   @Path("{position}")
   @Produces(Array(MediaType.APPLICATION_JSON))
@@ -49,17 +57,10 @@ class DCGService extends Service {
     val queries = LabelStorager().allQueries
     val dcgs = queries.map(query => {
       val (dcg, active) = calcDCG(query, rankPosition)
-      (query, dcg, active)
+      QueryDCG(query, dcg, active)
     })
-    val average = dcgs.map(_._2).sum / dcgs.length
-    Json.prettyPrint(Json.obj(
-      "dcg" -> average,
-      "details" ->
-        (dcgs map {
-          case (query, dcg, active) => {
-            Json.obj("query" -> query, "dcg" -> dcg, "active" -> active)
-          }
-        })))
+    val average = dcgs.map(_.dcg).sum / dcgs.length
+    Json.prettyPrint(Json.toJson(DCGResult(average, dcgs)))
   }
 
   private[this] def calcDCG(query: String, rankPosition: Int): (Double, Int) = {
