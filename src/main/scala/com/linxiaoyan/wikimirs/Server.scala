@@ -23,6 +23,8 @@ import play.api.libs.json.Json
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import javax.ws.rs.core.MediaType
 import com.typesafe.scalalogging.slf4j.Logging
+import play.api.libs.json.JsArray
+import scala.math._
 
 trait Service extends Logging {
   protected def handleError(message: String): String = {
@@ -34,6 +36,34 @@ trait Service extends Logging {
   protected def handleError(e: Throwable): String = {
     logger.error(e.getMessage, e)
     handleError(e.getMessage)
+  }
+}
+
+@Path("/api/dcg")
+class DCGService extends Service {
+
+  @GET
+  @Path("{position}")
+  @Produces(Array(MediaType.APPLICATION_JSON))
+  def get(@PathParam("position") rankPosition: Int): String = {
+    val queries = "a" :: "b" :: Nil
+    val dcgs = queries.map(query => dcg(query, rankPosition))
+    val average = dcgs.map(_._1).sum / dcgs.length
+    ""
+  }
+
+  private[this] def dcg(query: String, rankPosition: Int): (Double, Int) = {
+    val json = FormulaSearcher.search(query, 1, rankPosition)
+    val relevances = (json \ "results").asInstanceOf[JsArray].value.map(
+      o => ((o \ "formula").as[String], (o \ "doc_url").as[String]))
+      .map(p => LabelStorager().get(new LabelUnit(query, p._1, p._2)))
+    val active = relevances.count(_ > 0)
+    val dcg = relevances.zipWithIndex.map({
+      case (r, i) =>
+        val p = i + 1
+        pow(2.0, r) - 1.0 / (log(p + 1.0) / log(2.0))
+    }).sum
+    (dcg, active)
   }
 }
 
