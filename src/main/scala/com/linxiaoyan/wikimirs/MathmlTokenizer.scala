@@ -16,9 +16,8 @@ trait MathmlNode extends Iterable[MathmlNode] {
   def size: Int
 }
 
-class MathmlTag(val parent: MathmlTag, val tag: String) extends MathmlNode {
-
-  private val children = scala.collection.mutable.ListBuffer[MathmlNode]()
+class MathmlTag(val parent: MathmlTag, val tag: String,
+  val children: ListBuffer[MathmlNode] = ListBuffer[MathmlNode]()) extends MathmlNode {
 
   override val isText = false
 
@@ -53,16 +52,20 @@ class MathmlText(val parent: MathmlTag, val text: String) extends MathmlNode {
   override val size = 0
 }
 
-abstract class MathmlLeafNode(val parent: MathmlTag, val text: String) extends MathmlNode {
+abstract class MathmlLeafNode(val text: String, val tag: String) extends MathmlNode {
   override val isText = false
 
   override def iterator = List[MathmlText]().iterator
 
   override val isLeaf = true
 
-  override val toString = s"<${label}>${text}</${label}>"
+  override val toString = s"<${tag}>${text}</${tag}>"
 
   override val size = 0
+
+  override val label: String = tag
+
+  override val parent: MathmlNode = null
 }
 
 class MSpace(val parent: MathmlTag) extends MathmlNode {
@@ -79,24 +82,19 @@ class MSpace(val parent: MathmlTag) extends MathmlNode {
   override val size = 0
 }
 
-class MText(parent: MathmlTag, text: String) extends MathmlLeafNode(parent, text) {
-  override val label: String = "mtext"
+class MText(text: String) extends MathmlLeafNode(text, "mtext") {
 }
 
-class MI(parent: MathmlTag, text: String) extends MathmlLeafNode(parent, text) {
-  override val label: String = "mi"
+class MI(text: String) extends MathmlLeafNode(text, "mi") {
 }
 
-class MN(parent: MathmlTag, text: String) extends MathmlLeafNode(parent, text) {
-  override val label: String = "mn"
+class MN(text: String) extends MathmlLeafNode(text, "mn") {
 }
 
-class MO(parent: MathmlTag, text: String) extends MathmlLeafNode(parent, text) {
-  override val label: String = "mo"
+class MO(text: String) extends MathmlLeafNode(text, "mo") {
 }
 
-class MS(parent: MathmlTag, text: String) extends MathmlLeafNode(parent, text) {
-  override val label: String = "ms"
+class MS(text: String) extends MathmlLeafNode(text, "ms") {
 }
 
 class MathmlTokenizer {
@@ -280,4 +278,3 @@ class MathmlTokenizer {
     node.map(_.toString).mkString
   }
 }
-

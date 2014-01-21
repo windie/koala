@@ -181,10 +181,82 @@ class FormulaAnalyzer extends Analyzer {
 //  override def toString = label
 //}
 
-class MathmlParser {
-  private val handler = new MathmlXMLHandler
+trait TreeVisitor {
+  def visit(node: MathmlNode): MathmlNode
+}
 
-  private val tokenizer = new MathmlTokenizer
+/**
+ * <mo>+</mo> -> MO(+)
+ * <mi>a</mi> -> MI(a)
+ * <mi>a</mi><mi>b</mi> -> MI(ab)
+ * <msup><mi>x</mi><mi>y</mi></msup> -> MathmlNode(msup, [MI(x), MI(y)])
+ */
+class AdjustTreeVisitor extends TreeVisitor {
+  def visit(root: MathmlNode): MathmlNode = {
+    root match {
+      case node: MathmlTag => {
+        node.label match {
+          case "mo" => {
+            assert(node.children.size == 1)
+            assert(node.children(0).isInstanceOf[MathmlText])
+            new MO(node.children(0).toString)
+          }
+          case "mi" => {
+            assert(node.children.size == 1)
+            assert(node.children(0).isInstanceOf[MathmlText])
+            new MI(node.children(0).toString)
+          }
+          case "mn" => {
+            assert(node.children.size == 1)
+            assert(node.children(0).isInstanceOf[MathmlText])
+            new MN(node.children(0).toString)
+          }
+          case "ms" => {
+            assert(node.children.size == 1)
+            assert(node.children(0).isInstanceOf[MathmlText])
+            new MS(node.children(0).toString)
+          }
+          case _ => {
+            if (node.tag != "msup" && node.tag != "msub") {
+              val children = node.children.map(child => visit(child)).foldLeft(ListBuffer[MathmlNode]()) {
+                case (children, child) => {
+                  if (children.isEmpty) {
+                    children += child
+                  } else {
+                    if (children.last.isInstanceOf[MI] && child.isInstanceOf[MI]) {
+                      children.update(children.size - 1, new MI(children.last.asInstanceOf[MI].text + child.asInstanceOf[MI].text));
+                    } else {
+                      children += child
+                    }
+                  }
+                  children
+                }
+              }
+              if (children.size == 1 && node.tag == "mrow") {
+                children(0)
+              } else {
+                new MathmlTag(null, node.tag, children)
+              }
+            } else {
+              node
+            }
+          }
+        }
+      }
+      case leaf: MathmlText =>
+        leaf
+    }
+  }
+}
+
+class ReorderOperantsVisitor extends TreeVisitor {
+  def visit(node: MathmlNode): MathmlNode = {
+    null
+  }
+}
+
+class MathmlBuilder {
+  private val handler = new MathmlXMLHandler
 
   private val parser = new SAXParser
   parser.setFeature("http://xml.org/sax/features/validation", false);
@@ -195,10 +267,38 @@ class MathmlParser {
   parser.setContentHandler(handler)
   parser.setErrorHandler(handler)
 
-  def parse(mathml: String, tokens: ListBuffer[FormulaTerm]) {
+  def parse(mathml: String): MathmlNode = {
     handler.clear
     parser.parse(new InputSource(new StringReader(mathml)))
-    tokenizer.toTokens(handler.node.iterator.next, tokens)
+    handler.node.iterator.next
+  }
+}
+
+class MathmlParser(
+  enableAdjustTree: Boolean = false,
+  enableReorderOperants: Boolean = false) {
+
+  private val tokenizer = new MathmlTokenizer
+
+  private[this] val visitors = {
+    val visitors = ListBuffer[TreeVisitor]()
+    if (enableAdjustTree) {
+      visitors += new AdjustTreeVisitor()
+    }
+    if (enableReorderOperants) {
+      visitors += new ReorderOperantsVisitor()
+    }
+    visitors.toList
+  }
+
+  private val builder = new MathmlBuilder
+
+  def parse(mathml: String, tokens: ListBuffer[FormulaTerm]) {
+    val node =
+      visitors.foldLeft(builder.parse(mathml)) {
+        case (node, visitor) => visitor.visit(node)
+      }
+    tokenizer.toTokens(node, tokens)
   }
 }
 
