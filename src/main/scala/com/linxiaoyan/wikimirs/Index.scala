@@ -184,6 +184,10 @@ object IndexApp {
 
   def main(args: Array[String]) {
     val parallel = Settings.getInt("index.parallel")
+    val indexDir = new File(Settings.getString("index.dir"))
+    if (indexDir.exists) {
+      throw new IllegalStateException(indexDir + " exists. Delete it if you want to rebuild the index")
+    }
     val dir = FSDirectory.open(new File(Settings.getString("index.dir")))
     val writer = new FormulaIndexWriter(dir)
     val data = new File(Settings.getString("index.wikipedia_export_file"));
