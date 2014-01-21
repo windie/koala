@@ -90,15 +90,18 @@ class MSpace(val parent: MathmlTag) extends MathmlNode {
 class MText(text: String) extends MathmlLeafNode(text, "mtext") {
 }
 
-class MI(text: String) extends MathmlLeafNode(text, "mi") {
+class NaiveNode(text: String, tag: String) extends MathmlLeafNode(text, tag)
+
+class MI(text: String) extends NaiveNode(text, "mi") {
 }
 
-class MN(text: String) extends MathmlLeafNode(text, "mn") {
+class MN(text: String) extends NaiveNode(text, "mn") {
 }
 
 class MO(text: String, val children: List[MathmlNode] = List[MathmlNode]()) extends MathmlLeafNode(text, "mo") {
   var operantSize = 0
   override val toString = s"<mo o='${text}'>${children.mkString}</mo>"
+  override val isLeaf = false
 }
 
 class MS(text: String) extends MathmlLeafNode(text, "ms") {
@@ -111,18 +114,18 @@ class MathmlTokenizer {
   }
 
   def toTokens(node: MathmlNode, level: Int, tokens: ListBuffer[FormulaTerm]): Unit = node match {
+    case node if isNaiveNode(node) => {
+      val text = node.asInstanceOf[NaiveNode].text;
+      if (text.length != 1) {
+        tokens += new FormulaTerm(text, level, false);
+      }
+      return
+    }
     case node if node.isLeaf => {
       if (node.isText && node.label.length == 1) {
         return
       }
       tokens += new FormulaTerm(node.toString, level, false);
-    }
-    case node if isNaiveNode(node) => {
-      val text = node.iterator.next.label;
-      if (text.length != 1) {
-        tokens += new FormulaTerm(text, level, false);
-      }
-      return ;
     }
     case node => {
       var gene = getChildrenTagString(node);
@@ -151,123 +154,12 @@ class MathmlTokenizer {
       }
     }
   }
-  //
-  //	private void rebuild(MathmlNode node) {
-  //		if (node.isLeaf()) {
-  //			return;
-  //		}
-  //		if (isNaiveNode(node)) {
-  //			return;
-  //		}
-  //		List<MathmlNode> operators = new ArrayList<MathmlNode>();
-  //		List<MathmlNode> operands = new ArrayList<MathmlNode>();
-  //		for (MathmlNode child : node) {
-  //			if (isOperator(node)) {
-  //				while (!operators.isEmpty()) {
-  //					MathmlNode top = operators.get(operators.size() - 1);
-  //					if (isLess(top, child)) {
-  //						operators.add(child);
-  //						break;
-  //					} else {
-  //						if (isBinaryOperator(top)) {
-  //							if (operands.isEmpty()) {
-  //								MathmlTag operator = newOperatorNode(top);
-  //								operands.add(operator);
-  //							} else if (operands.size() == 1) {
-  //								MathmlNode topOperand = operands.get(operands
-  //										.size() - 1);
-  //								MathmlTag operator = newOperatorNode(top);
-  //								operator.addChild(topOperand);
-  //								topOperand.setParent(operator);
-  //								operands.add(operator);
-  //							} else if (operands.size() > 1) {
-  //								MathmlNode topOperand1 = operands.get(operands
-  //										.size() - 1);
-  //								MathmlNode topOperand2 = operands.get(operands
-  //										.size() - 2);
-  //								MathmlTag operator = newOperatorNode(top);
-  //								operator.addChild(topOperand1);
-  //								operator.addChild(topOperand2);
-  //								topOperand1.setParent(operator);
-  //								topOperand2.setParent(operator);
-  //								operands.add(operator);
-  //							}
-  //						} else {
-  //							// unary
-  //							if (operands.isEmpty()) {
-  //								MathmlTag operator = newOperatorNode(top);
-  //								operands.add(operator);
-  //							} else {
-  //								MathmlNode topOperand = operands.get(operands
-  //										.size() - 1);
-  //								MathmlTag operator = newOperatorNode(child);
-  //								operator.addChild(topOperand);
-  //								topOperand.setParent(operator);
-  //								operands.add(operator);
-  //							}
-  //						}
-  //					}
-  //				}
-  //			} else {
-  //				operands.add(child);
-  //			}
-  //		}
-  //	}
-
-  //	private MathmlTag newOperatorNode(MathmlNode node) {
-  //		return new MathmlTag(node.getParent(), getNaiveNodeLabel(node));
-  //	}
-  //
-  //	private boolean isBinaryOperator(MathmlNode node) {
-  //		return true;
-  //	}
-  //
-  //	private boolean isLess(MathmlNode node1, MathmlNode node2) {
-  //		return true;
-  //	}
-
-  //	private int getOperatorPriority(MathmlNode operator) {
-  //		String sign = getNaiveNodeLabel(operator);
-  //		if (sign.equals("-")) {
-  //			// unary - ?? how
-  //			return 2;
-  //		}
-  //		if (sign.equals("^")) {
-  //			return 3;
-  //		}
-  //		if (sign.equals("*") || sign.equals("/") || sign.equals("%")) {
-  //			return 4;
-  //		}
-  //		if (sign.equals("+") || sign.equals("-")) {
-  //			return 5;
-  //		}
-  //		if (sign.equals("<") || sign.equals("<=") || sign.equals(">")
-  //				|| sign.equals(">=")) {
-  //			return 6;
-  //		}
-  //		if (sign.equals("==") || sign.equals("!=")) {
-  //			return 7;
-  //		}
-  //		if (sign.equals("&&")) {
-  //			return 8;
-  //		}
-  //		if (sign.equals("||")) {
-  //			return 9;
-  //		}
-  //		if (sign.equals("=")) {
-  //			return 10;
-  //		}
-  //		return 1;
-  //	}
-
-  private def getNaiveNodeLabel(node: MathmlNode) = node.iterator.next.label
 
   private def isNaiveNode(node: MathmlNode) = {
-    !node.isLeaf &&
-      (node.label.equals("mi") || node.label.equals("mo") || node.label.equals("mn"));
+    node.isInstanceOf[NaiveNode]
   }
 
-  private def isOperator(node: MathmlNode) = !node.isLeaf && node.label.equals("mo")
+  private def isOperator(node: MathmlNode) = node.isInstanceOf[MO]
 
   private def getTagString(node: MathmlNode) = "<" + node.label + "></" + node.label + ">"
 

@@ -156,31 +156,6 @@ class FormulaAnalyzer extends Analyzer {
   }
 }
 
-//case class Tag(val parent: Tag, val label: String) {
-//  val children = ArrayBuffer[Tag]()
-//
-//  def add(node: Tag) {
-//    children += node
-//  }
-//
-//  def isText = false
-//
-//  def isOnlyText = {
-//    children.isEmpty || children.forall(child => {
-//      child.label == "mo" || child.label == "mi" || child.isText
-//    })
-//  }
-//
-//  def toLabelString = "<" + label + "></" + label + ">"
-//
-//  override def toString = "<" + label + ">" + children.map(_.toString).mkString + "</" + label + ">"
-//}
-//
-//class Text(parent: Tag, label: String) extends Tag(parent, label) {
-//  override def isText = true
-//  override def toString = label
-//}
-
 trait TreeVisitor {
   def visit(node: MathmlNode): MathmlNode
 }
@@ -289,9 +264,13 @@ class ReconstructExpressionVistor extends TreeVisitor {
         }
         val newChildren = ListBuffer[MathmlNode]()
         while (!stack.isEmpty) {
-          newChildren += buildTree(stack)
+          newChildren.+=:(buildTree(stack))
         }
-        new MathmlTag(null, parent.tag, newChildren)
+        if (node.isInstanceOf[MO]) {
+          new MO(parent.tag, newChildren.toList)
+        } else {
+          new MathmlTag(null, parent.tag, newChildren)
+        }
       }
     case _ => node
   }
@@ -410,6 +389,7 @@ class MathmlParser(
       visitors.foldLeft(builder.parse(mathml)) {
         case (node, visitor) => visitor.visit(node)
       }
+    println(node)
     tokenizer.toTokens(node, tokens)
   }
 }
