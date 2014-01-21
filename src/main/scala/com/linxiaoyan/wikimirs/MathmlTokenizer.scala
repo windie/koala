@@ -3,7 +3,7 @@ package com.linxiaoyan.wikimirs
 import org.apache.commons.lang3.StringUtils
 import scala.collection.mutable.ListBuffer
 
-trait MathmlNode extends Iterable[MathmlNode] {
+trait MathmlNode extends Iterable[MathmlNode] with Ordered[MathmlNode] {
 
   def isText: Boolean
 
@@ -14,6 +14,11 @@ trait MathmlNode extends Iterable[MathmlNode] {
   def parent: MathmlNode
 
   def size: Int
+
+  def compare(that: MathmlNode) = {
+    // TODO improve the performance
+    this.toString.compare(that.toString)
+  }
 }
 
 class MathmlTag(val parent: MathmlTag, val tag: String,
@@ -91,7 +96,9 @@ class MI(text: String) extends MathmlLeafNode(text, "mi") {
 class MN(text: String) extends MathmlLeafNode(text, "mn") {
 }
 
-class MO(text: String) extends MathmlLeafNode(text, "mo") {
+class MO(text: String, val children: List[MathmlNode] = List[MathmlNode]()) extends MathmlLeafNode(text, "mo") {
+  var operantSize = 0
+  override val toString = s"<mo o='${text}'>${children.mkString}</mo>"
 }
 
 class MS(text: String) extends MathmlLeafNode(text, "ms") {

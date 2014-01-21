@@ -37,7 +37,7 @@ class AdjustTreeVisitorSuite extends FunSuite {
   }
 
   test("latex: a+b") {
-    assertCase("<math><mi>a</mi><mo>+</mo><mi>b</mi></math>", "a+b")
+    assertCase("<math><mi>a</mi><mo o='+'></mo><mi>b</mi></math>", "a+b")
   }
 
   test("latex: 123") {
@@ -49,7 +49,7 @@ class AdjustTreeVisitorSuite extends FunSuite {
   }
 
   test("latex: x ^ y + z") {
-    assertCase("<math><msup><mi>x</mi><mi>y</mi></msup><mo>+</mo><mi>z</mi></math>", "x ^ y + z")
+    assertCase("<math><msup><mi>x</mi><mi>y</mi></msup><mo o='+'></mo><mi>z</mi></math>", "x ^ y + z")
   }
 
   test("latex: x_n") {

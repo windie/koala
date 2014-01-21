@@ -10,6 +10,7 @@ object Settings {
   def getString = config.getString _
   def getInt = config.getInt _
   def getDouble = config.getDouble _
+  def getBoolean = config.getBoolean _
 
   def set(config: Config) {
     this.config = config

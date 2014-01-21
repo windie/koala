@@ -249,9 +249,117 @@ class AdjustTreeVisitor extends TreeVisitor {
   }
 }
 
+class ReconstructExpressionVistor extends TreeVisitor {
+  def visit(node: MathmlNode): MathmlNode = node match {
+    case parent: MathmlTag =>
+      {
+        val children = parent.children.map(child => visit(child))
+        val operators = new scala.collection.mutable.Stack[MO]
+        val stack = new scala.collection.mutable.Stack[MathmlNode]
+        var prev: MathmlNode = null
+        for (i <- 0 until children.size) {
+          val child = children(i)
+          if (child.isInstanceOf[MO]) {
+            val mo = child.asInstanceOf[MO]
+            var operantSize = 0
+            if (i != 0 && !children(i - 1).isInstanceOf[MO]) {
+              operantSize += 1
+            }
+            if (i != children.size - 1 && !children(i + 1).isInstanceOf[MO]) {
+              operantSize += 1
+            }
+            mo.operantSize = operantSize
+            if (operators.isEmpty) {
+              operators push mo
+            } else {
+              if (priority(prev, operators.top) > priority(prev, mo)) {
+                operators push mo
+              } else {
+                stack push (operators.pop)
+                operators push mo
+              }
+            }
+          } else {
+            stack push child
+          }
+          prev = child
+        }
+        while (!operators.isEmpty) {
+          stack push (operators.pop)
+        }
+        val newChildren = ListBuffer[MathmlNode]()
+        while (!stack.isEmpty) {
+          newChildren += buildTree(stack)
+        }
+        new MathmlTag(null, parent.tag, newChildren)
+      }
+    case _ => node
+  }
+
+  def buildTree(stack: scala.collection.mutable.Stack[MathmlNode]): MathmlNode = {
+    val child = stack.pop
+    if (child.isInstanceOf[MO]) {
+      var mo = child.asInstanceOf[MO]
+      if (mo.operantSize == 1) {
+        if (!stack.isEmpty) {
+          mo = new MO(mo.text, List(buildTree(stack)))
+        }
+      } else if (mo.operantSize == 2) {
+        var children = List[MathmlNode]()
+        if (!stack.isEmpty) {
+          children = buildTree(stack) :: children
+        }
+        if (!stack.isEmpty) {
+          children = buildTree(stack) :: children
+        }
+        mo = new MO(mo.text, children)
+      }
+      mo
+    } else {
+      child
+    }
+  }
+
+  def priority(prev: MathmlNode, mo: MO): Int = {
+    mo.text match {
+      case "+" =>
+        if (prev == null || prev.isInstanceOf[MO]) {
+          2
+        } else {
+          5
+        }
+      case "-" =>
+        if (prev == null || prev.isInstanceOf[MO]) {
+          2
+        } else {
+          5
+        }
+      case "*" => 4
+      case "/" => 4
+      case "%" => 4 // TODO
+      case "<" => 6
+      case ">" => 6
+      case "<=" => 6 // TODO
+      case ">=" => 6 // TODO
+      case "==" => 7 // TODO
+      case "!=" => 7 // TODO
+      case "&&" => 8 // TODO
+      case "||" => 9 // TODO
+      case _ => 100
+    }
+  }
+}
+
 class ReorderOperantsVisitor extends TreeVisitor {
-  def visit(node: MathmlNode): MathmlNode = {
-    null
+  def visit(node: MathmlNode): MathmlNode = node match {
+    case operator: MO if (operator.text == "+" || operator.text == "*") &&
+      operator.children.size == 2 &&
+      operator.children(0) > operator.children(1) =>
+      {
+        val children = List(operator.children(1), operator.children(0))
+        new MO(operator.text, children)
+      }
+    case node => node
   }
 }
 
@@ -276,6 +384,7 @@ class MathmlBuilder {
 
 class MathmlParser(
   enableAdjustTree: Boolean = false,
+  enableReconstructExpression: Boolean = false,
   enableReorderOperants: Boolean = false) {
 
   private val tokenizer = new MathmlTokenizer
@@ -283,10 +392,13 @@ class MathmlParser(
   private[this] val visitors = {
     val visitors = ListBuffer[TreeVisitor]()
     if (enableAdjustTree) {
-      visitors += new AdjustTreeVisitor()
+      visitors += new AdjustTreeVisitor
+    }
+    if (enableReconstructExpression) {
+      visitors += new ReconstructExpressionVistor
     }
     if (enableReorderOperants) {
-      visitors += new ReorderOperantsVisitor()
+      visitors += new ReorderOperantsVisitor
     }
     visitors.toList
   }
@@ -332,7 +444,10 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
 
   private var tokens = ListBuffer[FormulaTerm]()
 
-  private val parser = new MathmlParser
+  private val parser = new MathmlParser(
+    enableAdjustTree = Settings.getBoolean("index.enableAdjustTree"),
+    enableReconstructExpression = Settings.getBoolean("index.enableReconstructExpression"),
+    enableReorderOperants = Settings.getBoolean("index.enableReorderOperants"))
 
   override def incrementToken = {
     if (tokens.isEmpty) {
