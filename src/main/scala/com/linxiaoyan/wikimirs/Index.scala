@@ -26,14 +26,18 @@ case class Stop()
  *
  * @see <a href="http://en.wikipedia.org/wiki/Help:Export">Help:Export</a>
  */
-class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 4) extends Actor {
+class WikiXMLScanner(
+  formulaWriter: FormulaIndexWriter,
+  pageWriter: PageIndexWriter,
+  xmlFile: File,
+  parallel: Int = 4) extends Actor {
 
   private val xmlInputFactory = XMLInputFactory.newInstance()
   xmlInputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
   xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 
   private val workers: Seq[IndexWorker] = (0 until parallel) map { x =>
-    val worker = new IndexWorker(writer, this)
+    val worker = new IndexWorker(formulaWriter, pageWriter, this)
     worker.start
     this ! worker
     worker
@@ -121,7 +125,8 @@ class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 
         }
       }
     }
-    writer.close
+    formulaWriter.close
+    pageWriter.close
     exit
   }
 
@@ -131,15 +136,17 @@ class WikiXMLScanner(writer: FormulaIndexWriter, xmlFile: File, parallel: Int = 
   }
 }
 
-class IndexWorker(writer: FormulaIndexWriter, scanner: WikiXMLScanner) extends Actor {
+class IndexWorker(
+  formulaWriter: FormulaIndexWriter,
+  pageWriter: PageIndexWriter,
+  scanner: WikiXMLScanner) extends Actor {
+
   def act() {
     loop {
       react {
         case page: WikiPage => {
-          for (math <- page.mathes) {
-            val formula = new FormulaDocument(math, page)
-            writer.add(formula)
-          }
+          formulaWriter.add(page)
+          pageWriter.add(page)
           scanner ! this
         }
         case Stop => {
@@ -153,15 +160,25 @@ class IndexWorker(writer: FormulaIndexWriter, scanner: WikiXMLScanner) extends A
 
 class FormulaDocument(latex: String, page: WikiPage) {
 
-  val id = WikiPage.ID.incrementAndGet()
+  val id = FormulaDocument.ID.incrementAndGet()
 
   def toDocument: Document = {
     val doc = new Document;
     doc.add(new StoredField("formula_id", id))
     doc.add(new TextField("formula", latex, Field.Store.YES))
     doc.add(new StoredField("doc_id", page.id))
-    doc.add(new StoredField("doc_title", page.title))
+    doc
+  }
+}
 
+class PageDocument(page: WikiPage) {
+
+  def toDocument: Document = {
+    val doc = new Document;
+    val content = page.mathes.mkString("\0")
+    doc.add(new TextField("formula", content, Field.Store.YES))
+    doc.add(new StoredField("doc_id", page.id))
+    doc.add(new StoredField("doc_title", page.title))
     doc
   }
 }
@@ -171,7 +188,7 @@ object FormulaDocument {
 }
 
 case class WikiPage(val title: String, text: String) {
-  val mathes = for (WikiPage.MATH(math) <- WikiPage.MATH findAllIn text) yield math
+  val mathes = (for (WikiPage.MATH(math) <- WikiPage.MATH findAllIn text) yield math).toList
   val id = WikiPage.ID.incrementAndGet()
 }
 
@@ -182,16 +199,20 @@ object WikiPage {
 
 object IndexApp {
 
+  private def getFSDirectory(dirConfigName: String): FSDirectory = {
+    val dir = new File(Settings.getString(dirConfigName))
+    if (dir.exists) {
+      throw new IllegalStateException(dir + " exists. Delete it if you want to rebuild the index")
+    }
+    FSDirectory.open(dir)
+  }
+
   def main(args: Array[String]) {
     val parallel = Settings.getInt("index.parallel")
-    val indexDir = new File(Settings.getString("index.dir"))
-    if (indexDir.exists) {
-      throw new IllegalStateException(indexDir + " exists. Delete it if you want to rebuild the index")
-    }
-    val dir = FSDirectory.open(new File(Settings.getString("index.dir")))
-    val writer = new FormulaIndexWriter(dir)
+    val formulaWriter = new FormulaIndexWriter(getFSDirectory("index.formula_dir"))
+    val pageWriter = new PageIndexWriter(getFSDirectory("index.page_dir"))
     val data = new File(Settings.getString("index.wikipedia_export_file"));
-    val scanner = new WikiXMLScanner(writer, data, parallel)
+    val scanner = new WikiXMLScanner(formulaWriter, pageWriter, data, parallel)
     scanner.start
   }
 }

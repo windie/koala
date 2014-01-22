@@ -19,9 +19,7 @@ class ReconstructExpressionVistorSuite extends FunSuite {
   def convert(latex: String): MO = {
     val tokens = ListBuffer[FormulaTerm]()
     val mathml = latex2mathml.toMathml(latex)
-    if (latex == "a \\mod b") {
-      println(mathml)
-    }
+    println(mathml)
     val node = builder.parse(mathml)
     visitor1.visit(node).asInstanceOf[MathmlTag].children(0).asInstanceOf[MO]
   }
@@ -81,6 +79,15 @@ class ReconstructExpressionVistorSuite extends FunSuite {
     assertEquals(6, visitor.priority(null, mo))
   }
 
+  test("latex: \\leq") {
+    val mo = convert("\\leq")
+    assertEquals(6, visitor.priority(null, mo))
+  }
+
+  test("latex: \\geq") {
+    val mo = convert("\\geq")
+    assertEquals(6, visitor.priority(null, mo))
+  }
   //  test("latex: ==") {
   //    val mo = convert("==")
   //    assertEquals(6, visitor.priority(null, mo))

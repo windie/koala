@@ -39,6 +39,7 @@ import org.apache.lucene.util.BytesRef
 import org.apache.lucene.util.ToStringUtils
 import org.apache.lucene.util.Version
 import org.apache.xerces.parsers.SAXParser
+import org.apache.lucene.search.TopDocs
 import org.xml.sax.Attributes
 import org.xml.sax.InputSource
 import org.xml.sax.SAXParseException
@@ -170,63 +171,65 @@ class AdjustTreeVisitor extends TreeVisitor {
   def visit(root: MathmlNode): MathmlNode = {
     root match {
       case node: MathmlTag => {
-        node.label match {
+        node.tag match {
           case "mo" => {
             assert(node.children.size == 1)
-            assert(node.children(0).isInstanceOf[MathmlText])
+            assert(node.children(0).isInstanceOf[Text])
             new MO(node.children(0).toString)
           }
           case "mi" => {
             assert(node.children.size == 1)
-            assert(node.children(0).isInstanceOf[MathmlText])
+            assert(node.children(0).isInstanceOf[Text])
             new MI(node.children(0).toString)
           }
           case "mn" => {
             assert(node.children.size == 1)
-            assert(node.children(0).isInstanceOf[MathmlText])
+            assert(node.children(0).isInstanceOf[Text])
             new MN(node.children(0).toString)
           }
           case "ms" => {
             assert(node.children.size == 1)
-            assert(node.children(0).isInstanceOf[MathmlText])
+            assert(node.children(0).isInstanceOf[Text])
             new MS(node.children(0).toString)
           }
           case _ => {
-            if (node.tag != "msup" && node.tag != "msub") {
-              val children = node.children.map(child => visit(child)).foldLeft(ListBuffer[MathmlNode]()) {
-                case (children, child) => {
-                  if (children.isEmpty) {
-                    children += child
-                  } else {
+            val children = node.children.map(child => visit(child)).foldLeft(ListBuffer[MathmlNode]()) {
+              case (children, child) => {
+                if (children.isEmpty) {
+                  children += child
+                } else {
+                  if (node.tag != "msup" && node.tag != "msub") {
                     if (children.last.isInstanceOf[MI] && child.isInstanceOf[MI]) {
                       children.update(children.size - 1, new MI(children.last.asInstanceOf[MI].text + child.asInstanceOf[MI].text));
                     } else {
                       children += child
                     }
+                  } else {
+                    children += child
                   }
-                  children
                 }
+                children
               }
-              if (children.size == 1 && node.tag == "mrow") {
-                children(0)
-              } else {
-                new MathmlTag(null, node.tag, children)
-              }
+            }
+            if (children.size == 1 && node.tag == "mrow") {
+              children(0)
             } else {
-              node
+              new MathmlTag(null, node.tag, children)
             }
           }
         }
       }
-      case leaf: MathmlText =>
-        leaf
+      case text: Text =>
+        text
     }
   }
 }
 
 class ReconstructExpressionVistor extends TreeVisitor {
   def visit(node: MathmlNode): MathmlNode = node match {
-    case parent: MathmlTag =>
+    case text: Text => text
+    case node: NaiveNode => node
+    case parent: MathmlNode =>
       {
         val children = parent.children.map(child => visit(child))
         val operators = new scala.collection.mutable.Stack[MO]
@@ -266,10 +269,10 @@ class ReconstructExpressionVistor extends TreeVisitor {
         while (!stack.isEmpty) {
           newChildren.+=:(buildTree(stack))
         }
-        if (node.isInstanceOf[MO]) {
-          new MO(parent.tag, newChildren.toList)
+        if (parent.isInstanceOf[MO]) {
+          new MO(parent.asInstanceOf[MO].text, newChildren.toList)
         } else {
-          new MathmlTag(null, parent.tag, newChildren)
+          new MathmlTag(null, parent.asInstanceOf[MathmlTag].tag, newChildren)
         }
       }
     case _ => node
@@ -319,6 +322,8 @@ class ReconstructExpressionVistor extends TreeVisitor {
       case "<" => 6
       case ">" => 6
       case "<=" => 6 // TODO
+      case "&leq;" => 6
+      case "&GreaterEqual;" => 6
       case ">=" => 6 // TODO
       case "==" => 7 // TODO
       case "!=" => 7 // TODO
@@ -357,7 +362,7 @@ class MathmlBuilder {
   def parse(mathml: String): MathmlNode = {
     handler.clear
     parser.parse(new InputSource(new StringReader(mathml)))
-    handler.node.iterator.next
+    handler.getTree
   }
 }
 
@@ -389,7 +394,6 @@ class MathmlParser(
       visitors.foldLeft(builder.parse(mathml)) {
         case (node, visitor) => visitor.visit(node)
       }
-    println(node)
     tokenizer.toTokens(node, tokens)
   }
 }
@@ -443,14 +447,16 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
   }
 
   override def reset {
-    val latex = IOUtils.toString(input)
-    try {
-      val mathml = latex2mathml.toMathml(latex)
-      tokens.clear
-      parser.parse(mathml, tokens)
-    } catch {
-      case e: Throwable => {
-        println("find error: latex")
+    val latexes = IOUtils.toString(input)
+    tokens.clear
+    latexes.split('\0').filterNot(_.isEmpty).foreach { latex =>
+      try {
+        val mathml = latex2mathml.toMathml(latex)
+        parser.parse(mathml, tokens)
+      } catch {
+        case e: Throwable => {
+          println("find error: latex")
+        }
       }
     }
   }
@@ -466,10 +472,10 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
 
 class MathmlXMLHandler extends org.xml.sax.helpers.DefaultHandler {
 
-  var node: MathmlTag = new MathmlTag(null, "dummy")
+  private var node: MathmlTag = new MathmlTag(null, "dummy")
   var text = new java.lang.StringBuilder
 
-  def getTree = node.iterator.next
+  def getTree = node.children.head
 
   def clear {
     node = new MathmlTag(null, "dummy")
@@ -486,7 +492,7 @@ class MathmlXMLHandler extends org.xml.sax.helpers.DefaultHandler {
     if (text.length() != 0) {
       val trim = text.toString.trim;
       if (trim.length() != 0) {
-        node.addChild(new MathmlText(node, trim))
+        node.addChild(new Text(node, trim))
       }
       text.setLength(0);
     }
@@ -510,7 +516,7 @@ class MathmlXMLHandler extends org.xml.sax.helpers.DefaultHandler {
 
 class FormulaIndexWriter(dir: Directory) {
 
-  private val writer = {
+  protected val writer = {
     val analyzer = new FormulaAnalyzer
     val mergePolicy = new LogByteSizeMergePolicy
     mergePolicy.setUseCompoundFile(false)
@@ -522,13 +528,22 @@ class FormulaIndexWriter(dir: Directory) {
     new IndexWriter(dir, iwc)
   }
 
-  def add(formulaDoc: FormulaDocument) {
-    writer.addDocument(formulaDoc.toDocument)
+  def add(page: WikiPage) {
+    for (math <- page.mathes) {
+      val formula = new FormulaDocument(math, page)
+      writer.addDocument(formula.toDocument)
+    }
   }
 
   def close {
     writer.forceMerge(1)
     writer.close()
+  }
+}
+
+class PageIndexWriter(dir: Directory) extends FormulaIndexWriter(dir) {
+  override def add(page: WikiPage) {
+    writer.addDocument(new PageDocument(page).toDocument)
   }
 }
 
@@ -603,9 +618,32 @@ class FormulaSearcher(dir: Directory) extends Logging {
   similarity.setDiscountOverlaps(false)
   searcher.setSimilarity(similarity)
 
-  def search(query: String, sizeOfResult: Int) = {
+  def search(query: String): scala.collection.mutable.Map[Long, FormulaSearchResult] = {
     new FormulaQueryParser()
-      .parse(query) map { searcher.search(_, sizeOfResult) }
+      .parse(query) match {
+        case Some(q) =>
+          val totalHits = getTotalHits(q)
+          if (totalHits > 0) {
+            val result = scala.collection.mutable.Map[Long, FormulaSearchResult]()
+            for (scoreDoc <- searcher.search(q, totalHits).scoreDocs) {
+              val doc = searcher.doc(scoreDoc.doc)
+              val pageId = doc.get("doc_id").toLong
+              if (!result.contains(pageId)) {
+                result += pageId -> FormulaSearchResult(scoreDoc.doc, doc.get("formula_id").toLong, doc.get("formula"), pageId, scoreDoc.score)
+              } else {
+                // skip this formula since we have already included the page
+              }
+            }
+            result
+          } else {
+            scala.collection.mutable.Map[Long, FormulaSearchResult]()
+          }
+        case None => scala.collection.mutable.Map[Long, FormulaSearchResult]()
+      }
+  }
+
+  private def getTotalHits(query: Query) = {
+    searcher.search(query, 1).totalHits
   }
 
   def explain(query: String, docId: Int) = {
@@ -615,15 +653,58 @@ class FormulaSearcher(dir: Directory) extends Logging {
   def explainQuery(query: String) = {
     new FormulaQueryParser().explain(query)
   }
+}
 
-  def doc(docId: Int) = searcher.doc(docId)
+class PageSearcher(dir: Directory) extends Logging {
+
+  private val searcher = {
+    logger.info(s"Opening index dir: ${dir}")
+    val reader = DirectoryReader.open(dir)
+    new IndexSearcher(reader)
+  }
+  private val similarity = new FormulaSimilarity
+  similarity.setDiscountOverlaps(false)
+  searcher.setSimilarity(similarity)
+
+  def search(query: String): scala.collection.mutable.Map[Long, PageSearchResult] = {
+    new FormulaQueryParser()
+      .parse(query) match {
+        case Some(q) =>
+          val totalHits = getTotalHits(q)
+          if (totalHits > 0) {
+            val result = scala.collection.mutable.Map[Long, PageSearchResult]()
+            searcher.search(q, totalHits).scoreDocs foreach { scoreDoc =>
+              val doc = searcher.doc(scoreDoc.doc)
+              val pageId = doc.get("doc_id").toLong
+              result += pageId -> PageSearchResult(scoreDoc.doc, pageId, doc.get("doc_title"), scoreDoc.score)
+            }
+            result
+          } else {
+            scala.collection.mutable.Map[Long, PageSearchResult]()
+          }
+        case None => scala.collection.mutable.Map[Long, PageSearchResult]()
+      }
+  }
+
+  private def getTotalHits(query: Query) = {
+    searcher.search(query, 1).totalHits
+  }
+
+  def explain(query: String, docId: Int) = {
+    new FormulaQueryParser().parse(query) map { searcher.explain(_, docId) }
+  }
 }
 
 object FormulaSearcher {
 
-  val searcher = {
-    val dir = FSDirectory.open(new File(Settings.getString("index.dir")))
+  val formulaSearcher = {
+    val dir = FSDirectory.open(new File(Settings.getString("index.formula_dir")))
     new FormulaSearcher(dir)
+  }
+
+  val pageSearcher = {
+    val dir = FSDirectory.open(new File(Settings.getString("index.page_dir")))
+    new PageSearcher(dir)
   }
 
   /**
@@ -643,74 +724,102 @@ object FormulaSearcher {
 
     val beginTime = System.currentTimeMillis()
 
-    val results = searcher.search(query, page * pageSize)
+    val pageResults = pageSearcher.search(query)
+    val formulaResults = formulaSearcher.search(query)
+
+    require(formulaResults.size == pageResults.size, s"Not equal: ${formulaResults.size} ${pageResults.size}")
+
+    val results = scala.collection.mutable.TreeSet[FinalResult]()
+    formulaResults foreach {
+      case (pageId, formula) => {
+        require(pageResults.contains(pageId))
+        results += new FinalResult(formula, pageResults(pageId))
+      }
+    }
 
     val endTime = System.currentTimeMillis()
 
     val mathml = new LatexToMathml().toMathml(query);
 
-    results match {
-      case Some(topDocs) => {
-        val hits = topDocs.scoreDocs
-        val numTotalHits = topDocs.totalHits
-
-        val start = (page - 1) * pageSize
-        val end = (start + pageSize) min numTotalHits
-        val resultsJson = for (i <- start until end) yield {
-          scoreDocToJson(query, hits(i))
-        }
-
-        Json.obj(
-          "status" -> "OK",
-          "query_mathml" -> mathml,
-          "query_detail" -> {
-            searcher.explainQuery(query) match {
-              case Some(e) => e
-              case None => ""
-            }
-          },
-          "results" -> resultsJson,
-          "page" -> page,
-          "pageSize" -> pageSize,
-          "total" -> numTotalHits,
-          "time" -> ((endTime - beginTime) / 1000.0).toString)
-      }
-      case None => {
-        Json.obj(
-          "status" -> "OK",
-          "query_mathml" -> mathml,
-          "query_detail" -> {
-            searcher.explainQuery(query) match {
-              case Some(e) => e
-              case None => ""
-            }
-          },
-          "results" -> Json.arr())
-      }
+    val numTotalHits = results.size
+    val start = (page - 1) * pageSize
+    val end = (start + pageSize) min numTotalHits
+    if (numTotalHits > 0) {
+      Json.obj(
+        "status" -> "OK",
+        "query_mathml" -> mathml,
+        "query_detail" -> {
+          formulaSearcher.explainQuery(query) match {
+            case Some(e) => e
+            case None => ""
+          }
+        },
+        "results" -> (results.slice(start, end) map {
+          _.toJson(
+            formulaSearcher,
+            pageSearcher,
+            query)
+        } toList),
+        "page" -> page,
+        "pageSize" -> pageSize,
+        "total" -> numTotalHits,
+        "time" -> ((endTime - beginTime) / 1000.0).toString)
+    } else {
+      Json.obj(
+        "status" -> "OK",
+        "query_mathml" -> mathml,
+        "query_detail" -> {
+          formulaSearcher.explainQuery(query) match {
+            case Some(e) => e
+            case None => ""
+          }
+        },
+        "results" -> Json.arr())
     }
   }
+}
 
-  private def scoreDocToJson(query: String, scoreDoc: ScoreDoc) = {
-    val docId = scoreDoc.doc
-    val doc = searcher.doc(docId)
+case class FormulaSearchResult(docId: Int, formulaId: Long, formula: String, pageId: Long, score: Float)
+case class PageSearchResult(docId: Int, pageId: Long, title: String, score: Float)
+
+case class FinalResult(formula: FormulaSearchResult, page: PageSearchResult) extends Ordered[FinalResult] {
+  require(formula.pageId == page.pageId)
+
+  import FinalResult._
+  val score = formula.score * formulaWeight + page.score * pageWeight
+
+  def toJson(
+    formulaSearcher: FormulaSearcher,
+    pageSearcher: PageSearcher,
+    query: String) = {
     Json.obj(
-      "doc" -> documentToJson(doc),
-      "score" -> scoreDoc.score,
-      "explain" -> (searcher.explain(query, docId) match {
-        case Some(e) => e.toHtml
-        case None => ""
-      }))
+      "doc" ->
+        Json.obj(
+          "formula_id" -> formula.formulaId,
+          "formula" -> formula.formula,
+          "doc_id" -> page.pageId,
+          "doc_title" -> page.title,
+          "doc_url" -> {
+            "http://en.wikipedia.org/wiki/" + URLEncoder.encode(page.title.replaceAll(" ", "_"), "UTF-8")
+          }),
+      "score" -> score,
+      "explain" -> (
+        (formulaSearcher.explain(query, formula.docId) map (_.toHtml) getOrElse "")
+        + (pageSearcher.explain(query, page.docId) map (_.toHtml) getOrElse "")))
   }
 
-  private def documentToJson(doc: Document) = {
-    Json.obj(
-      "formula_id" -> doc.get("formula_id").toLong,
-      "formula" -> doc.get("formula"),
-      "doc_id" -> doc.get("doc_id").toLong,
-      "doc_title" -> doc.get("doc_title"),
-      "doc_url" -> {
-        "http://en.wikipedia.org/wiki/" + URLEncoder.encode(doc.get("doc_title").replaceAll(" ", "_"), "UTF-8")
-      })
+  override def compare(that: FinalResult): Int = {
+    if (this.score < that.score) {
+      1
+    } else if (this.score > that.score) {
+      -1
+    } else {
+      0
+    }
   }
+}
 
+object FinalResult {
+  val formulaWeight = Settings.getDouble("webserver.formula_weight")
+  val pageWeight = Settings.getDouble("webserver.page_weight")
 }
