@@ -17,7 +17,7 @@ import scala.collection.mutable.ListBuffer
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
-case class LabelUnit(val query: String, val formula: String, val url: String) {
+case class LabelUnit(val query: String, val url: String) {
 }
 
 trait LabelStorager {
@@ -35,7 +35,8 @@ object LabelStorager {
 
 object BDBLabelStorager extends LabelStorager {
 
-  case class LabelValue(formula: String, url: String, relevance: Int)
+  case class LabelValue(url: String, relevance: Int)
+
   implicit val labelValueReads = Json.reads[LabelValue]
   implicit val labelValueWrites = Json.writes[LabelValue]
 
@@ -83,36 +84,34 @@ object BDBLabelStorager extends LabelStorager {
         case Some(array) => {
           for (o <- array.value) {
             val label = Json.fromJson(o).get
-            if (label.formula == labelUnit.formula &&
-              label.url == labelUnit.url) {
+            if (label.url == labelUnit.url) {
               return label.relevance
             }
           }
-          -1
+          0
         }
-        case None => -1
+        case None => 0
       }
     }
   }
 
   def put(labelUnit: LabelUnit, relevance: Int): Unit = {
     synchronized {
-      val o = LabelValue(labelUnit.formula, labelUnit.url, relevance)
+      val o = LabelValue(labelUnit.url, relevance)
       val r = get(labelUnit.query) match {
         case Some(array) => {
           val filtered = array.value.filter { x =>
             val label = Json.fromJson(x).get
-            !(o.formula == labelUnit.formula &&
-              o.url == labelUnit.url)
+            label.url != labelUnit.url
           }.toList
-          if (relevance < 0) {
+          if (relevance == 0) {
             filtered
           } else {
             filtered :+ Json.toJson(o)
           }
         }
         case None => {
-          if (relevance < 0) {
+          if (relevance == 0) {
             Nil
           } else {
             List(Json.toJson(o))

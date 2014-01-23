@@ -2,7 +2,7 @@
         ratingObject.raty("readOnly", true);
         $.ajax({
             type: "PUT",
-            url: "/api/label/" + encodeURIComponent(result.query) + "/" + encodeURIComponent(result.formula) + "/" + encodeURIComponent(result.url) + "/" + encodeURIComponent(label)
+            url: "/api/label/" + encodeURIComponent(result.query) + "/" + encodeURIComponent(result.url) + "/" + encodeURIComponent(label)
             }).done(function(data) {
             if (data.status == "OK") { 
                 result.label = label;
@@ -23,7 +23,7 @@
     
     function getRating(ratingObject, result) {
         ratingObject.raty("readOnly", true);
-        var url = "/api/label/" + encodeURIComponent(result.query) + "/" + encodeURIComponent(result.formula) + "/" + encodeURIComponent(result.url);
+        var url = "/api/label/" + encodeURIComponent(result.query) + "/" + encodeURIComponent(result.url);
         $.ajax({
             type: "GET",
             url: url
@@ -49,11 +49,11 @@
         ratingObject.raty("readOnly", true);
         $.ajax({
             type: "DELETE",
-            url: "/api/label/" + encodeURIComponent(result.query) + "/" + encodeURIComponent(result.formula) + "/" + encodeURIComponent(result.url)
+            url: "/api/label/" + encodeURIComponent(result.query) + "/" + encodeURIComponent(result.url)
             }).done(function(data) {
             if (data.status == "OK") {
-                result.label = -1;
-                setRating(ratingObject, -1);
+                result.label = 0;
+                setRating(ratingObject, 0);
             }
             else {
                 setRating(ratingObject, result.label);
@@ -70,7 +70,7 @@
     
     function setRating(ratingObject, label) {
         ratingObject.raty("readOnly", false);
-        if(label && label >= 0) {
+        if(label && label > 0) {
             ratingObject.raty("setScore", label);
         }
         else {

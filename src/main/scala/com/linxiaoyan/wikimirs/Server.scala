@@ -44,10 +44,10 @@ trait Service extends Logging {
 @Path("/api/dcg")
 class DCGService extends Service {
 
-  case class QueryDCG(query: String, dcg: Double, active: Int)
+  case class QueryDCG(query: String, dcg: Double, active: Int, precision: Double)
   implicit val queryDCGWrites = Json.writes[QueryDCG]
 
-  case class DCGResult(dcg: Double, details: Seq[QueryDCG])
+  case class DCGResult(dcg: Double, precision: Double, details: Seq[QueryDCG])
   implicit val dcgResultWrites = Json.writes[DCGResult]
 
   @GET
@@ -57,19 +57,20 @@ class DCGService extends Service {
     val queries = LabelStorager().allQueries
     val dcgs = queries.map(query => {
       val (dcg, active) = calcDCG(query, rankPosition)
-      QueryDCG(query, dcg, active)
+      QueryDCG(query, dcg, active, active.toDouble / rankPosition)
     })
-    val average = dcgs.map(_.dcg).sum / dcgs.length
-    Json.prettyPrint(Json.toJson(DCGResult(average, dcgs)))
+    val averageDCG = dcgs.map(_.dcg).sum / dcgs.length
+    val averagePrecision = dcgs.map(_.precision).sum / dcgs.length
+    Json.prettyPrint(Json.toJson(DCGResult(averageDCG, averagePrecision, dcgs)))
   }
 
   private[this] def calcDCG(query: String, rankPosition: Int): (Double, Int) = {
     val json = FormulaSearcher.search(query, 1, rankPosition)
     val relevances = (json \ "results").asInstanceOf[JsArray].value.map({
       o =>
-        ((o \ "doc" \ "formula").as[String], (o \ "doc" \ "doc_url").as[String])
+        (o \ "doc" \ "doc_url").as[String]
     })
-      .map(p => LabelStorager().get(new LabelUnit(query, p._1, p._2)))
+      .map(p => LabelStorager().get(new LabelUnit(query, p)))
     val active = relevances.count(_ > 0)
     val dcg = relevances.zipWithIndex.map({
       case (r, i) =>
@@ -84,16 +85,15 @@ class DCGService extends Service {
 class LabelService extends Service {
 
   @PUT
-  @Path("{query}/{formula}/{url}/{label}")
+  @Path("{query}/{url}/{label}")
   @Produces(Array(MediaType.APPLICATION_JSON))
   def put(@PathParam("query") query: String,
-    @PathParam("formula") formula: String,
     @PathParam("url") url: String,
-    @PathParam("label")@DefaultValue("-1") label: Int): String = {
-    logger.debug(s"put: ${query}, ${formula}, ${url}, ${label}")
+    @PathParam("label")@DefaultValue("0") label: Int): String = {
+    logger.debug(s"put: ${query}, ${url}, ${label}")
 
     try {
-      LabelStorager().put(new LabelUnit(query, formula, url), label)
+      LabelStorager().put(new LabelUnit(query, url), label)
       """{
     "status": "OK"
 }
@@ -106,15 +106,14 @@ class LabelService extends Service {
   }
 
   @GET
-  @Path("{query}/{formula}/{url}")
+  @Path("{query}/{url}")
   @Produces(Array(MediaType.APPLICATION_JSON))
   def get(@PathParam("query") query: String,
-    @PathParam("formula") formula: String,
     @PathParam("url") url: String): String = {
-    logger.debug(s"get: ${query}, ${formula}, ${url}")
+    logger.debug(s"get: ${query}, ${url}")
 
     try {
-      val label = LabelStorager().get(new LabelUnit(query, formula, url))
+      val label = LabelStorager().get(new LabelUnit(query, url))
       Json.stringify(Json.obj(
         "status" -> "OK",
         "label" -> label))
@@ -126,15 +125,14 @@ class LabelService extends Service {
   }
 
   @DELETE
-  @Path("{query}/{formula}/{url}")
+  @Path("{query}/{url}")
   @Produces(Array(MediaType.APPLICATION_JSON))
   def delete(@PathParam("query") query: String,
-    @PathParam("formula") formula: String,
     @PathParam("url") url: String): String = {
-    logger.debug(s"delete: ${query}, ${formula}, ${url}")
+    logger.debug(s"delete: ${query}, ${url}")
 
     try {
-      LabelStorager().put(new LabelUnit(query, formula, url), -1)
+      LabelStorager().put(new LabelUnit(query, url), 0)
       Json.stringify(Json.obj(
         "status" -> "OK"))
     } catch {

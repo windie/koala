@@ -217,7 +217,7 @@
 			"query": query,
 			"formula": result.doc.formula,
 			"url": result.doc.doc_url,
-			"label": -1
+			"label": 0
 		};
 		
 		rating.raty({
@@ -230,11 +230,11 @@
 			readOnly	: true,
 			click : function(score) {
 				if(score == null) {
-					score = -1;
+					score = 0;
 				}
 				var oldScore = cache.label;
 				if(oldScore != score) {
-					if(score == -1) {
+					if(score == 0) {
 						deleteRating(rating, cache);
 					}
 					else {
