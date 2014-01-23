@@ -167,6 +167,7 @@ class FormulaDocument(latex: String, page: WikiPage) {
     doc.add(new StoredField("formula_id", id))
     doc.add(new TextField("formula", latex, Field.Store.YES))
     doc.add(new StoredField("doc_id", page.id))
+    doc.add(new StoredField("doc_title", page.title))
     doc
   }
 }
@@ -176,7 +177,7 @@ class PageDocument(page: WikiPage) {
   def toDocument: Document = {
     val doc = new Document;
     val content = page.mathes.mkString("\0")
-    doc.add(new TextField("formula", content, Field.Store.YES))
+    doc.add(new TextField("formula", content, Field.Store.NO))
     doc.add(new StoredField("doc_id", page.id))
     doc.add(new StoredField("doc_title", page.title))
     doc

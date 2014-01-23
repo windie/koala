@@ -52,6 +52,7 @@ import uk.ac.ed.ph.snuggletex.XMLStringOutputOptions
 import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.search.IndexSearcher
 import com.typesafe.scalalogging.slf4j.Logging
+import org.apache.lucene.store._
 
 class TermLevelTermQuery(term: Term, function: PayloadFunction) extends PayloadTermQuery(term, function) {
 
@@ -247,16 +248,10 @@ class ReconstructExpressionVistor extends TreeVisitor {
               operantSize += 1
             }
             mo.operantSize = operantSize
-            if (operators.isEmpty) {
-              operators push mo
-            } else {
-              if (priority(prev, operators.top) > priority(prev, mo)) {
-                operators push mo
-              } else {
-                stack push (operators.pop)
-                operators push mo
-              }
+            while (!operators.isEmpty && priority(prev, operators.top) <= priority(prev, mo)) {
+              stack push (operators.pop)
             }
+            operators push mo
           } else {
             stack push child
           }
@@ -595,7 +590,7 @@ class FormulaSimilarity extends DefaultSimilarity {
   override def coord(overlap: Int, maxOverlap: Int) = 1.0F
 
   override def computeNorm(state: FieldInvertState, norm: Norm) {
-    val numTerms = state.getLength();
+    val numTerms = state.getLength()
     norm.setByte(encodeNormValue(state.getBoost()
       * ((1.0 / numTerms).toFloat)));
   }
@@ -629,7 +624,7 @@ class FormulaSearcher(dir: Directory) extends Logging {
               val doc = searcher.doc(scoreDoc.doc)
               val pageId = doc.get("doc_id").toLong
               if (!result.contains(pageId)) {
-                result += pageId -> FormulaSearchResult(scoreDoc.doc, doc.get("formula_id").toLong, doc.get("formula"), pageId, scoreDoc.score)
+                result += pageId -> FormulaSearchResult(scoreDoc.doc, doc.get("formula_id").toLong, pageId, scoreDoc.score)
               } else {
                 // skip this formula since we have already included the page
               }
@@ -646,6 +641,8 @@ class FormulaSearcher(dir: Directory) extends Logging {
     searcher.search(query, 1).totalHits
   }
 
+  def doc(docId: Int) = searcher.doc(docId)
+  
   def explain(query: String, docId: Int) = {
     new FormulaQueryParser().parse(query) map { searcher.explain(_, docId) }
   }
@@ -676,7 +673,7 @@ class PageSearcher(dir: Directory) extends Logging {
             searcher.search(q, totalHits).scoreDocs foreach { scoreDoc =>
               val doc = searcher.doc(scoreDoc.doc)
               val pageId = doc.get("doc_id").toLong
-              result += pageId -> PageSearchResult(scoreDoc.doc, pageId, doc.get("doc_title"), scoreDoc.score)
+              result += pageId -> PageSearchResult(scoreDoc.doc, pageId, scoreDoc.score)
             }
             result
           } else {
@@ -689,21 +686,23 @@ class PageSearcher(dir: Directory) extends Logging {
   private def getTotalHits(query: Query) = {
     searcher.search(query, 1).totalHits
   }
+  
+  def doc(docId: Int) = searcher.doc(docId)
 
   def explain(query: String, docId: Int) = {
     new FormulaQueryParser().parse(query) map { searcher.explain(_, docId) }
   }
 }
 
-object FormulaSearcher {
+object FormulaSearcher extends Logging{
 
   val formulaSearcher = {
-    val dir = FSDirectory.open(new File(Settings.getString("index.formula_dir")))
+    val dir = new RAMDirectory(new MMapDirectory(new File(Settings.getString("index.formula_dir"))), IOContext.READ)
     new FormulaSearcher(dir)
   }
 
   val pageSearcher = {
-    val dir = FSDirectory.open(new File(Settings.getString("index.page_dir")))
+    val dir = new RAMDirectory(new MMapDirectory(new File(Settings.getString("index.page_dir"))), IOContext.READ)
     new PageSearcher(dir)
   }
 
@@ -724,26 +723,30 @@ object FormulaSearcher {
 
     val beginTime = System.currentTimeMillis()
 
+    logger.info("Search page")
     val pageResults = pageSearcher.search(query)
+    logger.info("Search formula")
     val formulaResults = formulaSearcher.search(query)
-
+    logger.info("Merge")
     require(formulaResults.size == pageResults.size, s"Not equal: ${formulaResults.size} ${pageResults.size}")
 
-    val results = scala.collection.mutable.TreeSet[FinalResult]()
+    val results = scala.collection.mutable.ListBuffer[FinalResult]()
     formulaResults foreach {
       case (pageId, formula) => {
         require(pageResults.contains(pageId))
-        results += new FinalResult(formula, pageResults(pageId))
+//        if (pageResults.contains(pageId)) {
+          results += new FinalResult(formula, pageResults(pageId))
+//        }
       }
     }
 
     val endTime = System.currentTimeMillis()
-
-    val mathml = new LatexToMathml().toMathml(query);
-
+    logger.info("Done")
     val numTotalHits = results.size
     val start = (page - 1) * pageSize
     val end = (start + pageSize) min numTotalHits
+    val sortedResults = results.toList.sortWith(_.score > _.score).slice(start, end)
+    val mathml = new LatexToMathml().toMathml(query);
     if (numTotalHits > 0) {
       Json.obj(
         "status" -> "OK",
@@ -754,12 +757,12 @@ object FormulaSearcher {
             case None => ""
           }
         },
-        "results" -> (results.slice(start, end) map {
+        "results" -> (sortedResults map {
           _.toJson(
             formulaSearcher,
             pageSearcher,
             query)
-        } toList),
+        }),
         "page" -> page,
         "pageSize" -> pageSize,
         "total" -> numTotalHits,
@@ -779,8 +782,8 @@ object FormulaSearcher {
   }
 }
 
-case class FormulaSearchResult(docId: Int, formulaId: Long, formula: String, pageId: Long, score: Float)
-case class PageSearchResult(docId: Int, pageId: Long, title: String, score: Float)
+case class FormulaSearchResult(docId: Int, formulaId: Long, pageId: Long, score: Float)
+case class PageSearchResult(docId: Int, pageId: Long, score: Float)
 
 case class FinalResult(formula: FormulaSearchResult, page: PageSearchResult) extends Ordered[FinalResult] {
   require(formula.pageId == page.pageId)
@@ -792,15 +795,18 @@ case class FinalResult(formula: FormulaSearchResult, page: PageSearchResult) ext
     formulaSearcher: FormulaSearcher,
     pageSearcher: PageSearcher,
     query: String) = {
+    val formulaDoc = formulaSearcher.doc(formula.docId)
+    val pageDoc = pageSearcher.doc(page.docId)
+    val pageTitle = pageDoc.get("doc_title")
     Json.obj(
       "doc" ->
         Json.obj(
           "formula_id" -> formula.formulaId,
-          "formula" -> formula.formula,
+          "formula" -> formulaDoc.get("formula"),
           "doc_id" -> page.pageId,
-          "doc_title" -> page.title,
+          "doc_title" -> pageTitle,
           "doc_url" -> {
-            "http://en.wikipedia.org/wiki/" + URLEncoder.encode(page.title.replaceAll(" ", "_"), "UTF-8")
+            "http://en.wikipedia.org/wiki/" + URLEncoder.encode(pageTitle.replaceAll(" ", "_"), "UTF-8")
           }),
       "score" -> score,
       "explain" -> (

@@ -148,4 +148,15 @@ class ReconstructExpressionVistorSuite2 extends FunSuite {
     assertCase("<math><mo o='+'><mi>a</mi><mo o='/'><mi>b</mi><mi>c</mi></mo></mo></math>", "a + b / c")
   }
 
+  test("latex: a + b = c") {
+    assertCase("<math><mo o='='><mo o='+'><mi>a</mi><mi>b</mi></mo><mi>c</mi></mo></math>", "a + b = c")
+  }
+
+  test("latex: \\frac{1}{n} + b = c") {
+    assertCase("<math><mo o='='><mo o='+'><mfrac><mn>1</mn><mi>n</mi></mfrac><mi>b</mi></mo><mi>c</mi></mo></math>", "\\frac{1}{n} + b = c")
+  }
+
+  test("latex: \\frac{1}{n} + 2*n = a+b") {
+    assertCase("<math><mo o='='><mo o='+'><mfrac><mn>1</mn><mi>n</mi></mfrac><mo o='*'><mn>2</mn><mi>n</mi></mo></mo><mo o='+'><mi>a</mi><mi>b</mi></mo></mo></math>", "\\frac{1}{n} + 2*n = a+b")
+  }
 }

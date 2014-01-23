@@ -64,13 +64,14 @@ task index(type: JavaExec, dependsOn: build) {
   println configurations.runtime
   classpath sourceSets.main.runtimeClasspath
   classpath configurations.runtime
-  jvmArgs "-Dactors.corePoolSize=6 -XX:+HeapDumpOnOutOfMemoryError"
-  maxHeapSize "1512m"
+  jvmArgs "-Dactors.corePoolSize=8 -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=85 verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -Xloggc:gc.log"
+  maxHeapSize "2000m"
 }
 
 task server(type: JavaExec, dependsOn: build) {
   main = 'com.linxiaoyan.wikimirs.HttpServer'
   classpath sourceSets.main.runtimeClasspath
   classpath configurations.runtime
+  maxHeapSize "2000m"
 }
 
