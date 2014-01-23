@@ -60,4 +60,8 @@ class AdjustTreeVisitorSuite extends FunSuite {
     assertCase("<math><msqrt><mi>text</mi></msqrt></math>", "\\sqrt{text}")
   }
 
+  test("latex: \\frac{a}{b}") {
+    assertCase("<math><mfrac><mi>a</mi><mi>b</mi></mfrac></math>", "\\frac{a}{b}")
+  }
+
 }

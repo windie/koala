@@ -199,7 +199,7 @@ class AdjustTreeVisitor extends TreeVisitor {
                 if (children.isEmpty) {
                   children += child
                 } else {
-                  if (node.tag != "msup" && node.tag != "msub") {
+                  if (node.tag != "msup" && node.tag != "msub" && node.tag != "mfrac") {
                     if (children.last.isInstanceOf[MI] && child.isInstanceOf[MI]) {
                       children.update(children.size - 1, new MI(children.last.asInstanceOf[MI].text + child.asInstanceOf[MI].text));
                     } else {
