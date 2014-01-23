@@ -93,7 +93,7 @@ class FormulaQueryParser {
   def parse(query: String): Option[Query] = {
     val source = analyzer.tokenStream("formula", new StringReader(query));
     source.reset()
-    val combinedQuery = new BooleanQuery(true) // TODO true or false
+    val combinedQuery = new BooleanQuery(false) // TODO true or false
     var numTokens = 0
 
     val termAtt: CharTermAttribute = source.getAttribute(classOf[CharTermAttribute])
@@ -117,7 +117,7 @@ class FormulaQueryParser {
   def explain(query: String): Option[String] = {
     val source = analyzer.tokenStream("formula", new StringReader(query));
     source.reset()
-    val combinedQuery = new BooleanQuery(true) // TODO true or false
+    val combinedQuery = new BooleanQuery(false) // TODO true or false
     var numTokens = 0
 
     val termAtt: CharTermAttribute = source.getAttribute(classOf[CharTermAttribute])
@@ -580,14 +580,14 @@ class FormulaTermLevelPayloadFunction(val termLevelInQuery: Int) extends Payload
  * method.
  */
 class FormulaSimilarity extends DefaultSimilarity {
-  override def queryNorm(sumOfSquaredWeights: Float) = 1.0F
+  //override def queryNorm(sumOfSquaredWeights: Float) = 1.0F
 
   override def scorePayload(doc: Int, start: Int, end: Int, payload: BytesRef): Float = {
     // decode the term level
     PayloadHelper.decodeInt(payload.bytes, payload.offset);
   }
 
-  override def coord(overlap: Int, maxOverlap: Int) = 1.0F
+  //override def coord(overlap: Int, maxOverlap: Int) = 1.0F
 
   override def computeNorm(state: FieldInvertState, norm: Norm) {
     val numTerms = state.getLength()
