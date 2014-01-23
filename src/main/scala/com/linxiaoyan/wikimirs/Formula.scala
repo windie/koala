@@ -550,7 +550,7 @@ class FormulaTermLevelPayloadFunction(val termLevelInQuery: Int) extends Payload
 
   override def currentScore(docId: Int, field: String, start: Int, end: Int,
     numPayloadsSeen: Int, currentScore: Float, currentPayloadScore: Float): Float = {
-    currentScore + 1.0F / (1.0F + (termLevelInQuery - currentPayloadScore).abs);
+    currentScore max (1.0F / (1.0F + (termLevelInQuery - currentPayloadScore).abs))
   }
 
   override def docScore(docId: Int, field: String, numPayloadsSeen: Int, payloadScore: Float): Float = payloadScore
@@ -570,8 +570,8 @@ class FormulaTermLevelPayloadFunction(val termLevelInQuery: Int) extends Payload
 
     val result = super.explain(docId, field, numPayloadsSeen,
       payloadScore);
-    result.addDetail(termLevel);
-    result;
+    result.addDetail(termLevel)
+    result
   }
 }
 
@@ -642,7 +642,7 @@ class FormulaSearcher(dir: Directory) extends Logging {
   }
 
   def doc(docId: Int) = searcher.doc(docId)
-  
+
   def explain(query: String, docId: Int) = {
     new FormulaQueryParser().parse(query) map { searcher.explain(_, docId) }
   }
@@ -686,7 +686,7 @@ class PageSearcher(dir: Directory) extends Logging {
   private def getTotalHits(query: Query) = {
     searcher.search(query, 1).totalHits
   }
-  
+
   def doc(docId: Int) = searcher.doc(docId)
 
   def explain(query: String, docId: Int) = {
@@ -694,7 +694,7 @@ class PageSearcher(dir: Directory) extends Logging {
   }
 }
 
-object FormulaSearcher extends Logging{
+object FormulaSearcher extends Logging {
 
   val formulaSearcher = {
     val dir = new RAMDirectory(new MMapDirectory(new File(Settings.getString("index.formula_dir"))), IOContext.READ)
@@ -734,9 +734,9 @@ object FormulaSearcher extends Logging{
     formulaResults foreach {
       case (pageId, formula) => {
         require(pageResults.contains(pageId))
-//        if (pageResults.contains(pageId)) {
-          results += new FinalResult(formula, pageResults(pageId))
-//        }
+        //        if (pageResults.contains(pageId)) {
+        results += new FinalResult(formula, pageResults(pageId))
+        //        }
       }
     }
 
@@ -810,8 +810,12 @@ case class FinalResult(formula: FormulaSearchResult, page: PageSearchResult) ext
           }),
       "score" -> score,
       "explain" -> (
-        (formulaSearcher.explain(query, formula.docId) map (_.toHtml) getOrElse "")
-        + (pageSearcher.explain(query, page.docId) map (_.toHtml) getOrElse "")))
+        "<div>"
+        + (formulaSearcher.explain(query, formula.docId) map (_.toHtml) getOrElse "")
+        + "</div>"
+        + "<div style='background-color:gray'>"
+        + (pageSearcher.explain(query, page.docId) map (_.toHtml) getOrElse "")
+        + "</div>"))
   }
 
   override def compare(that: FinalResult): Int = {
