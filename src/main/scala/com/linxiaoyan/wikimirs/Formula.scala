@@ -440,8 +440,136 @@ class MathmlParser(
   }
 }
 
+import uk.ac.ed.ph.snuggletex.SnugglePackage;
+import uk.ac.ed.ph.snuggletex.SnuggleRuntimeException;
+import uk.ac.ed.ph.snuggletex.SnugglePackage;
+import uk.ac.ed.ph.snuggletex.SnuggleRuntimeException;
+import uk.ac.ed.ph.snuggletex.dombuilding.AccentHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.AnchorHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.ArrayHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.BoxHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.CharacterCommandHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.DoNothingHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.EnsureMathHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.EqnArrayHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.GetVarHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.HSpaceHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.HrefHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.InsertUnicodeHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.InterpretableSimpleMathHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.LineBreakHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.ListEnvironmentHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.LiteralHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.MathComplexCommandHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.MathEnvironmentHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.MathFenceHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.MathLimitsHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.MathNotHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.MathRootHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.MathStackrelHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.MathVariantMapHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.MatrixHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.ModeDelegatingHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.MrowHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.ParagraphHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.SetVarHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.SimpleXHTMLContainerBuildingHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.SpaceHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.StyleInterpretationHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.TabularHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.TextSafeInterpretableMathIdentifierHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.UnitsHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.VerbatimHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.XMLAttrHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.XMLBlockElementHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.XMLInlineElementHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.XMLNameOrIdHandler;
+import uk.ac.ed.ph.snuggletex.dombuilding.XMLUnparseHandler;
+import uk.ac.ed.ph.snuggletex.semantics.Interpretation;
+import uk.ac.ed.ph.snuggletex.semantics.InterpretationType;
+import uk.ac.ed.ph.snuggletex.semantics.MathBigLimitOwnerInterpretation;
+import uk.ac.ed.ph.snuggletex.semantics.MathBracketInterpretation;
+import uk.ac.ed.ph.snuggletex.semantics.MathFunctionInterpretation;
+import uk.ac.ed.ph.snuggletex.semantics.MathIdentifierInterpretation;
+import uk.ac.ed.ph.snuggletex.semantics.MathMLSymbol;
+import uk.ac.ed.ph.snuggletex.semantics.MathNegatableInterpretation;
+import uk.ac.ed.ph.snuggletex.semantics.MathOperatorInterpretation;
+import uk.ac.ed.ph.snuggletex.semantics.StyleDeclarationInterpretation;
+import uk.ac.ed.ph.snuggletex.semantics.TabularInterpretation;
+import uk.ac.ed.ph.snuggletex.semantics.MathBracketInterpretation.BracketType;
+import uk.ac.ed.ph.snuggletex.tokens.FlowToken;
+
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import uk.ac.ed.ph.snuggletex.definitions._
+
+object WikimirsPackage {
+  val extensionPackage: SnugglePackage = {
+    synchronized {
+      val corePackage = CorePackageDefinitions.getPackage()
+
+      /* Math "functions" (treated as identifiers in MathML) */
+      corePackage.addSimpleMathCommand("arccos", new MathOperatorInterpretation("arccos"));
+      corePackage.addSimpleMathCommand("arcsin", new MathOperatorInterpretation("arcsin"));
+      corePackage.addSimpleMathCommand("arctan", new MathOperatorInterpretation("arctan"));
+      corePackage.addSimpleMathCommand("arg", new MathOperatorInterpretation("arg"));
+      corePackage.addSimpleMathCommand("cos", new MathOperatorInterpretation("cos"));
+      corePackage.addSimpleMathCommand("cosh", new MathOperatorInterpretation("cosh"));
+      corePackage.addSimpleMathCommand("cot", new MathOperatorInterpretation("cot"));
+      corePackage.addSimpleMathCommand("coth", new MathOperatorInterpretation("coth"));
+      corePackage.addSimpleMathCommand("csc", new MathOperatorInterpretation("csc"));
+      corePackage.addSimpleMathCommand("deg", new MathOperatorInterpretation("deg"));
+      corePackage.addSimpleMathCommand("det", new MathOperatorInterpretation("det"));
+      corePackage.addSimpleMathCommand("dim", new MathOperatorInterpretation("dim"));
+      corePackage.addSimpleMathCommand("exp", new MathOperatorInterpretation("exp"));
+      corePackage.addSimpleMathCommand("gcd", new MathOperatorInterpretation("gcd"));
+      corePackage.addSimpleMathCommand("hom", new MathOperatorInterpretation("hom"));
+      corePackage.addSimpleMathCommand("inf", new MathOperatorInterpretation("inf"));
+      corePackage.addSimpleMathCommand("ker", new MathOperatorInterpretation("ker"));
+      corePackage.addSimpleMathCommand("lg", new MathOperatorInterpretation("lg"));
+      corePackage.addSimpleMathCommand("lcm", new MathOperatorInterpretation("lcm"));
+      corePackage.addSimpleMathCommand("lim", new MathOperatorInterpretation("lim"));
+      corePackage.addSimpleMathCommand("liminf", new MathOperatorInterpretation("lim inf"));
+      corePackage.addSimpleMathCommand("limsup", new MathOperatorInterpretation("lim sup"));
+      corePackage.addSimpleMathCommand("ln", new MathOperatorInterpretation("ln"));
+      corePackage.addSimpleMathCommand("log", new MathOperatorInterpretation("log"));
+      corePackage.addSimpleMathCommand("max", new MathOperatorInterpretation("max"));
+      corePackage.addSimpleMathCommand("min", new MathOperatorInterpretation("min"));
+      corePackage.addSimpleMathCommand("Pr", new MathOperatorInterpretation("Pr"));
+      corePackage.addSimpleMathCommand("sec", new MathOperatorInterpretation("sec"));
+      corePackage.addSimpleMathCommand("sin", new MathOperatorInterpretation("sin"));
+      corePackage.addSimpleMathCommand("sinh", new MathOperatorInterpretation("sinh"));
+      corePackage.addSimpleMathCommand("sup", new MathOperatorInterpretation("sup"));
+      corePackage.addSimpleMathCommand("tan", new MathOperatorInterpretation("tan"));
+      corePackage.addSimpleMathCommand("tanh", new MathOperatorInterpretation("tanh"));
+
+      /* Extra Math functions (added for consistency with standard Content MathML operators) */
+      corePackage.addSimpleMathCommand("sech", new MathOperatorInterpretation("sech"));
+      corePackage.addSimpleMathCommand("csch", new MathOperatorInterpretation("csch"));
+      corePackage.addSimpleMathCommand("coth", new MathOperatorInterpretation("coth"));
+      corePackage.addSimpleMathCommand("arcsec", new MathOperatorInterpretation("arcsec"));
+      corePackage.addSimpleMathCommand("arccsc", new MathOperatorInterpretation("arccsc"));
+      corePackage.addSimpleMathCommand("arccot", new MathOperatorInterpretation("arccot"));
+      corePackage.addSimpleMathCommand("arccosh", new MathOperatorInterpretation("arccosh"));
+      corePackage.addSimpleMathCommand("arcsinh", new MathOperatorInterpretation("arcsinh"));
+      corePackage.addSimpleMathCommand("arctanh", new MathOperatorInterpretation("arctanh"));
+      corePackage.addSimpleMathCommand("arcsech", new MathOperatorInterpretation("arcsech"));
+      corePackage.addSimpleMathCommand("arccsch", new MathOperatorInterpretation("arccsch"));
+      corePackage.addSimpleMathCommand("arccoth", new MathOperatorInterpretation("arccoth"));
+
+      val p = new SnugglePackage("wikimirs");
+      p.addSimpleMathCommand("mod", new MathOperatorInterpretation("mod"))
+      p.addSimpleMathCommand("pmod", new MathOperatorInterpretation("mod"))
+      p.addSimpleMathCommand("bmod", new MathOperatorInterpretation("mod"))
+      p.addSimpleMathCommand("dots", new MathIdentifierInterpretation(MathMLSymbol.CDOTS))
+      p
+    }
+  }
+}
+
 class LatexToMathml {
   private val engine = new SnuggleEngine
+  engine.addPackage(WikimirsPackage.extensionPackage)
 
   private val options = new XMLStringOutputOptions
   options.setSerializationMethod(SerializationMethod.XML)
