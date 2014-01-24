@@ -64,4 +64,19 @@ class AdjustTreeVisitorSuite extends FunSuite {
     assertCase("<math><mfrac><mi>a</mi><mi>b</mi></mfrac></math>", "\\frac{a}{b}")
   }
 
+  test("latex: a + b .") {
+    assertCase("<math><mi>a</mi><mo o='+'></mo><mi>b</mi></math>", "a + b .")
+  }
+
+  test("latex: a + b \\,") {
+    assertCase("<math><mi>a</mi><mo o='+'></mo><mi>b</mi></math>", "a + b \\,")
+  }
+
+  test("latex: \\sum_{i=0}^5") {
+    assertCase("<math><munderover><mo o='&Sum;'></mo><mi>i</mi><mi>n</mi></munderover></math>", "\\sum_{i}^{n}")
+  }
+
+  test("latex: \\root_{i}^{j}") {
+    assertCase("<math><msubsup><mrow></mrow><mi>i</mi><mi>j</mi></msubsup></math>", "\\root_{i}^{j}")
+  }
 }

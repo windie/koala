@@ -127,6 +127,8 @@ class WikiXMLScanner(
     }
     formulaWriter.close
     pageWriter.close
+    println("Pages: " + WikiPage.ID)
+    println("Formulas: " + FormulaDocument.ID)
     exit
   }
 

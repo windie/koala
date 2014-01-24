@@ -169,7 +169,54 @@ trait TreeVisitor {
  * <msup><mi>x</mi><mi>y</mi></msup> -> MathmlNode(msup, [MI(x), MI(y)])
  */
 class AdjustTreeVisitor extends TreeVisitor {
+
+  private def checkText(node: MathmlTag, text: String): Boolean = {
+    (!node.children.isEmpty) && (node.children.head.asInstanceOf[Text].text == ".")
+  }
+
+  private def removeLastIfPossible(node: MathmlTag): MathmlTag = {
+    if (node.children.isEmpty) {
+      return node
+    }
+
+    node.children.last match {
+      case last: MathmlTag =>
+        {
+          val removeLast = if (last.tag == "mspace") {
+            true
+          } else if (last.tag == "mo") {
+            checkText(last, ".")
+          } else if (last.tag == "mi") {
+            checkText(last, " ")
+          } else {
+            false
+          }
+          if (removeLast) {
+            val newChildren = ListBuffer[MathmlNode]()
+            newChildren ++= node.children
+            newChildren.remove(newChildren.size - 1)
+            new MathmlTag(node.parent, node.tag, newChildren)
+          } else {
+            node
+          }
+        }
+      case other => node
+    }
+  }
+
   def visit(root: MathmlNode): MathmlNode = {
+    val updatedNode = root match {
+      case node: MathmlTag => {
+        removeLastIfPossible(node)
+      }
+      case other => other
+    }
+    visitInternal(updatedNode)
+  }
+
+  val noMergedTag = "msup" :: "msub" :: "mfrac" :: "munderover" :: "mover" :: "munder" :: "msubsup" :: "mroot" :: Nil
+
+  def visitInternal(root: MathmlNode): MathmlNode = {
     root match {
       case node: MathmlTag => {
         node.tag match {
@@ -194,12 +241,12 @@ class AdjustTreeVisitor extends TreeVisitor {
             new MS(node.children(0).toString)
           }
           case _ => {
-            val children = node.children.map(child => visit(child)).foldLeft(ListBuffer[MathmlNode]()) {
+            val children = node.children.map(child => visitInternal(child)).foldLeft(ListBuffer[MathmlNode]()) {
               case (children, child) => {
                 if (children.isEmpty) {
                   children += child
                 } else {
-                  if (node.tag != "msup" && node.tag != "msub" && node.tag != "mfrac") {
+                  if (!noMergedTag.exists { _ == node.tag }) {
                     if (children.last.isInstanceOf[MI] && child.isInstanceOf[MI]) {
                       children.update(children.size - 1, new MI(children.last.asInstanceOf[MI].text + child.asInstanceOf[MI].text));
                     } else {
@@ -450,7 +497,7 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
         parser.parse(mathml, tokens)
       } catch {
         case e: Throwable => {
-          println("find error: latex")
+          println("find error: latex " + e.getMessage())
         }
       }
     }
