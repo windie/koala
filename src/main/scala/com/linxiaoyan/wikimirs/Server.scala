@@ -56,15 +56,15 @@ class DCGService extends Service {
   def get(@PathParam("position") rankPosition: Int): String = {
     val queries = LabelStorager().allQueries
     val dcgs = queries.map(query => {
-      val (dcg, active) = calcDCG(query, rankPosition)
-      QueryDCG(query, dcg, active, active.toDouble / rankPosition)
+      val (dcg, active, relevanceCount) = calcDCG(query, rankPosition)
+      QueryDCG(query, dcg, active, relevanceCount.toDouble / rankPosition)
     })
     val averageDCG = dcgs.map(_.dcg).sum / dcgs.length
     val averagePrecision = dcgs.map(_.precision).sum / dcgs.length
     Json.prettyPrint(Json.toJson(DCGResult(averageDCG, averagePrecision, dcgs)))
   }
 
-  private[this] def calcDCG(query: String, rankPosition: Int): (Double, Int) = {
+  private[this] def calcDCG(query: String, rankPosition: Int): (Double, Int, Int) = {
     val json = FormulaSearcher.search(query, 1, rankPosition)
     val relevances = (json \ "results").asInstanceOf[JsArray].value.map({
       o =>
@@ -77,7 +77,8 @@ class DCGService extends Service {
         val p = i + 1
         pow(2.0, r) - 1.0 / (log(p + 1.0) / log(2.0))
     }).sum
-    (dcg, active)
+    val relevanceCount = relevances.count(_ > 1)
+    (dcg, active, relevanceCount)
   }
 }
 

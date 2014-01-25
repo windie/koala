@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+	<head>
+		<title>DCG</title>
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="css/bootstrap-notify.css" rel="stylesheet">
+		<link href="css/prettify.css" rel="stylesheet">
+		<style type="text/css">
+		.box {
+			margin-left: 0;
+			margin-right: 0;
+			background-color: #fff;
+			border-radius: 4px 4px 4px 4px;
+			border: 1px solid #ddd;
+			box-shadow: none;
+			padding: 9px 14px;
+		}
+		</style>
+	</head>
+	<body>
+	<div id="main" class="container main-body">
+		<div class="row">
+			<ul id="dcg">
+			</ul>
+		</div>
+		<div class='notifications top-center'></div>
+	</div>
+	</body>
+	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+	function error(error) {
+		$('.top-center').notify({
+				type: "error",
+				message: { text: error }
+			}).show();
+		console.log(error);
+	}
+	</script>
+	<script type="text/javascript">	
+	$(function() {
+	    var position = getParameterByName("p")
+	    if(!position) {
+	    	position = 10
+	    }
+		var url = "/api/dcg/" + encodeURIComponent(position);
+        $.ajax({
+            type: "GET",
+            url: url
+            }).done(function(data) {
+            if (!data.status) {
+                renderDCGResult(data, position);
+            }
+            else {
+                error(data.message);
+            }
+          })
+          .fail(
+          function( jqxhr, textStatus, e ) {
+                var err = textStatus + ', ' + e;
+                error("Request Failed: " + err);
+            });
+	});
+	
+	function renderDCGResult(data, position) {
+		$("#dcg").append($("<li>").html("dcg: " + data.dcg))
+		.append($("<li>").html("precision: " + data.precision))
+		.append(renderDCGDetails(data.details, position))
+	}
+	
+	function renderDCGDetails(details, position) {
+		var ul = $("<ul>");
+		console.log(details);
+		for(var i = 0; i < details.length; i++) {
+		    var d = details[i];
+			var oneDetail = renderOneQueryDCG(d, position)
+			ul.append($("<li>").append(oneDetail))
+		}
+		return ul;
+	}
+	
+	function renderOneQueryDCG(queryDCG, position) {
+	    console.log(queryDCG);
+	    var querySpan = renderQuery(queryDCG.query, queryDCG.active, position);
+		return $("<ul>").append($("<li>").append(querySpan))
+				.append($("<li>").html("dcg: " + queryDCG.dcg))
+				.append($("<li>").html("precision: " + queryDCG.precision))
+				.append($("<li>").html("active: " + queryDCG.active));
+	}
+	
+	function renderQuery(query, active, position) {
+	    var anchor = $("<a>").attr("href", "/?q=" + encodeURIComponent(query))
+				.attr("target", "_blank")
+				.text(query);
+	    if(active < position) {
+	    	anchor.attr("class", "btn btn-danger");
+	    } else {
+	    	anchor.attr("class", "btn");
+	    }
+	    return anchor;
+	}
+	
+	function getParameterByName(name) {
+		name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
+		return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+	</script>
+</html>
