@@ -54,7 +54,9 @@ class WikiXMLScanner(
     var status = Status.OTHER
     var pageCount = 0
     var begin = System.currentTimeMillis()
-    while (streamReader.hasNext()) {
+    var isExit = false
+    val maxFormulaCount = Settings.getInt("index.max_formula_count")
+    while (!isExit && streamReader.hasNext()) {
       streamReader.next() match {
         case XMLStreamConstants.START_ELEMENT =>
           streamReader.getLocalName() match {
@@ -96,6 +98,9 @@ class WikiXMLScanner(
                 println(pageCount)
                 begin = end;
               }
+              if(FormulaDocument.ID.get >= maxFormulaCount) {
+                isExit = true
+              }
             case "text" =>
               status = Status.PAGE
             case "title" =>
@@ -129,6 +134,7 @@ class WikiXMLScanner(
     pageWriter.close
     println("Pages: " + WikiPage.ID)
     println("Formulas: " + FormulaDocument.ID)
+    println("Error: " + ErrorCount.count)
     exit
   }
 
@@ -198,6 +204,10 @@ case class WikiPage(val title: String, text: String) {
 object WikiPage {
   val ID = new AtomicLong(0)
   val MATH = """(?s)\<math\>(.*?)\</math\>""".r
+}
+
+object ErrorCount {
+  val count = new AtomicLong(0)
 }
 
 object IndexApp {

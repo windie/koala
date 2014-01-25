@@ -361,6 +361,7 @@ class ReconstructExpressionVistor extends TreeVisitor {
       case "*" => 4
       case "/" => 4
       case "%" => 4 // TODO
+      case "mod" => 4
       case "<" => 6
       case ">" => 6
       case "<=" => 6 // TODO
@@ -625,7 +626,11 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
         parser.parse(mathml, tokens)
       } catch {
         case e: Throwable => {
-          println("find error: latex " + e.getMessage())
+          ErrorCount.count.incrementAndGet()
+          if (!e.isInstanceOf[NullPointerException]) {
+            println(latex)
+            e.printStackTrace
+          }
         }
       }
     }
@@ -1008,3 +1013,4 @@ object FinalResult {
   val formulaWeight = Settings.getDouble("webserver.formula_weight")
   val pageWeight = Settings.getDouble("webserver.page_weight")
 }
+

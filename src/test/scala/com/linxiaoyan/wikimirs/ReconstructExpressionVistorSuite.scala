@@ -88,6 +88,11 @@ class ReconstructExpressionVistorSuite extends FunSuite {
     val mo = convert("\\geq")
     assertEquals(6, visitor.priority(null, mo))
   }
+
+  test("latex: \\pmod") {
+    val mo = convert("\\pmod")
+    assertEquals(4, visitor.priority(null, mo))
+  }
   //  test("latex: ==") {
   //    val mo = convert("==")
   //    assertEquals(6, visitor.priority(null, mo))
