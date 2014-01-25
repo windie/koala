@@ -18,7 +18,7 @@ object Perf extends App {
   var count = 0
 
   val times = ListBuffer[Double]()
-  for (query <- Source.fromFile(Settings.getString("perf.query_file")).getLines.filterNot(_.isEmpty)) {
+  for (query <- PerfQuerySuite.allQueries) {
     val time = getQueryTime(query)
     minTime = minTime min time
     maxTime = maxTime max time
@@ -36,6 +36,7 @@ object Perf extends App {
     sortedTimes(sortedTimes.size / 2)
   }
 
+  println("query: " + count)
   println("min: " + minTime)
   println("max: " + maxTime)
   println("mean:" + meanTime)
@@ -50,6 +51,76 @@ object Perf extends App {
       (Json.parse(json) \ "time").as[String].toDouble
     } finally {
       input.close()
+    }
+  }
+}
+
+
+import com.sleepycat.je.EnvironmentConfig
+import java.io.File
+import com.sleepycat.je.Environment
+import com.sleepycat.je.DatabaseConfig
+import com.sleepycat.je.Database
+import com.sleepycat.je.DatabaseEntry
+import com.sleepycat.je.LockMode
+import com.sleepycat.je.OperationStatus
+import play.api.libs.json.Json
+import play.api.libs.json.JsArray
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
+import java.nio.charset.Charset
+import scala.collection.mutable.ListBuffer
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+
+object PerfQuerySuite {
+
+  case class LabelValue(url: String, relevance: Int)
+
+  implicit val labelValueReads = Json.reads[LabelValue]
+  implicit val labelValueWrites = Json.writes[LabelValue]
+
+  private val UTF8 = Charset.forName("UTF-8")
+
+  private val db = connect
+
+  private def connect: Database = {
+    val file = new File(Settings.getString("label.dir"))
+    if (!file.exists()) {
+      file.mkdirs()
+    }
+
+    val envConfig = new EnvironmentConfig
+    envConfig.setAllowCreate(true)
+    envConfig.setTransactional(true)
+    envConfig.setReadOnly(true)
+
+    val env = new Environment(file, envConfig)
+    env.openDatabase(null, "label", createDatabaseConfig);
+  }
+
+  private def createDatabaseConfig: DatabaseConfig = {
+    val dbConfig = new DatabaseConfig()
+    dbConfig.setAllowCreate(true)
+    dbConfig.setTransactional(true)
+    dbConfig.setReadOnly(true)
+    dbConfig
+  }
+
+  def allQueries: List[String] = {
+    synchronized {
+      val cursor = db.openCursor(null, null)
+      try {
+        val key = new DatabaseEntry
+        val value = new DatabaseEntry
+        val queries = ListBuffer[String]()
+        while (cursor.getNext(key, value, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+          queries += new String(key.getData(), UTF8)
+        }
+        queries.toList
+      } finally {
+        cursor.close()
+      }
     }
   }
 }
