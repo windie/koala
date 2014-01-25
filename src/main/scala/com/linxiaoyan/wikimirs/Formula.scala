@@ -875,7 +875,7 @@ class PageSearcher(dir: Directory) extends Logging {
 }
 
 object FormulaSearcher extends Logging {
-
+  
   val formulaSearcher = {
     val dir = new RAMDirectory(new MMapDirectory(new File(Settings.getString("index.formula_dir"))), IOContext.READ)
     new FormulaSearcher(dir)
@@ -957,7 +957,8 @@ object FormulaSearcher extends Logging {
             case None => ""
           }
         },
-        "results" -> Json.arr())
+        "results" -> Json.arr(),
+        "time" -> ((endTime - beginTime) / 1000.0).toString)
     }
   }
 }

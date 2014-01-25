@@ -209,5 +209,8 @@ object HttpServer {
   def main(args: Array[String]) {
     val server = new HttpServer(Settings.getInt("webserver.port"))
     server.start
+    Thread.sleep(2000)
+    // Force to warm up the server
+    Perf.getQueryTime("a + b")
   }
 }
