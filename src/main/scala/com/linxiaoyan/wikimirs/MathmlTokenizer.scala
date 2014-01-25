@@ -9,7 +9,6 @@ trait MathmlNode extends Ordered[MathmlNode] {
 
   def children: List[MathmlNode]
   def compare(that: MathmlNode) = {
-    // TODO improve the performance
     this.toString.compare(that.toString)
   }
 }

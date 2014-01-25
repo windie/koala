@@ -358,6 +358,7 @@ class ReconstructExpressionVistor extends TreeVisitor {
         } else {
           5
         }
+      case "&not;" => 2
       case "*" => 4
       case "/" => 4
       case "%" => 4 // TODO
@@ -370,8 +371,8 @@ class ReconstructExpressionVistor extends TreeVisitor {
       case ">=" => 6 // TODO
       case "==" => 7 // TODO
       case "!=" => 7 // TODO
-      case "&&" => 8 // TODO
-      case "||" => 9 // TODO
+      case "&vee;" => 8
+      case "&wedge;" => 9
       case _ => 100
     }
   }
@@ -379,13 +380,37 @@ class ReconstructExpressionVistor extends TreeVisitor {
 
 class ReorderOperantsVisitor extends TreeVisitor {
   def visit(node: MathmlNode): MathmlNode = node match {
-    case operator: MO if (operator.text == "+" || operator.text == "*") &&
-      operator.children.size == 2 &&
-      operator.children(0) > operator.children(1) =>
+    case operator: MO =>
       {
-        val children = List(operator.children(1), operator.children(0))
-        new MO(operator.text, children)
+        val children = node.children
+        if (children.isEmpty) {
+          node
+        } else {
+          val newChildren = ListBuffer[MathmlNode]()
+          for (child <- children) {
+            newChildren += visit(child)
+          }
+          if ((operator.text == "+" || operator.text == "*") &&
+            newChildren.size == 2 &&
+            newChildren(0) > newChildren(1)) {
+            new MO(operator.text, List(newChildren(1), newChildren(0)))
+          } else {
+            new MO(operator.text, newChildren.toList)
+          }
+        }
       }
+    case node: MathmlTag => {
+      val children = node.children
+      if (children.isEmpty) {
+        node
+      } else {
+        val newChildren = ListBuffer[MathmlNode]()
+        for (child <- children) {
+          newChildren += visit(child)
+        }
+        new MathmlTag(node.parent, node.tag, newChildren)
+      }
+    }
     case node => node
   }
 }
@@ -562,6 +587,8 @@ object WikimirsPackage {
       p.addSimpleMathCommand("mod", new MathOperatorInterpretation("mod"))
       p.addSimpleMathCommand("pmod", new MathOperatorInterpretation("mod"))
       p.addSimpleMathCommand("bmod", new MathOperatorInterpretation("mod"))
+      p.addSimpleMathCommand("to", new MathOperatorInterpretation("&ShortRightArrow;"))
+      p.addSimpleMathCommand("choose", new MathOperatorInterpretation("choose"))
       p.addSimpleMathCommand("dots", new MathIdentifierInterpretation(MathMLSymbol.CDOTS))
       p
     }
@@ -875,7 +902,7 @@ class PageSearcher(dir: Directory) extends Logging {
 }
 
 object FormulaSearcher extends Logging {
-  
+
   val formulaSearcher = {
     val dir = new RAMDirectory(new MMapDirectory(new File(Settings.getString("index.formula_dir"))), IOContext.READ)
     new FormulaSearcher(dir)
