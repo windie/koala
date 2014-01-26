@@ -54,6 +54,7 @@ import org.apache.lucene.search.IndexSearcher
 import com.typesafe.scalalogging.slf4j.Logging
 import org.apache.lucene.store._
 import com.linxiaoyan.wikimirs.LatexToMathml
+import com.linxiaoyan.wikimirs.FormulaDocument
 
 case class MockResult(val formula: String, val title: String) {
 
@@ -61,7 +62,7 @@ case class MockResult(val formula: String, val title: String) {
     Json.obj(
       "doc" ->
         Json.obj(
-          "formula_id" -> 0,
+          "formula_id" -> FormulaDocument.ID.incrementAndGet(),
           "formula" -> formula,
           "doc_id" -> 0,
           "doc_title" -> title,
@@ -77,21 +78,26 @@ object MockSearch extends Logging {
 
   val mockResults = {
     val mockResults = scala.collection.mutable.Map[String, List[MockResult]]()
-    val iter = scala.io.Source.fromFile("mock.txt").getLines
+    val iter = scala.io.Source.fromFile("result.txt")("UTF-8").getLines
     while (iter.hasNext) {
       val query = iter.next
-      val result = (0 until 1) map { _ =>
+      println(query)
+      val result = ListBuffer[MockResult]()
+      require(iter.hasNext)
+      var formula = iter.next
+      while (!formula.isEmpty) {
         require(iter.hasNext)
-        val formula = iter.next
+        val url = iter.next
         require(iter.hasNext)
         val title = iter.next
-        MockResult(formula, title)
+        result += MockResult(formula, title)
+        formula = iter.next
       }
       mockResults += query -> result.toList
     }
     mockResults.toMap
   }
-
+  
   def search(query: String, page: Int, pageSize: Int) = {
     if (page <= 0) {
       throw new IllegalArgumentException("page <= 0")
