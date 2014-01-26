@@ -76,7 +76,7 @@ class MO(val text: String, val children: List[MathmlNode] = List[MathmlNode]()) 
 class MS(text: String) extends NaiveNode(text, "ms") {
 }
 
-class MathmlTokenizer {
+class MathmlTokenizer(val enableGen: Boolean = true) {
 
   def toTokens(node: MathmlNode, tokens: ListBuffer[FormulaTerm]) {
     toTokens(node, 1, tokens);
@@ -99,7 +99,9 @@ class MathmlTokenizer {
       val generalized = node.tagString(getChildrenTagString(node))
       val nonGeneralized = node.tagString(getChildrenString(node))
       if (!generalized.equals(nonGeneralized)) {
-        tokens += new FormulaTerm(generalized, level, true)
+        if (enableGen) {
+          tokens += new FormulaTerm(generalized, level, true)
+        }
       }
       tokens += new FormulaTerm(nonGeneralized, level, false)
       node.children.foreach {
@@ -124,7 +126,9 @@ class MathmlTokenizer {
       }
       if (!skipThisNode) {
         if (!generalized.equals(nonGeneralized)) {
-          tokens += new FormulaTerm(generalized, level, true);
+          if (enableGen) {
+            tokens += new FormulaTerm(generalized, level, true)
+          }
         }
         tokens += new FormulaTerm(nonGeneralized, level, false);
       }

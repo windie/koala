@@ -437,9 +437,10 @@ class MathmlBuilder {
 class MathmlParser(
   enableAdjustTree: Boolean = false,
   enableReconstructExpression: Boolean = false,
-  enableReorderOperants: Boolean = false) {
+  enableReorderOperants: Boolean = false,
+  enableGen : Boolean = true) {
 
-  private val tokenizer = new MathmlTokenizer
+  private val tokenizer = new MathmlTokenizer(enableGen)
 
   private[this] val visitors = {
     val visitors = ListBuffer[TreeVisitor]()
@@ -629,7 +630,8 @@ class FormulaTokenizer(_input: Reader) extends Tokenizer(_input) {
   private val parser = new MathmlParser(
     enableAdjustTree = Settings.getBoolean("index.enableAdjustTree"),
     enableReconstructExpression = Settings.getBoolean("index.enableReconstructExpression"),
-    enableReorderOperants = Settings.getBoolean("index.enableReorderOperants"))
+    enableReorderOperants = Settings.getBoolean("index.enableReorderOperants"),
+    enableGen = Settings.getBoolean("index.enableGen"))
 
   override def incrementToken = {
     if (tokens.isEmpty) {
