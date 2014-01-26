@@ -16,6 +16,7 @@ import com.typesafe.config.ConfigFactory
 
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLStreamConstants
+import com.linxiaoyan.wikimirs.lab.LabIndexWriter
 
 case class Finish()
 case class Stop()
@@ -27,8 +28,8 @@ case class Stop()
  * @see <a href="http://en.wikipedia.org/wiki/Help:Export">Help:Export</a>
  */
 class WikiXMLScanner(
-  formulaWriter: FormulaIndexWriter,
-  pageWriter: PageIndexWriter,
+  labWriter: LabIndexWriter,
+//  pageWriter: PageIndexWriter,
   xmlFile: File,
   parallel: Int = 4) extends Actor {
 
@@ -37,7 +38,7 @@ class WikiXMLScanner(
   xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 
   private val workers: Seq[IndexWorker] = (0 until parallel) map { x =>
-    val worker = new IndexWorker(formulaWriter, pageWriter, this)
+    val worker = new IndexWorker(labWriter, this)
     worker.start
     this ! worker
     worker
@@ -130,8 +131,7 @@ class WikiXMLScanner(
         }
       }
     }
-    formulaWriter.close
-    pageWriter.close
+    labWriter.close
     println("Pages: " + WikiPage.ID)
     println("Formulas: " + FormulaDocument.ID)
     println("Error: " + ErrorCount.count)
@@ -145,16 +145,14 @@ class WikiXMLScanner(
 }
 
 class IndexWorker(
-  formulaWriter: FormulaIndexWriter,
-  pageWriter: PageIndexWriter,
+  labWriter: LabIndexWriter,
   scanner: WikiXMLScanner) extends Actor {
 
   def act() {
     loop {
       react {
         case page: WikiPage => {
-          formulaWriter.add(page)
-          pageWriter.add(page)
+          labWriter.add(page)
           scanner ! this
         }
         case Stop => {
@@ -222,10 +220,9 @@ object IndexApp {
 
   def main(args: Array[String]) {
     val parallel = Settings.getInt("index.parallel")
-    val formulaWriter = new FormulaIndexWriter(getFSDirectory("index.formula_dir"))
-    val pageWriter = new PageIndexWriter(getFSDirectory("index.page_dir"))
+    val labWriter = new LabIndexWriter(getFSDirectory("index.page_dir"))
     val data = new File(Settings.getString("index.wikipedia_export_file"));
-    val scanner = new WikiXMLScanner(formulaWriter, pageWriter, data, parallel)
+    val scanner = new WikiXMLScanner(labWriter, data, parallel)
     scanner.start
   }
 }

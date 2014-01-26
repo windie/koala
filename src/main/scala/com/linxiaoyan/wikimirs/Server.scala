@@ -158,7 +158,7 @@ class SearchService extends Service {
     }
 
     try {
-      val json = FormulaSearcher.search(query, page, pageSize)
+      val json = com.linxiaoyan.wikimirs.lab.LabSearcher.search(query, page, pageSize)
       Json.stringify(json)
     } catch {
       case e: Throwable => {
