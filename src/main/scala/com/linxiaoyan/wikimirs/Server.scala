@@ -74,8 +74,13 @@ class DCGService extends Service {
     val active = relevances.count(_ > 0)
     val dcg = relevances.zipWithIndex.map({
       case (r, i) =>
+        if(r > 0) {
         val p = i + 1
         pow(2.0, r) - 1.0 / (log(p + 1.0) / log(2.0))
+        }
+        else {
+          0
+        }
     }).sum
     val relevanceCount = relevances.count(_ > 1)
     (dcg, active, relevanceCount)
