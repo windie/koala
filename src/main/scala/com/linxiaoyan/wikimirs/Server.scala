@@ -146,6 +146,7 @@ class LabelService extends Service {
 
 @Path("/api/search")
 class SearchService extends Service {
+  import com.linxiaoyan.wikimirs.mock.MockSearch
 
   @GET
   @Path("{query}/{page}")
@@ -158,7 +159,7 @@ class SearchService extends Service {
     }
 
     try {
-      val json = FormulaSearcher.search(query, page, pageSize)
+      val json = MockSearch.search(query, page, pageSize)
       Json.stringify(json)
     } catch {
       case e: Throwable => {
