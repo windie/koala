@@ -27,6 +27,7 @@ import play.api.libs.json.JsArray
 import scala.math._
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import com.linxiaoyan.wikimirs.mock.MockSearch
 
 trait Service extends Logging {
   protected def handleError(message: String): String = {
@@ -65,7 +66,7 @@ class DCGService extends Service {
   }
 
   private[this] def calcDCG(query: String, rankPosition: Int): (Double, Int, Int) = {
-    val json = FormulaSearcher.search(query, 1, rankPosition)
+    val json = MockSearch.search(query, 1, rankPosition)
     val relevances = (json \ "results").asInstanceOf[JsArray].value.map({
       o =>
         (o \ "doc" \ "doc_url").as[String]
@@ -75,7 +76,12 @@ class DCGService extends Service {
     val dcg = relevances.zipWithIndex.map({
       case (r, i) =>
         val p = i + 1
-        pow(2.0, r) - 1.0 / (log(p + 1.0) / log(2.0))
+        if(r > 0) {
+           pow(2.0, r) - 1.0 / (log(p + 1.0) / log(2.0))
+        }
+        else {
+           0
+        }
     }).sum
     val relevanceCount = relevances.count(_ > 1)
     (dcg, active, relevanceCount)

@@ -19,6 +19,7 @@ object Perf extends App {
 
   val times = ListBuffer[Double]()
   for (query <- PerfQuerySuite.allQueries) {
+    println(query)
     val time = getQueryTime(query)
     minTime = minTime min time
     maxTime = maxTime max time
