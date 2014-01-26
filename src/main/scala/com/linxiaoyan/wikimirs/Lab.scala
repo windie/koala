@@ -514,8 +514,8 @@ object LabSearcher extends Logging {
     Json.obj(
       "doc" ->
         Json.obj(
-          "formula_id" -> 0,
-          "formula" -> "",
+          "formula_id" -> com.linxiaoyan.wikimirs.FormulaDocument.ID.incrementAndGet(),
+          "formula" -> doc.get("formula").split('\0').toList,
           "doc_id" -> doc.get("doc_id"),
           "doc_title" -> pageTitle,
           "doc_url" -> {

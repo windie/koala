@@ -188,7 +188,9 @@
 				search_results_div.append(renderOneResult(data.query, this));
 			});
 			$.each(data.results, function() {
-				renderFormula("formula" + this.doc.formula_id, this.doc.formula);
+			    for(var i = 0;i < this.doc.formula.length; i++) {
+			    	renderFormula("formula_" + this.doc.formula_id + "_" + i, this.doc.formula[i]);
+			    }
 			});
 			setPage(data.query, data.page, data.pageSize, data.total);
 		}
@@ -207,7 +209,15 @@
 		
 		wrapper.append($("<div>").append(title_anchor));
 		wrapper.append($("<div>").text(score));
-		wrapper.append($("<div id='formula" + result.doc.formula_id + "'>"));
+		var formulasDiv = $("<div>")
+		var i = 0;
+		$.each(formula, function() {
+		    var fDiv = $("<div id='formula_"+result.doc.formula_id+"_"+i+"'>");
+		    formulasDiv.append(fDiv);
+		    i++;
+		});
+		console.log(formulasDiv.html())
+		wrapper.append(formulasDiv);
 		var explain = $("<div>").html(explain);
 		explain.hide();
 		
