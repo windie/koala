@@ -73,10 +73,11 @@ class DCGService extends Service {
       .map(p => LabelStorager().get(new LabelUnit(query, p)))
     val active = relevances.count(_ > 0)
     val dcg = relevances.zipWithIndex.map({
-      case (r, i) =>
+      case (r, index) =>
         if(r > 0) {
-        val p = i + 1
-        pow(2.0, r) - 1.0 / (log(p + 1.0) / log(2.0))
+          val i = index + 1
+          val rel = r - 1
+          (pow(2.0, rel) - 1.0) / (log(i + 1.0) / log(2.0))
         }
         else {
           0
