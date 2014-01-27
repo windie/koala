@@ -65,6 +65,7 @@
 	function renderDCGResult(data, position) {
 		$("#dcg").append($("<li>").html("dcg: " + data.dcg))
 		.append($("<li>").html("precision: " + data.precision))
+		.append($("<li>").html("size: " + data.details.length))
 		.append(renderDCGDetails(data.details, position))
 	}
 	
