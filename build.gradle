@@ -80,3 +80,8 @@ task perf(type: JavaExec, dependsOn: build) {
   classpath sourceSets.main.runtimeClasspath
   classpath configurations.runtime
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
+
