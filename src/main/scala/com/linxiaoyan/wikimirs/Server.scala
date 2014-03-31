@@ -41,7 +41,7 @@ trait Service extends Logging {
   }
 }
 
-@Path("/api/dcg")
+//@Path("/api/dcg")
 class DCGService extends Service {
 
   case class QueryDCG(query: String, dcg: Double, active: Int, precision: Double)
@@ -88,7 +88,7 @@ class DCGService extends Service {
   }
 }
 
-@Path("/api/label")
+//@Path("/api/label")
 class LabelService extends Service {
 
   @PUT
