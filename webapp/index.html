@@ -152,7 +152,7 @@
 	function search(query, page, pageSize, noload) {
 		var getParamter = "query=" + encodeURIComponent(query) + "&page=" + encodeURIComponent(page) + "&pageSize=" + encodeURIComponent(pageSize);
 		var parameter = encodeURIComponent(query) + "/" + page + "?size=" + pageSize;
-		var url = "/api/search/" + parameter;
+		var url = "api/search/" + parameter;
 		$.get(url, function(data) {
 			console.log(data)
 			if (data.status == "OK") {
@@ -166,14 +166,14 @@
 				if(noload) {
 				}
 				else {
-					window.history.pushState(data, query + " - Wikimirs", "/?" + getParamter);
+					window.history.pushState(data, query + " - Wikimirs", window.location.pathname + "?" + getParamter);
 				}
 			}
 			else {
 				error("Request Failed: " + data.status);
 			}
-		}).fail(function( jqxhr, textStatus, error ) {
-			var err = textStatus + ', ' + error;
+		}).fail(function( jqxhr, textStatus, e ) {
+			var err = textStatus + ', ' + e;
 			error("Request Failed: " + err);
 		});
 	}

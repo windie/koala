@@ -43,7 +43,7 @@
 	    if(!position) {
 	    	position = 10
 	    }
-		var url = "/api/dcg/" + encodeURIComponent(position);
+		var url = "api/dcg/" + encodeURIComponent(position);
         $.ajax({
             type: "GET",
             url: url
@@ -90,7 +90,7 @@
 	}
 	
 	function renderQuery(query, active, position) {
-	    var anchor = $("<a>").attr("href", "/?q=" + encodeURIComponent(query))
+	    var anchor = $("<a>").attr("href", window.location.pathname + "?q=" + encodeURIComponent(query))
 				.attr("target", "_blank")
 				.text(query);
 	    if(active < position) {
