@@ -90,7 +90,7 @@
 	}
 	
 	function renderQuery(query, active, position) {
-	    var anchor = $("<a>").attr("href", "/?q=" + encodeURIComponent(query))
+	    var anchor = $("<a>").attr("href", window.location.pathname + "?q=" + encodeURIComponent(query))
 				.attr("target", "_blank")
 				.text(query);
 	    if(active < position) {

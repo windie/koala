@@ -164,7 +164,7 @@
 				if(noload) {
 				}
 				else {
-					window.history.pushState(data, query + " - Wikimirs", "/?" + getParamter);
+					window.history.pushState(data, query + " - Wikimirs", window.location.pathname + "?" + getParamter);
 				}
 			}
 			else {
