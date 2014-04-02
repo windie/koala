@@ -1,0 +1,10 @@
+Labeled resutls for each system contains:
+1) Average DCG of this system;
+2) Average precision of this system;
+3) Details of the result. 100 query and its results on this system are recorded. For each query, the following contents are recorded:
+   a) The query string in LaTeX;
+   b) DCG of this query;
+   c) "Active" is an attribute for our label system. Please just ignore it;
+   d) Precision of this query;
+   e) The top 10 results in order returned by this system. 
+      Note: There will be- less than 10 results for some queries, if this system returns less than 10 results in total.  

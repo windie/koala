@@ -1,0 +1,3605 @@
+{
+  "dcg" : 3.7471514156479504,
+  "precision" : 0.33900000000000013,
+  "details" : [ {
+    "query" : " (\\neg q \\vee \\neg q) \\leftrightarrow (p \\to \\neg q)",
+    "dcg" : 2.9938917550369584,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Boolean_data_type",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/File%3ABinary_Boolean_Expression_Tree.JPG",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_fallacies",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Clarence_Irving_Lewis",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Falsifiability",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Binary_expression_tree",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2007_June_30",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Horn-satisfiability",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Template%3ALogical_connectives",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Validity",
+      "score" : 1
+    } ]
+  }, {
+    "query" : " (a-b)^2 = a^2+b^2-2ab",
+    "dcg" : 1.516765608811647,
+    "active" : 10,
+    "precision" : 0.2,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2008_December_18",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/HAL%2FS",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Rook%27s_graph",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Operation_%28mathematics%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Convexoid_operator",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 1
+    } ]
+  }, {
+    "query" : " (x \\oplus y) = (x+7)(x+4) - 6k",
+    "dcg" : 1.3060353928910655,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Variable_%28mathematics%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Operation_%28mathematics%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Differential_%28mechanical_device%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mixed_anomaly",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    } ]
+  }, {
+    "query" : " \\int \\frac{\\sin x}{x}dx",
+    "dcg" : 3.3162174160295748,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Mayflower_Compact",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AVillage_pump_%28proposals%29%2FArchive_63",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Coriolis_frequency",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/The_Analyst",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Functional_programming",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Geodesic_dome",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Truncation_error",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Dynamic_method",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2010_May_17",
+      "score" : 2
+    } ]
+  }, {
+    "query" : " \\neg(p \\vee q) \\vee (\\neg p \\wedge q) = \\neg p",
+    "dcg" : 2.1592241531738425,
+    "active" : 10,
+    "precision" : 0.2,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Boolean_data_type",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/File%3ABinary_Boolean_Expression_Tree.JPG",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Binary_expression_tree",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Dialetheism",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Duality_%28order_theory%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Absorption_law",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Boolean_prime_ideal_theorem",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Power_domains",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Template%3AOr-",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_fallacies",
+      "score" : 3
+    } ]
+  }, {
+    "query" : " a \\equiv b \\pmod n",
+    "dcg" : 17.73975571570513,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Propargyl",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AHelp_desk%2FArchive_55",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Template%3AIdent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Acetylenic",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Ternary_relation",
+      "score" : 5
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MU_puzzle",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Kaprekar_number",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Congruence_relation",
+      "score" : 5
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Triple_bar",
+      "score" : 5
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Boolean_data_type",
+      "score" : 1
+    } ]
+  }, {
+    "query" : " {6.7}^n - {2.3}^n",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Primitive_data_type",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Resistor_ladder",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2013_January_18",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Code_coverage",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Bitcrusher",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/PPP_%28complexity%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "((p \\to (q \\to r)) \\to ((p \\to q) \\to (p \\to r)))",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Mergelyan%27s_theorem",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hepatic_fructokinase",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cellular_waste_product",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comparison_of_optimization_software",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hole_argument",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_optimization_software",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AVillage_pump_%28proposals%29%2FArchive_Q",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Triangulation_%28topology%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Carath%C3%A9odory%27s_theorem_%28conformal_mapping%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Oxygen_evolution",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "(a^2+b^2+c^2)^2 = 2(a^4+b^4+c^4)",
+    "dcg" : 2.4229594277916364,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FScience%2F2009_August_7",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/HAL%2FS",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lam%C3%A9%27s_special_quartic",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "(n-m) \\mid (n^k-m^k)",
+    "dcg" : 3.8233731975204703,
+    "active" : 10,
+    "precision" : 0.8,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2008_December_18",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Convexoid_operator",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions%2F2007%2FNovember",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Unit_interval",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FComputing%2F2008_October_31",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "(p \\leftrightarrow q)",
+    "dcg" : 4.515449934959718,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Phosphagen",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Digital_signature",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Template%3AEqv",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Yttria-stabilized_zirconia",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Effects_of_global_warming_on_human_health",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Solubility_pump",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AWikiProject_Wiki_Syntax",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Katapayadi_system",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Biconditional_introduction",
+      "score" : 5
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Template%3ALogical_connectives",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "(p \\vee q) \\wedge (p \\to r) \\wedge (p \\to r) \\to r",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Philosophy_of_language",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mergelyan%27s_theorem",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hepatic_fructokinase",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cellular_waste_product",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comparison_of_optimization_software",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hole_argument",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_optimization_software",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AVillage_pump_%28proposals%29%2FArchive_Q",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Triangulation_%28topology%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Carath%C3%A9odory%27s_theorem_%28conformal_mapping%29",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "(p-1)! \\equiv -1 (\\mod {p})",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions%2F2007%2FNovember",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Extensible_automorphism",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2008_December_18",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Propargyl",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AHelp_desk%2FArchive_55",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "(x+y)\\times\\frac{a}{b}",
+    "dcg" : 9.969848414582401,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Category%3ARational_numbers",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Large_Plasma_Device",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Estadio_de_B%C3%A9isbol_Francisco_I._Madero",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/AC0",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Solar_eclipse_of_March_9%2C_1997",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Caroline_era",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Preordered_class",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Operation_%28mathematics%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AHelp_desk%2FArchive_24",
+      "score" : 4
+    } ]
+  }, {
+    "query" : "(x^2+1)^2",
+    "dcg" : 2.8426174664974155,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Prettyprint",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/HAL%2FS",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2011_May_29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gilbreath_shuffle",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "(z + y + x)^2",
+    "dcg" : 4.342412508735885,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perfect_spline",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perles_configuration",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Algebraic_structure",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "1+\\tan^2x",
+    "dcg" : 0.3333333333333333,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perfect_spline",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perles_configuration",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Algebraic_structure",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "1+x+x^2+x^3+\\ldots \\:",
+    "dcg" : 2.663054574231909,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perfect_spline",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perles_configuration",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Algebraic_structure",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "1+x+x^2+x^3=y",
+    "dcg" : 0.6164948724497099,
+    "active" : 10,
+    "precision" : 0.2,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Differential_%28mechanical_device%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mixed_anomaly",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "1.1!+\\dots+n.n! = (n+1)!",
+    "dcg" : 4.210318626022307,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Change_ringing",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Method_ringing",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Moore_reduction_procedure",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Equidissection",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "10 \\sin^2(\\theta) - 13 \\sin(\\theta) - 3 = 0",
+    "dcg" : 6.585873470211864,
+    "active" : 10,
+    "precision" : 0.9,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Truncation_error",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Geodesic_dome",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Dubins_path",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hypotrochoid",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cl%C3%A9lies",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Epitrochoid",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Coriolis_frequency",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Orwaldo%27s_gablet",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Isotropic_radiator",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Neutron_reflectometry",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "2+4+\\dots+2n=n(n+1)",
+    "dcg" : 1.817795604475628,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Moore_reduction_procedure",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Differential_%28mechanical_device%29",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "3x^2 + 2x",
+    "dcg" : 2.1971602105369157,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Prettyprint",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/HAL%2FS",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2011_May_29",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gilbreath_shuffle",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "7x + 5y = 3 \\pmod 4",
+    "dcg" : 2.2689773034365897,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Differential_%28mechanical_device%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mixed_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Luigi_Pasinetti",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Message_authentication_code",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/HAL%2FS",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "F_{n}^{2}-(F_{n+1})(F_{n-1})=(-1)^{n-1}",
+    "dcg" : 3.8556765351898226,
+    "active" : 10,
+    "precision" : 0.8,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Nondeterministic_finite_automaton",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Proximity_search_%28text%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions%2F2007%2FNovember",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Extensible_automorphism",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cyclic_cellular_automaton",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "O(n!) \\in O(n^n)",
+    "dcg" : 3.6166835934970365,
+    "active" : 10,
+    "precision" : 0.6,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Change_ringing",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Method_ringing",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Natalya_Gorbanevskaya",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Equidissection",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Local_feature_size",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Inflation-restriction_exact_sequence",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ATemplates_for_deletion%2FLog%2F2009_August_27",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mahlo_cardinal",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Algebraic_group",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FComputing%2F2011_August_20",
+      "score" : 3
+    } ]
+  }, {
+    "query" : "T(n) = T(n-1) + T(n-2)",
+    "dcg" : 20.718809558500773,
+    "active" : 10,
+    "precision" : 0.9,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AArticles_for_creation%2F2007-04-08",
+      "score" : 5
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Interlingual_machine_translation",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Nondeterministic_finite_automaton",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Proximity_search_%28text%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions%2F2007%2FNovember",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Extensible_automorphism",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/L-system",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Knight%27s_graph",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "X^2 + Y^2 = Z^2",
+    "dcg" : 4.220186140567875,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Formation_and_evolution_of_the_Solar_System",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Diophantine_graph",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/HAL%2FS",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Covariance_and_contravariance_%28computer_science%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/LiveMath",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Danica_McKellar",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FScience%2F2009_August_7",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Two-dimensional_space",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Theodorus_of_Cyrene",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Ram_pressure",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "X^2 = 10^X",
+    "dcg" : 2.9356819553004776,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Luigi_Pasinetti",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/LiveMath",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Pirin%C3%A7lik_Air_Base",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Residual_value",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Two-dimensional_space",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Theodorus_of_Cyrene",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Ram_pressure",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Kerberos_%28moon%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/One-dimensional_space",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "X^n + Y^n = Z^n",
+    "dcg" : 16.894939644978184,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Portal%3AMathematics%2FSelected_article%2F16",
+      "score" : 5
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_articles%2FMathematics",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Sergey_Yablonsky",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cousin%27s_theorem",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Total_ionic_strength_adjustment_buffer",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Complex_convexity",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "[A \\to (B\\vee C)] \\wedge C \\to (A \\to B)",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Philosophy_of_language",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mergelyan%27s_theorem",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hepatic_fructokinase",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cellular_waste_product",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comparison_of_optimization_software",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hole_argument",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_optimization_software",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AVillage_pump_%28proposals%29%2FArchive_Q",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Triangulation_%28topology%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Carath%C3%A9odory%27s_theorem_%28conformal_mapping%29",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\arctan(x)=x-\\frac{x^3}{3}+\\frac{x^5}{5}-\\frac{x^7}{7}+\\cdots.",
+    "dcg" : 0.38685280723454163,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2011_May_29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Operation_%28mathematics%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Truncation_error",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lost_time",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Bulgarian_solitaire",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Indian_inventions_and_discoveries",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\begin{vmatrix} x & a & b \\\\ b & x & a \\\\ a & b & x \\end{vmatrix}",
+    "dcg" : 6.56037377912411,
+    "active" : 10,
+    "precision" : 0.6,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Geodesy",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Linear_algebraic_group",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/WORHP",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mumford%E2%80%93Tate_group",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Antiisomorphism",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Classical_dichotomy",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Pappus%27s_hexagon_theorem",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2006_December_2",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Truncated_power_function",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Biaxial_nematic",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "\\cos x \\sin x",
+    "dcg" : 6.680802460736478,
+    "active" : 10,
+    "precision" : 1.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Crank_%28mechanism%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Language_of_mathematics",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Yao_graph",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cardinal_point_%28optics%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cl%C3%A9lies",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Dubins_path",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Coriolis_frequency",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2012_June_6",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Ambisonic_decoding",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "\\cos(y + x) =",
+    "dcg" : 0.38685280723454163,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Reactive_programming",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Crank_%28mechanism%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Differential_%28mechanical_device%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mixed_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\exp \\sum_{t} \\lambda f(t, Q, t) \\frac{1}{z_\\lambda (Q)}",
+    "dcg" : 1.4981242325251207,
+    "active" : 10,
+    "precision" : 0.2,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AFeatured_picture_candidates%2FLyapunov_Fractal",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AArticles_for_creation%2F2006-01-23",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Franz_Rellich",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Atmospheric_thermodynamics",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Back_injury",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Absolutely_simple_group",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Strictly_simple_group",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Pauling%27s_rules",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/William_Huggins",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Molecular_replacement",
+      "score" : 3
+    } ]
+  }, {
+    "query" : "\\frac{0}{0}",
+    "dcg" : 6.051225358852807,
+    "active" : 10,
+    "precision" : 0.7,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AArticles_for_deletion%2FA_Bad_Dream",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AManual_of_Style%2FDates_and_numbers",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gordon_Jenkins",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2013_March_22",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AAdministrators%27_noticeboard%2FArchive79",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/DVB-T",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk_archive%2FScience%2F2006_June_22",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequests_for_adminship%2FAitias_2",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Celsius",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Vienna_Standard_Mean_Ocean_Water",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "\\frac{\\tan \\frac{A-B}{2 }}{\\tan \\frac{A+B}{2 } }",
+    "dcg" : 2.3540188176469896,
+    "active" : 10,
+    "precision" : 0.6,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2008_December_18",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Operation_%28mathematics%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Backlash_%28engineering%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FScience%2F2007_June_25",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Convexoid_operator",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "\\frac{d}{dx}\\sqrt{4-x^2} dx",
+    "dcg" : 0.7197413843912809,
+    "active" : 10,
+    "precision" : 0.2,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/The_Analyst",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Functional_programming",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Rook%27s_graph",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Frobenius_pseudoprime",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "\\frac{x^2-1}{x^2+1}-\\frac{2ix}{x^2+1}",
+    "dcg" : 1.702984890321381,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2011_May_29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Operation_%28mathematics%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Rook%27s_graph",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Frobenius_pseudoprime",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Theodorus_of_Cyrene",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Prettyprint",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Inductive_effect",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\frac{x^2}{x+1}",
+    "dcg" : 5.456437669409941,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2008_January_8",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Moore_reduction_procedure",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Handshaking",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Prettyprint",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\frac{x}{1+\\sin x}",
+    "dcg" : 2.5701793692750443,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Crank_%28mechanism%29",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Scalar_field",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perfect_spline",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Language_of_mathematics",
+      "score" : 3
+    } ]
+  }, {
+    "query" : "\\int \\exp(-x^2)dx",
+    "dcg" : 3.5,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Mayflower_Compact",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Automatic_label_placement",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2009_June_18",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Rook%27s_graph",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Frobenius_pseudoprime",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\int \\sin^x\\cos^2x\\;dx",
+    "dcg" : 4.557117799027421,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Mayflower_Compact",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Three_dots",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Karplus_equation",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AVillage_pump_%28proposals%29%2FArchive_63",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/L-shell",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Weakly_harmonic_function",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Fayet%E2%80%93Iliopoulos_D-term",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Crank_%28mechanism%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Code_page_437",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FScience%2F2009_January_22",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "\\int e^{-\\frac{r^2}{k}}dr ",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Mayflower_Compact",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Rook%27s_graph",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2008_December_18",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions%2F2007%2FNovember",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Two-dimensional_space",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\int e^{-x^2}dx",
+    "dcg" : 0.6309297535714574,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Mayflower_Compact",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Rook%27s_graph",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Ferrofluid",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Frobenius_pseudoprime",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\int x\\;dx",
+    "dcg" : 2.4992981193974595,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Mayflower_Compact",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Three_dots",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Weakly_harmonic_function",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Fayet%E2%80%93Iliopoulos_D-term",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Code_page_437",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AVillage_pump_%28proposals%29%2FArchive_63",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mean-periodic_function",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Pi_%28letter%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Upsilon",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Earth_ellipsoid",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\int x\\;dx = 1",
+    "dcg" : 0.3154648767857287,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Weakly_harmonic_function",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mayflower_Compact",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Fayet%E2%80%93Iliopoulos_D-term",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Three_dots",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Luigi_Pasinetti",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Bond_dipole_moment",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mean-periodic_function",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Color_of_chemicals",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Stevens%27_power_law",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\int x^2 f(x)dx",
+    "dcg" : 1.0050053972270843,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Mayflower_Compact",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2010_June_5",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2011_May_29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Flexural_rigidity",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2010_December_23",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Euclidean_minimum_spanning_tree",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Theodorus_of_Cyrene",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Chromosome_%28genetic_algorithm%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Liskov_substitution_principle",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Homomorphic_secret_sharing",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\int x^3(1-x^2)^{1/2}",
+    "dcg" : 3.3090309376660176,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Mayflower_Compact",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Indian_inventions_and_discoveries",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Semantic_security",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Rook%27s_graph",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Fractional_supersymmetry",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Viper_telescope",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Stationary_point",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Truncation_error",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Frobenius_pseudoprime",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\int_0^{2\\pi} \\cos (2x)/\\exp (x) dx",
+    "dcg" : 2.5529888219830084,
+    "active" : 10,
+    "precision" : 0.6,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/The_Analyst",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FScience%2F2011_March_15",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2009_January_15",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Template%3ASI_dimensionless_units",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Point_in_polygon",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mayflower_Compact",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Functional_programming",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2012_May_30",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Integrable_system",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FScience%2F2007_January_3",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "\\int_{-\\infty}^{\\infty} \\exp -r^2 dr",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Cosmological_decade",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Semi-infinite",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Linati_schema_for_Ulysses",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Actor_model_theory",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Portal%3ABible%2FSelected_person%2FMarch%2C_2006",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/2002_%28band%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Arturo_Rodas",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Kamen_Rider_OOO",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Keeper_of_the_Archives",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Herman_Wold",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\int_{0}^{1} x\\cdot (1-x)^{n-1} dx ",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Glossary_of_cue_sports_terms",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions%2F2007%2FNovember",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Nondeterministic_finite_automaton",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Proximity_search_%28text%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Extensible_automorphism",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\lim_{x\\to \\infty}\\left(\\frac{x+1}{x}\\right)=1",
+    "dcg" : 0.43067655807339306,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequests_for_adminship%2FOleg_Alexandrov",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cullen_number",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2010_August_22",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mergelyan%27s_theorem",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hepatic_fructokinase",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cellular_waste_product",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comparison_of_optimization_software",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hole_argument",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_optimization_software",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\log (x+3) +\\log x",
+    "dcg" : 1.6309297535714573,
+    "active" : 10,
+    "precision" : 0.2,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/External_sorting",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mental_chronometry",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Carr%E2%80%93Madan_formula",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Superscalar",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perfect_spline",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\log\\frac{z}{(1-z)^2}",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/External_sorting",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Minimum_description_length",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Glossary_of_cue_sports_terms",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2008_December_18",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions%2F2007%2FNovember",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\neg (p \\leftrightarrow q) = \\neg q \\leftrightarrow p",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Phosphagen",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Digital_signature",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Template%3AEqv",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Yttria-stabilized_zirconia",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Effects_of_global_warming_on_human_health",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Solubility_pump",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Template%3ALogical_connectives",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Validity",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Clarence_Irving_Lewis",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Boolean_data_type",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\phi (V1^{V2})",
+    "dcg" : 4.543559338088345,
+    "active" : 10,
+    "precision" : 1.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Comparison_of_analog_and_digital_recording",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/A_Large_Ion_Collider_Experiment",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Direct_shear_test",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Tephigram",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2010_April_6",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Arnold_Walfisz",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2012_August_2",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Protein_structure_prediction",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Antecedent_%28logic%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Consequent",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "\\sin^2 x + \\cos^2 x",
+    "dcg" : 3.5112295596663627,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Crank_%28mechanism%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Karplus_equation",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/L-shell",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Language_of_mathematics",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Ambisonic_decoding",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "\\sqrt{(a^2 + b^2)}",
+    "dcg" : 15.960882076727026,
+    "active" : 10,
+    "precision" : 0.7,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Portal%3AMathematics%2FFeatured_picture%2F2011_10",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/HAL%2FS",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Henryk_Iwaniec",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AHelp_desk%2FArchive_14",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Covariance_and_contravariance_%28computer_science%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Stern_prime",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Timeline_of_mathematical_innovation_in_South_and_West_Asia",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Friedlander%E2%80%93Iwaniec_theorem",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sqrt{2+\\sqrt{2+\\sqrt{2}}}",
+    "dcg" : 1.93581604027773,
+    "active" : 10,
+    "precision" : 0.2,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2009_September_13",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perfect_spline",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perles_configuration",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_things_named_after_Carl_Friedrich_Gauss",
+      "score" : 3
+    } ]
+  }, {
+    "query" : "\\sqrt{a^2 + b^2}",
+    "dcg" : 13.091856165198253,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Portal%3AMathematics%2FFeatured_picture%2F2011_10",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/HAL%2FS",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Henryk_Iwaniec",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hypotenuse",
+      "score" : 5
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AHelp_desk%2FArchive_14",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Covariance_and_contravariance_%28computer_science%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Stern_prime",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Timeline_of_mathematical_innovation_in_South_and_West_Asia",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Friedlander%E2%80%93Iwaniec_theorem",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "\\sqrt{x+1}",
+    "dcg" : 6.163073726659979,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Moore_reduction_procedure",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Handshaking",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perfect_spline",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2008_January_8",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perles_configuration",
+      "score" : 3
+    } ]
+  }, {
+    "query" : "\\sum \\frac{1}{i^2}",
+    "dcg" : 9.58152214662859,
+    "active" : 10,
+    "precision" : 0.6,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Back_injury",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Avalanche_diode",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Outline_of_energy_storage",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/William_Rowan_Hamilton",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Monopole_antenna",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AVillage_pump_%28technical%29%2FArchive_51",
+      "score" : 5
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Covariance_and_contravariance_%28computer_science%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AArticles_for_deletion%2FRoman_letters_used_in_mathematics",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FScience%2F2007_January_18",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Pauling%27s_rules",
+      "score" : 3
+    } ]
+  }, {
+    "query" : "\\sum _{i=0}^{\\infty}a_iX^i",
+    "dcg" : 1.0,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wetted_perimeter",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Linati_schema_for_Ulysses",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Actor_model_theory",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Portal%3ABible%2FSelected_person%2FMarch%2C_2006",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/2002_%28band%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Arturo_Rodas",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Kamen_Rider_OOO",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Keeper_of_the_Archives",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Herman_Wold",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequests_for_adminship%2FBumm13",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum _{i=0}^{\\infty}a_iX^i  ",
+    "dcg" : 1.0,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wetted_perimeter",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Linati_schema_for_Ulysses",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Actor_model_theory",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Portal%3ABible%2FSelected_person%2FMarch%2C_2006",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/2002_%28band%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Arturo_Rodas",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Kamen_Rider_OOO",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Keeper_of_the_Archives",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Herman_Wold",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequests_for_adminship%2FBumm13",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum _{n=1}^{\\infty \\:}\\frac{3n+2}{n\\left(n+1\\right)}",
+    "dcg" : 0.5,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Moore_reduction_procedure",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mental_chronometry",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Differential_%28mechanical_device%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mixed_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum_{i=1}^n x^{i!}",
+    "dcg" : 5.886070834736351,
+    "active" : 10,
+    "precision" : 0.7,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Change_ringing",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Method_ringing",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Block-stacking_problem",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Amortizing_loan",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AArticles_for_deletion%2FAscending_power_numbers",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Luigi_Pasinetti",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Variable_%28mathematics%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Commutation_matrix",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Equidissection",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum_{i=1}^ni^k",
+    "dcg" : 19.820470274012813,
+    "active" : 10,
+    "precision" : 0.5,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Block-stacking_problem",
+      "score" : 5
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Amortizing_loan",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AArticles_for_deletion%2FAscending_power_numbers",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Luigi_Pasinetti",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Variable_%28mathematics%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Commutation_matrix",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Back_injury",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/History_of_string_theory",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Acoustic_approximation",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum_{i=1}^{\\infty} P(X>i) < \\infty",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Linati_schema_for_Ulysses",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Actor_model_theory",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Portal%3ABible%2FSelected_person%2FMarch%2C_2006",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/2002_%28band%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Arturo_Rodas",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Kamen_Rider_OOO",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Keeper_of_the_Archives",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Herman_Wold",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequests_for_adminship%2FBumm13",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lazy_Eight",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum_{i=1}^{n} 2^i",
+    "dcg" : 4.815464876785729,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Block-stacking_problem",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Amortizing_loan",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AArticles_for_deletion%2FAscending_power_numbers",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Luigi_Pasinetti",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Variable_%28mathematics%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Commutation_matrix",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2008_September_2",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Back_injury",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/History_of_string_theory",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum_{i=1}^{n} \\frac{n!}{i!} 2^i",
+    "dcg" : 2.138549443667017,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Change_ringing",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Method_ringing",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Equidissection",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Algebraic_group",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ANotability%2FRFC%3Acompromise%2FB.1",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/S3",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2009_December_23",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Block-stacking_problem",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2007_April_6",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FComputing%2F2011_August_20",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "\\sum_{j=1}^{n} j^k {n \\choose j}",
+    "dcg" : 2.386150926632001,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Luigi_Pasinetti",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Commutation_matrix",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Block-stacking_problem",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Laplacian_smoothing",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AArticles_for_deletion%2FAscending_power_numbers",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Back_injury",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/History_of_string_theory",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Acoustic_approximation",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Pauling%27s_rules",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum_{k=0}^5k+1",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Differential_%28mechanical_device%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mixed_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Luigi_Pasinetti",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Closed_timelike_curve",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/HAL%2FS",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum_{m=1}^{n} \\frac{e^{-am^2}}{m^2}",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Electronics_and_Radar_Development_Establishment",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Muk%C5%8Djima-Hyakkaen_Garden",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FScience%2F2009_August_7",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Renison_University_College",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/St._Paul%27s_University_College",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Skopi%C5%84ski_Panda",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Skopi%C5%84ski_Puma",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Rook%27s_graph",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/LiveMath",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum_{n=0} \\frac{f^{(n)}(a)}{n! } (x-a)^{n}",
+    "dcg" : 3.7442656673842425,
+    "active" : 10,
+    "precision" : 0.6,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Change_ringing",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Method_ringing",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Adaptive_equalizer",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Equidissection",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2008_December_18",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Algebraic_group",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lothar_G%C3%B6ttsche",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2007_April_6",
+      "score" : 3
+    } ]
+  }, {
+    "query" : "\\sum_{n=0}^\\infty z^{n!}",
+    "dcg" : 2.517782560805999,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Change_ringing",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Method_ringing",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2007_April_6",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Equidissection",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Variational_perturbation_theory",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Linati_schema_for_Ulysses",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Actor_model_theory",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Portal%3ABible%2FSelected_person%2FMarch%2C_2006",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/2002_%28band%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Arturo_Rodas",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum_{n=0}^{\\infty}\\frac{(-1)^nx^{2n}}{(2n)!} ",
+    "dcg" : 3.4117052537898314,
+    "active" : 10,
+    "precision" : 0.6,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Integrable_system",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Interlingual_machine_translation",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Resistor_ladder",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AArticles_for_deletion%2FDragan_conjecture",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2007_April_6",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Shapley%E2%80%93Shubik_power_index",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Variational_perturbation_theory",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Level",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Linati_schema_for_Ulysses",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Actor_model_theory",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum_{n=1}^{\\infty} (1/n) ",
+    "dcg" : 2.517782560805999,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Proportionality",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gauss_Moutinho_Cordeiro",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Particle_physics_in_cosmology",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Field_emission_microscopy",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hartogs%27_extension_theorem",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Alternator",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Clinton_Davisson",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Password_length_parameter",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mixed_anomaly",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\sum_{x=1}^{\\infty} \\frac{1}{x}",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Linati_schema_for_Ulysses",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Actor_model_theory",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Portal%3ABible%2FSelected_person%2FMarch%2C_2006",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/2002_%28band%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Arturo_Rodas",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Kamen_Rider_OOO",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Keeper_of_the_Archives",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Herman_Wold",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequests_for_adminship%2FBumm13",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lazy_Eight",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "\\tan(x) = 5/12",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2010_December_23",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Field_emission_microscopy",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ATemplates_for_discussion%2FLog%2F2010_June_1",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Alternator",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Clinton_Davisson",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Password_length_parameter",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mixed_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Universal_one-way_hash_function",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "a^n+1=b^n",
+    "dcg" : 7.0,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Portal%3AMathematics%2FSelected_article%2F16",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Definite_clause_grammar",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Total_ionic_strength_adjustment_buffer",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Differential_%28mechanical_device%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mixed_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "ab=c\\pmod {n} ",
+    "dcg" : 0.38685280723454163,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Toroidal_reflector",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/ISO_31-0",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Luigi_Pasinetti",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Message_authentication_code",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Kerberos_%28moon%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/One-dimensional_space",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Fundamental_theorem_of_cyclic_groups",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AHelp_desk%2FArchive_24",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Matter_collineation",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "ax^2 + bx + c ",
+    "dcg" : 5.3359723947683175,
+    "active" : 10,
+    "precision" : 0.2,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perfect_spline",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perles_configuration",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Seki_Takakazu",
+      "score" : 5
+    } ]
+  }, {
+    "query" : "dr_t = a(b-r_t) dt + \\sigma dW_t",
+    "dcg" : 13.777159510544447,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Rendleman%E2%80%93Bartter_model",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Ho%E2%80%93Lee_model",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Bessel_process",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Laplace_formula",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Dynamic_financial_analysis",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Health_economics",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Photoemission_spectroscopy",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Dynamic_lot-size_model",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Photoelectron_photoion_coincidence_spectroscopy",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "e^x > x^e",
+    "dcg" : 3.4850344669600526,
+    "active" : 10,
+    "precision" : 0.7,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Portal%3AMathematics%2FFeatured_picture%2F2008_08",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_articles%2FMathematics",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Sergey_Yablonsky",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cousin%27s_theorem",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Affine-regular_polygon",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Category%3ASurgery_theory",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Complex_convexity",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Exact_division",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Fuzz_testing",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Errett_Bishop",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "e^{ix}=\\cos \\left(x\\right)+i\\sin \\left(x\\right)",
+    "dcg" : 1.9637017381139301,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2010_December_23",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2010_June_5",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Universal_one-way_hash_function",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Crank_%28mechanism%29",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/SMA*",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Truncation_error",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2011_May_29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Variable_%28mathematics%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AWikipedia_Signpost%2F2009-06-22%2FVandalism",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Total_ionic_strength_adjustment_buffer",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "e^{iφ}=\\cos \\left(φ\\right)+i\\sin \\left(φ\\right) ",
+    "dcg" : 1.102348621967144,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2010_December_23",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2010_June_5",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Universal_one-way_hash_function",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Crank_%28mechanism%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/SMA*",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Truncation_error",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2011_May_29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Variable_%28mathematics%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AWikipedia_Signpost%2F2009-06-22%2FVandalism",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Total_ionic_strength_adjustment_buffer",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "f(x)=\\left(1+\\frac{1}{x}\\right)^x",
+    "dcg" : 7.0,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FComputing%2F2008_November_23",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2010_December_23",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Differential_%28mechanical_device%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mixed_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Universal_one-way_hash_function",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "f_{n+1}^{2} + f_{n}^{2} = f_{2n+1}",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Moore_reduction_procedure",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Burr_puzzle",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "g(n)=o(m^n)",
+    "dcg" : 0.3154648767857287,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Luigi_Pasinetti",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Adaptive_equalizer",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2010_December_23",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cotorsion_group",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/K-minimum_spanning_tree",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Stable_process",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Kerberos_%28moon%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/One-dimensional_space",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Fundamental_theorem_of_cyclic_groups",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "n!-(n-1)!=(n-1)(n-1)!",
+    "dcg" : 5.210226004755012,
+    "active" : 10,
+    "precision" : 1.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Interlingual_machine_translation",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Nondeterministic_finite_automaton",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Proximity_search_%28text%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions%2F2007%2FNovember",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Extensible_automorphism",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AArticles_for_creation%2F2007-04-08",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cyclic_cellular_automaton",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Polyphase_merge_sort",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/LH_%28complexity%29",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "p(xy|z)=p(x|z)p(y|xz)",
+    "dcg" : 1.7317065537373741,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Discriminative_model",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Ket",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Bra",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Markov_logic_network",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hedgehog_space",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Minimum_degree_spanning_tree",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Irreducible_element",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AVillage_pump%2FArchive_AZ",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Stern%E2%80%93Gerlach_experiment",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lupanov_representation",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "poly(n)",
+    "dcg" : 4.543559338088345,
+    "active" : 10,
+    "precision" : 1.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Adaptive_equalizer",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AVillage_pump_%28policy%29%2FArchive_82",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lisp_%28programming_language%29",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Flex_lexical_analyser",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Configuration_graph",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Best-first_search",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Reeh%E2%80%93Schlieder_theorem",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2010_June_5",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Line_chart",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AArticles_for_deletion%2FCasimir_goes_to_Casimir",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "x^2 +1",
+    "dcg" : 2.8135891093108496,
+    "active" : 10,
+    "precision" : 0.3,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Prettyprint",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/HAL%2FS",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2011_May_29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gilbreath_shuffle",
+      "score" : 3
+    } ]
+  }, {
+    "query" : "x^2-y^{2^6}",
+    "dcg" : 4.561606311644851,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Seymour_Ginsburg",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Rook%27s_graph",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/TI-89_series",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Frobenius_pseudoprime",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Voice_inversion",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMiscellaneous%2F2007_July_15",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/BFS",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2008_December_18",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "y = -x\\sin{\\theta} + y\\cos{\\theta}",
+    "dcg" : 3.3049589859077377,
+    "active" : 10,
+    "precision" : 0.4,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FMathematics%2F2010_April_6",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Crank_%28mechanism%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Geodesic_dome",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Yao_graph",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Hypotrochoid",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Mirror",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Ambisonic_decoding",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Orwaldo%27s_gablet",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "z \\tan{z}",
+    "dcg" : 17.974207384587125,
+    "active" : 10,
+    "precision" : 0.9,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FScience%2F2007_June_25",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Geotechnical_engineering",
+      "score" : 4
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Backlash_%28engineering%29",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3AReference_desk%2FArchives%2FScience%2F2008_April_20",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Penrose_diagram",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Angle_of_repose",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Prism_correction",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Surya_Siddhanta",
+      "score" : 3
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Miller_cylindrical_projection",
+      "score" : 2
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Grouser",
+      "score" : 2
+    } ]
+  }, {
+    "query" : "{n \\choose k} = 1 + \\sum_{j=0}^{k-1} \\sum_{i=0}^{n-k-1} {i+j \\choose j} ",
+    "dcg" : 5.0,
+    "active" : 10,
+    "precision" : 0.1,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Extensible_automorphism",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Idoling%21%21%21",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Luigi_Pasinetti",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lost_time",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Bijective_proof",
+      "score" : 5
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Laser-based_angle-resolved_photoemission_spectroscopy",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions_182",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARecent_additions%2F2007%2FNovember",
+      "score" : 1
+    } ]
+  }, {
+    "query" : "γ=\\lim _{n\\to \\infty \\:}\\left(1+\\frac{1}{2}+\\frac{1}{3}+\\frac{1}{4}+\\ldots \\:+\\frac{1}{n}-\\ln \\left(n\\right)\\right).",
+    "dcg" : 0.0,
+    "active" : 10,
+    "precision" : 0.0,
+    "results" : [ {
+      "url" : "http://en.wikipedia.org/wiki/MediaWiki%3AGadget-charinsert.js",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Cleavable_detergent",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Comic_book_price_guide",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Files-11",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Lux_%28disambiguation%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/List_of_Hoshin_Engi_chapters",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Perfect_spline",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Operation_%28mathematics%29",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Gravitational_anomaly",
+      "score" : 1
+    }, {
+      "url" : "http://en.wikipedia.org/wiki/Wikipedia%3ARequested_pictures%2FGraphics",
+      "score" : 1
+    } ]
+  } ]
+}
