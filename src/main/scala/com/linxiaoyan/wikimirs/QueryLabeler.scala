@@ -144,5 +144,41 @@ object BDBLabelStorager extends LabelStorager {
       }
     }
   }
+
+  case class LabelResult(url: String, score:Int)
+  implicit val LabelResultWrites = Json.writes[LabelResult]
+  case class QueryLabels(query: String, labels: List[LabelResult])
+  implicit val QueryLabelsWrites = Json.writes[QueryLabels]
+  
+  def export: String = {
+    synchronized {
+      val cursor = db.openCursor(null, null)
+      try {
+        val key = new DatabaseEntry
+        val value = new DatabaseEntry
+        val queries = ListBuffer[QueryLabels]()
+        while (cursor.getNext(key, value, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+          val query = new String(key.getData(), UTF8)
+          val json = new String(value.getData, UTF8)
+          val rs = Json.parse(json).asInstanceOf[JsArray].value map {
+            o => {
+              val label = Json.fromJson(o).get
+              LabelResult(label.url, label.relevance)
+            }
+          }
+          queries += QueryLabels(query, rs.toList)
+        }
+        Json.prettyPrint(Json.toJson(queries))
+      } finally {
+        cursor.close()
+      }
+    }
+  }
 }
 
+object LabelExporter extends App {
+  import java.io._
+  val writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream("labels.json"),"UTF-8"))
+  writer.write(BDBLabelStorager.export)
+  writer.close
+}
