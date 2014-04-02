@@ -170,8 +170,8 @@
 			else {
 				error("Request Failed: " + data.status);
 			}
-		}).fail(function( jqxhr, textStatus, error ) {
-			var err = textStatus + ', ' + error;
+		}).fail(function( jqxhr, textStatus, e ) {
+			var err = textStatus + ', ' + e;
 			error("Request Failed: " + err);
 		});
 	}
